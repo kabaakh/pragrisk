@@ -1,13 +1,13 @@
 export enum MitigationStatus {
-  MISS = 'Not performed',
+  NOT_PERFORMED = 'NOT_PERFORMED',
 
-  ADHOC = 'Performed informally',
+  AD_HOC = 'AD_HOC',
 
-  REPT = 'Planned &amp; tracked',
+  PLANNED_AND_TRACKED = 'PLANNED_AND_TRACKED',
 
-  DEF = 'Well defined',
+  WELL_DEFINED = 'WELL_DEFINED',
 
-  MEAS = 'Quantitatively controlled',
+  QUANTITATIVELY_CONTROLLED = 'QUANTITATIVELY_CONTROLLED',
 
-  CONT = 'Continuously improved',
+  CONTINUOUSLY_IMPROVED = 'CONTINUOUSLY_IMPROVED',
 }

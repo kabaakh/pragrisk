@@ -18,14 +18,13 @@
       "detail": {
         "title": "Technology"
       },
-      "technologyID": "Technology ID",
+      "id": "ID",
       "name": "Name",
       "category": "Category",
       "description": "Description",
-      "inheritsFrom": "Inherits From",
       "techStackType": "Tech Stack Type",
-      "inheritsFrom": "Inherits From",
-      "scenario": "Scenario"
+      "parentTechnology": "Parent Technology",
+      "technologyID": "Technology ID"
     }
   }
 }

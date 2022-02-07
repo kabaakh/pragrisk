@@ -43,7 +43,7 @@ describe('Mitigation Management Update Component', () => {
 
   describe('ngOnInit', () => {
     it('Should update editForm', () => {
-      const mitigation: IMitigation = { vulnerabiltyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
+      const mitigation: IMitigation = { id: 456 };
 
       activatedRoute.data = of({ mitigation });
       comp.ngOnInit();
@@ -56,7 +56,7 @@ describe('Mitigation Management Update Component', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Mitigation>>();
-      const mitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const mitigation = { id: 123 };
       jest.spyOn(mitigationService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ mitigation });
@@ -98,7 +98,7 @@ describe('Mitigation Management Update Component', () => {
     it('Should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Mitigation>>();
-      const mitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const mitigation = { id: 123 };
       jest.spyOn(mitigationService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ mitigation });

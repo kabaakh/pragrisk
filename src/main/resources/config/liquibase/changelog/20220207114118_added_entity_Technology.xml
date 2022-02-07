@@ -11,7 +11,7 @@
     -->
     <changeSet id="20220207114118-1" author="jhipster">
         <createTable tableName="technology">
-            <column name="technology_id" type="${uuidType}">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
@@ -23,14 +23,11 @@
             <column name="description" type="varchar(1024)">
                 <constraints nullable="true" />
             </column>
-            <column name="inherits_from" type="${uuidType}">
-                <constraints nullable="true" />
-            </column>
             <column name="tech_stack_type" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
-            <column name="inherits_from_technology_id" type="${uuidType}">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_technology__inherits_from_technology_id" />
+            <column name="parent_technology_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_technology__parent_technology_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -52,11 +49,10 @@
                   separator=";"
                   tableName="technology"
                   usePreparedStatements="true">
-            <column name="technology_id" type="${uuidType}"/>
+            <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="category" type="string"/>
             <column name="description" type="string"/>
-            <column name="inherits_from" type="${uuidType}"/>
             <column name="tech_stack_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

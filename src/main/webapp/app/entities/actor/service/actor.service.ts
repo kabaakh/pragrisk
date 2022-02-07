@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { Search } from 'app/core/request/request.model';
+import { SearchWithPagination } from 'app/core/request/request.model';
 import { IActor, getActorIdentifier } from '../actor.model';
 
 export type EntityResponseType = HttpResponse<IActor>;
@@ -23,14 +23,14 @@ export class ActorService {
   }
 
   update(actor: IActor): Observable<EntityResponseType> {
-    return this.http.put<IActor>(`${this.resourceUrl}/${getActorIdentifier(actor) as string}`, actor, { observe: 'response' });
+    return this.http.put<IActor>(`${this.resourceUrl}/${getActorIdentifier(actor) as number}`, actor, { observe: 'response' });
   }
 
   partialUpdate(actor: IActor): Observable<EntityResponseType> {
-    return this.http.patch<IActor>(`${this.resourceUrl}/${getActorIdentifier(actor) as string}`, actor, { observe: 'response' });
+    return this.http.patch<IActor>(`${this.resourceUrl}/${getActorIdentifier(actor) as number}`, actor, { observe: 'response' });
   }
 
-  find(id: string): Observable<EntityResponseType> {
+  find(id: number): Observable<EntityResponseType> {
     return this.http.get<IActor>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
@@ -39,11 +39,11 @@ export class ActorService {
     return this.http.get<IActor[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: string): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req: Search): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IActor[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

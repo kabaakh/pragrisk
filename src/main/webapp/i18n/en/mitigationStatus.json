@@ -2,12 +2,12 @@
   "pragRiskApp": {
     "MitigationStatus": {
       "null": "",
-      "MISS": "Not performed",
-      "ADHOC": "Performed informally",
-      "REPT": "Planned &amp; tracked",
-      "DEF": "Well defined",
-      "MEAS": "Quantitatively controlled",
-      "CONT": "Continuously improved"
+      "NOT_PERFORMED": "NOT_PERFORMED",
+      "AD_HOC": "AD_HOC",
+      "PLANNED_AND_TRACKED": "PLANNED_AND_TRACKED",
+      "WELL_DEFINED": "WELL_DEFINED",
+      "QUANTITATIVELY_CONTROLLED": "QUANTITATIVELY_CONTROLLED",
+      "CONTINUOUSLY_IMPROVED": "CONTINUOUSLY_IMPROVED"
     }
   }
 }

@@ -14,7 +14,7 @@ describe('Technology Management Detail Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { data: of({ technology: { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' } }) },
+          useValue: { data: of({ technology: { id: 123 } }) },
         },
       ],
     })
@@ -30,7 +30,7 @@ describe('Technology Management Detail Component', () => {
       comp.ngOnInit();
 
       // THEN
-      expect(comp.technology).toEqual(expect.objectContaining({ technologyID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+      expect(comp.technology).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });
