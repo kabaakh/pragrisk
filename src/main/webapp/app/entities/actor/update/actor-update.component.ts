@@ -17,7 +17,7 @@ export class ActorUpdateComponent implements OnInit {
   isSaving = false;
   environmentValues = Object.keys(Environment);
 
-  inheritsFromsCollection: IActor[] = [];
+  parentActorsCollection: IActor[] = [];
 
   editForm = this.fb.group({
     actorID: [null, [Validators.required]],
@@ -25,9 +25,9 @@ export class ActorUpdateComponent implements OnInit {
     lastName: [null, [Validators.required]],
     nickName: [null, [Validators.required]],
     environMent: [null, [Validators.required]],
-    inheritsFrom: [],
+    parentActor: [],
     description: [null, [Validators.maxLength(1024)]],
-    inheritsFrom: [],
+    parentActor: [],
   });
 
   constructor(protected actorService: ActorService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -84,20 +84,20 @@ export class ActorUpdateComponent implements OnInit {
       lastName: actor.lastName,
       nickName: actor.nickName,
       environMent: actor.environMent,
-      inheritsFrom: actor.inheritsFrom,
+      parentActor: actor.parentActor,
       description: actor.description,
-      inheritsFrom: actor.inheritsFrom,
+      parentActor: actor.parentActor,
     });
 
-    this.inheritsFromsCollection = this.actorService.addActorToCollectionIfMissing(this.inheritsFromsCollection, actor.inheritsFrom);
+    this.parentActorsCollection = this.actorService.addActorToCollectionIfMissing(this.parentActorsCollection, actor.parentActor);
   }
 
   protected loadRelationshipsOptions(): void {
     this.actorService
       .query({ filter: 'actor-is-null' })
       .pipe(map((res: HttpResponse<IActor[]>) => res.body ?? []))
-      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('inheritsFrom')!.value)))
-      .subscribe((actors: IActor[]) => (this.inheritsFromsCollection = actors));
+      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('parentActor')!.value)))
+      .subscribe((actors: IActor[]) => (this.parentActorsCollection = actors));
   }
 
   protected createFromForm(): IActor {
@@ -108,9 +108,9 @@ export class ActorUpdateComponent implements OnInit {
       lastName: this.editForm.get(['lastName'])!.value,
       nickName: this.editForm.get(['nickName'])!.value,
       environMent: this.editForm.get(['environMent'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentActor: this.editForm.get(['parentActor'])!.value,
       description: this.editForm.get(['description'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentActor: this.editForm.get(['parentActor'])!.value,
     };
   }
 }

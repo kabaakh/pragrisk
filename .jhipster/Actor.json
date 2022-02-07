@@ -35,7 +35,7 @@
       "fieldValues": "KOM (Kommune),KS (KS),UV (Uvedkommende),LEV (Leverandør)"
     },
     {
-      "fieldName": "inheritsFrom",
+      "fieldName": "parentActor",
       "fieldType": "UUID"
     },
     {
@@ -55,13 +55,13 @@
       "otherEntityName": "actor",
       "otherEntityRelationshipName": "actor",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentActor",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "actorID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "actorFK",
+      "relationshipName": "actorID",
       "relationshipType": "one-to-many"
     }
   ],

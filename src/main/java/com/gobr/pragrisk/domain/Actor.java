@@ -45,22 +45,22 @@ public class Actor implements Serializable {
     @Column(name = "environ_ment", nullable = false)
     private Environment environMent;
 
-    @Column(name = "inherits_from")
-    private UUID inheritsFrom;
+    @Column(name = "parent_actor")
+    private UUID parentActor;
 
     @Size(max = 1024)
     @Column(name = "description", length = 1024)
     private String description;
 
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentActor", "actorIDS" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private Actor inheritsFrom;
+    private Actor parentActor;
 
-    @OneToMany(mappedBy = "actorID")
+    @OneToMany(mappedBy = "actorFK")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "actorID", "technologyID", "vulnerabilityID" }, allowSetters = true)
-    private Set<Scenario> scenarios = new HashSet<>();
+    @JsonIgnoreProperties(value = { "actorFK", "technologyFK", "vulnerabilityFK" }, allowSetters = true)
+    private Set<Scenario> actorIDS = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -129,17 +129,17 @@ public class Actor implements Serializable {
         this.environMent = environMent;
     }
 
-    public UUID getInheritsFrom() {
-        return this.inheritsFrom;
+    public UUID getParentActor() {
+        return this.parentActor;
     }
 
-    public Actor inheritsFrom(UUID inheritsFrom) {
-        this.setInheritsFrom(inheritsFrom);
+    public Actor parentActor(UUID parentActor) {
+        this.setParentActor(parentActor);
         return this;
     }
 
-    public void setInheritsFrom(UUID inheritsFrom) {
-        this.inheritsFrom = inheritsFrom;
+    public void setParentActor(UUID parentActor) {
+        this.parentActor = parentActor;
     }
 
     public String getDescription() {
@@ -155,47 +155,47 @@ public class Actor implements Serializable {
         this.description = description;
     }
 
-    public Actor getInheritsFrom() {
-        return this.inheritsFrom;
+    public Actor getParentActor() {
+        return this.parentActor;
     }
 
-    public void setInheritsFrom(Actor actor) {
-        this.inheritsFrom = actor;
+    public void setParentActor(Actor actor) {
+        this.parentActor = actor;
     }
 
-    public Actor inheritsFrom(Actor actor) {
-        this.setInheritsFrom(actor);
+    public Actor parentActor(Actor actor) {
+        this.setParentActor(actor);
         return this;
     }
 
-    public Set<Scenario> getScenarios() {
-        return this.scenarios;
+    public Set<Scenario> getActorIDS() {
+        return this.actorIDS;
     }
 
-    public void setScenarios(Set<Scenario> scenarios) {
-        if (this.scenarios != null) {
-            this.scenarios.forEach(i -> i.setActorID(null));
+    public void setActorIDS(Set<Scenario> scenarios) {
+        if (this.actorIDS != null) {
+            this.actorIDS.forEach(i -> i.setActorFK(null));
         }
         if (scenarios != null) {
-            scenarios.forEach(i -> i.setActorID(this));
+            scenarios.forEach(i -> i.setActorFK(this));
         }
-        this.scenarios = scenarios;
+        this.actorIDS = scenarios;
     }
 
-    public Actor scenarios(Set<Scenario> scenarios) {
-        this.setScenarios(scenarios);
+    public Actor actorIDS(Set<Scenario> scenarios) {
+        this.setActorIDS(scenarios);
         return this;
     }
 
-    public Actor addScenario(Scenario scenario) {
-        this.scenarios.add(scenario);
-        scenario.setActorID(this);
+    public Actor addActorID(Scenario scenario) {
+        this.actorIDS.add(scenario);
+        scenario.setActorFK(this);
         return this;
     }
 
-    public Actor removeScenario(Scenario scenario) {
-        this.scenarios.remove(scenario);
-        scenario.setActorID(null);
+    public Actor removeActorID(Scenario scenario) {
+        this.actorIDS.remove(scenario);
+        scenario.setActorFK(null);
         return this;
     }
 
@@ -227,7 +227,7 @@ public class Actor implements Serializable {
             ", lastName='" + getLastName() + "'" +
             ", nickName='" + getNickName() + "'" +
             ", environMent='" + getEnvironMent() + "'" +
-            ", inheritsFrom='" + getInheritsFrom() + "'" +
+            ", parentActor='" + getParentActor() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }

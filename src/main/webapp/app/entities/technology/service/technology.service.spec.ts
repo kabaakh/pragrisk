@@ -26,7 +26,7 @@ describe('Technology Service', () => {
       name: 'AAAAAAA',
       category: TechCategory.FAG,
       description: 'AAAAAAA',
-      inheritsFrom: 'AAAAAAA',
+      parentTechnology: 'AAAAAAA',
       techStackType: TechStack.JAVA,
     };
   });
@@ -66,7 +66,7 @@ describe('Technology Service', () => {
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          parentTechnology: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault
@@ -108,7 +108,7 @@ describe('Technology Service', () => {
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          parentTechnology: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault

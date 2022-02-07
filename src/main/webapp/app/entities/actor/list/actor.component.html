@@ -62,9 +62,9 @@
           <th scope="col"><span jhiTranslate="pragRiskApp.actor.lastName">Last Name</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.actor.nickName">Nick Name</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.actor.environMent">Environ Ment</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.actor.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -77,11 +77,11 @@
           <td>{{ actor.lastName }}</td>
           <td>{{ actor.nickName }}</td>
           <td jhiTranslate="{{ 'pragRiskApp.Environment.' + actor.environMent }}">{{ actor.environMent }}</td>
-          <td>{{ actor.inheritsFrom }}</td>
+          <td>{{ actor.parentActor }}</td>
           <td>{{ actor.description }}</td>
           <td>
-            <div *ngIf="actor.inheritsFrom">
-              <a [routerLink]="['/actor', actor.inheritsFrom?.actorID, 'view']">{{ actor.inheritsFrom?.actorID }}</a>
+            <div *ngIf="actor.parentActor">
+              <a [routerLink]="['/actor', actor.parentActor?.actorID, 'view']">{{ actor.parentActor?.actorID }}</a>
             </div>
           </td>
           <td class="text-right">

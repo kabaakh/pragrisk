@@ -1,4 +1,4 @@
-actor_id;first_name;last_name;nick_name;environ_ment;inherits_from;description
+actor_id;first_name;last_name;nick_name;environ_ment;parent_actor;description
 d7da0e2d-516c-45dd-bb40-ac906c4d19bd;Alexandre;Quigley;Unit Unit;UV;3322cd26-4e68-4045-bdae-d1df48367f49;Soap deposit
 2dbd11eb-2192-47cf-b006-74bd481f231b;Vickie;Bradtke;Unbranded;UV;290108b9-a5e6-4679-acd8-169719e624f4;CFA synergize Manager
 4361f95f-5d19-403c-85d4-1647616839eb;Rodrick;Homenick;Chile;KOM;6babfeb9-5fee-4e73-b614-db042f260115;Home orchid

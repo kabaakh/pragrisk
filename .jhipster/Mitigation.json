@@ -6,9 +6,9 @@
   "entityTableName": "mitigation",
   "fields": [
     {
-      "fieldName": "vulnerabiltyID",
+      "fieldName": "mitigationID",
       "fieldType": "UUID",
-      "fieldValidateRules": ["required"],
+      "fieldValidateRules": ["required", "unique"],
       "options": {
         "id": true
       }

@@ -31,68 +31,34 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.actorID" for="field_actorID">Actor ID</label>
-          <input type="text" class="form-control" name="actorID" id="field_actorID" data-cy="actorID" formControlName="actorID" />
-          <div *ngIf="editForm.get('actorID')!.invalid && (editForm.get('actorID')!.dirty || editForm.get('actorID')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('actorID')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.actorFK" for="field_actorFK">Actor FK</label>
+          <input type="text" class="form-control" name="actorFK" id="field_actorFK" data-cy="actorFK" formControlName="actorFK" />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.technologyID" for="field_technologyID">Technology ID</label>
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.technologyFK" for="field_technologyFK">Technology FK</label>
           <input
             type="text"
             class="form-control"
-            name="technologyID"
-            id="field_technologyID"
-            data-cy="technologyID"
-            formControlName="technologyID"
+            name="technologyFK"
+            id="field_technologyFK"
+            data-cy="technologyFK"
+            formControlName="technologyFK"
           />
-          <div
-            *ngIf="editForm.get('technologyID')!.invalid && (editForm.get('technologyID')!.dirty || editForm.get('technologyID')!.touched)"
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('technologyID')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.vulnerabilityID" for="field_vulnerabilityID"
-            >Vulnerability ID</label
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.vulnerabilityFK" for="field_vulnerabilityFK"
+            >Vulnerability FK</label
           >
           <input
             type="text"
             class="form-control"
-            name="vulnerabilityID"
-            id="field_vulnerabilityID"
-            data-cy="vulnerabilityID"
-            formControlName="vulnerabilityID"
+            name="vulnerabilityFK"
+            id="field_vulnerabilityFK"
+            data-cy="vulnerabilityFK"
+            formControlName="vulnerabilityFK"
           />
-          <div
-            *ngIf="
-              editForm.get('vulnerabilityID')!.invalid &&
-              (editForm.get('vulnerabilityID')!.dirty || editForm.get('vulnerabilityID')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('vulnerabilityID')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
         </div>
 
         <div class="form-group">
@@ -142,11 +108,16 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.actorID" for="field_actorID">Actor ID</label>
-          <select class="form-control" id="field_actorID" data-cy="actorID" name="actorID" formControlName="actorID">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.riskValue" for="field_riskValue">Risk Value</label>
+          <input type="number" class="form-control" name="riskValue" id="field_riskValue" data-cy="riskValue" formControlName="riskValue" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.actorFK" for="field_actorFK">Actor FK</label>
+          <select class="form-control" id="field_actorFK" data-cy="actorFK" name="actorFK" formControlName="actorFK">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="actorOption.actorID === editForm.get('actorID')!.value?.actorID ? editForm.get('actorID')!.value : actorOption"
+              [ngValue]="actorOption.actorID === editForm.get('actorFK')!.value?.actorID ? editForm.get('actorFK')!.value : actorOption"
               *ngFor="let actorOption of actorsSharedCollection; trackBy: trackActorByActorID"
             >
               {{ actorOption.actorID }}
@@ -155,13 +126,13 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.technologyID" for="field_technologyID">Technology ID</label>
-          <select class="form-control" id="field_technologyID" data-cy="technologyID" name="technologyID" formControlName="technologyID">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.technologyFK" for="field_technologyFK">Technology FK</label>
+          <select class="form-control" id="field_technologyFK" data-cy="technologyFK" name="technologyFK" formControlName="technologyFK">
             <option [ngValue]="null"></option>
             <option
               [ngValue]="
-                technologyOption.technologyID === editForm.get('technologyID')!.value?.technologyID
-                  ? editForm.get('technologyID')!.value
+                technologyOption.technologyID === editForm.get('technologyFK')!.value?.technologyID
+                  ? editForm.get('technologyFK')!.value
                   : technologyOption
               "
               *ngFor="let technologyOption of technologiesSharedCollection; trackBy: trackTechnologyByTechnologyID"
@@ -172,21 +143,21 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.vulnerabilityID" for="field_vulnerabilityID"
-            >Vulnerability ID</label
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.vulnerabilityFK" for="field_vulnerabilityFK"
+            >Vulnerability FK</label
           >
           <select
             class="form-control"
-            id="field_vulnerabilityID"
-            data-cy="vulnerabilityID"
-            name="vulnerabilityID"
-            formControlName="vulnerabilityID"
+            id="field_vulnerabilityFK"
+            data-cy="vulnerabilityFK"
+            name="vulnerabilityFK"
+            formControlName="vulnerabilityFK"
           >
             <option [ngValue]="null"></option>
             <option
               [ngValue]="
-                vulnerabilityOption.vulnerabilityID === editForm.get('vulnerabilityID')!.value?.vulnerabilityID
-                  ? editForm.get('vulnerabilityID')!.value
+                vulnerabilityOption.vulnerabilityID === editForm.get('vulnerabilityFK')!.value?.vulnerabilityID
+                  ? editForm.get('vulnerabilityFK')!.value
                   : vulnerabilityOption
               "
               *ngFor="let vulnerabilityOption of vulnerabilitiesSharedCollection; trackBy: trackVulnerabilityByVulnerabilityID"

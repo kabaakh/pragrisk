@@ -51,7 +51,7 @@ class MitigationResourceIT {
     private static final MitigationStatus UPDATED_STATUS = MitigationStatus.ADHOC;
 
     private static final String ENTITY_API_URL = "/api/mitigations";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{vulnerabiltyID}";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{mitigationID}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/mitigations";
 
     @Autowired
@@ -210,10 +210,10 @@ class MitigationResourceIT {
 
         // Get all the mitigationList
         restMitigationMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=vulnerabiltyID,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=mitigationID,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].vulnerabiltyID").value(hasItem(mitigation.getVulnerabiltyID().toString())))
+            .andExpect(jsonPath("$.[*].mitigationID").value(hasItem(mitigation.getMitigationID().toString())))
             .andExpect(jsonPath("$.[*].controlID").value(hasItem(DEFAULT_CONTROL_ID)))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
@@ -228,10 +228,10 @@ class MitigationResourceIT {
 
         // Get the mitigation
         restMitigationMockMvc
-            .perform(get(ENTITY_API_URL_ID, mitigation.getVulnerabiltyID()))
+            .perform(get(ENTITY_API_URL_ID, mitigation.getMitigationID()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.vulnerabiltyID").value(mitigation.getVulnerabiltyID().toString()))
+            .andExpect(jsonPath("$.mitigationID").value(mitigation.getMitigationID().toString()))
             .andExpect(jsonPath("$.controlID").value(DEFAULT_CONTROL_ID))
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
@@ -254,14 +254,14 @@ class MitigationResourceIT {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
 
         // Update the mitigation
-        Mitigation updatedMitigation = mitigationRepository.findById(mitigation.getVulnerabiltyID()).get();
+        Mitigation updatedMitigation = mitigationRepository.findById(mitigation.getMitigationID()).get();
         // Disconnect from session so that the updates on updatedMitigation are not directly saved in db
         em.detach(updatedMitigation);
         updatedMitigation.controlID(UPDATED_CONTROL_ID).reference(UPDATED_REFERENCE).type(UPDATED_TYPE).status(UPDATED_STATUS);
 
         restMitigationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedMitigation.getVulnerabiltyID())
+                put(ENTITY_API_URL_ID, updatedMitigation.getMitigationID())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updatedMitigation))
             )
@@ -284,12 +284,12 @@ class MitigationResourceIT {
     @Transactional
     void putNonExistingMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMitigationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, mitigation.getVulnerabiltyID())
+                put(ENTITY_API_URL_ID, mitigation.getMitigationID())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(mitigation))
             )
@@ -307,7 +307,7 @@ class MitigationResourceIT {
     @Transactional
     void putWithIdMismatchMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restMitigationMockMvc
@@ -330,7 +330,7 @@ class MitigationResourceIT {
     @Transactional
     void putWithMissingIdPathParamMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restMitigationMockMvc
@@ -355,13 +355,13 @@ class MitigationResourceIT {
 
         // Update the mitigation using partial update
         Mitigation partialUpdatedMitigation = new Mitigation();
-        partialUpdatedMitigation.setVulnerabiltyID(mitigation.getVulnerabiltyID());
+        partialUpdatedMitigation.setMitigationID(mitigation.getMitigationID());
 
         partialUpdatedMitigation.reference(UPDATED_REFERENCE).type(UPDATED_TYPE).status(UPDATED_STATUS);
 
         restMitigationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedMitigation.getVulnerabiltyID())
+                patch(ENTITY_API_URL_ID, partialUpdatedMitigation.getMitigationID())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMitigation))
             )
@@ -387,13 +387,13 @@ class MitigationResourceIT {
 
         // Update the mitigation using partial update
         Mitigation partialUpdatedMitigation = new Mitigation();
-        partialUpdatedMitigation.setVulnerabiltyID(mitigation.getVulnerabiltyID());
+        partialUpdatedMitigation.setMitigationID(mitigation.getMitigationID());
 
         partialUpdatedMitigation.controlID(UPDATED_CONTROL_ID).reference(UPDATED_REFERENCE).type(UPDATED_TYPE).status(UPDATED_STATUS);
 
         restMitigationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedMitigation.getVulnerabiltyID())
+                patch(ENTITY_API_URL_ID, partialUpdatedMitigation.getMitigationID())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMitigation))
             )
@@ -413,12 +413,12 @@ class MitigationResourceIT {
     @Transactional
     void patchNonExistingMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMitigationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, mitigation.getVulnerabiltyID())
+                patch(ENTITY_API_URL_ID, mitigation.getMitigationID())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(mitigation))
             )
@@ -436,7 +436,7 @@ class MitigationResourceIT {
     @Transactional
     void patchWithIdMismatchMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restMitigationMockMvc
@@ -459,7 +459,7 @@ class MitigationResourceIT {
     @Transactional
     void patchWithMissingIdPathParamMitigation() throws Exception {
         int databaseSizeBeforeUpdate = mitigationRepository.findAll().size();
-        mitigation.setVulnerabiltyID(UUID.randomUUID());
+        mitigation.setMitigationID(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restMitigationMockMvc
@@ -486,7 +486,7 @@ class MitigationResourceIT {
 
         // Delete the mitigation
         restMitigationMockMvc
-            .perform(delete(ENTITY_API_URL_ID, mitigation.getVulnerabiltyID().toString()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, mitigation.getMitigationID().toString()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -494,7 +494,7 @@ class MitigationResourceIT {
         assertThat(mitigationList).hasSize(databaseSizeBeforeDelete - 1);
 
         // Validate the Mitigation in Elasticsearch
-        verify(mockMitigationSearchRepository, times(1)).deleteById(mitigation.getVulnerabiltyID());
+        verify(mockMitigationSearchRepository, times(1)).deleteById(mitigation.getMitigationID());
     }
 
     @Test
@@ -503,14 +503,14 @@ class MitigationResourceIT {
         // Configure the mock search repository
         // Initialize the database
         mitigationRepository.saveAndFlush(mitigation);
-        when(mockMitigationSearchRepository.search("id:" + mitigation.getVulnerabiltyID())).thenReturn(Stream.of(mitigation));
+        when(mockMitigationSearchRepository.search("id:" + mitigation.getMitigationID())).thenReturn(Stream.of(mitigation));
 
         // Search the mitigation
         restMitigationMockMvc
-            .perform(get(ENTITY_SEARCH_API_URL + "?query=id:" + mitigation.getVulnerabiltyID()))
+            .perform(get(ENTITY_SEARCH_API_URL + "?query=id:" + mitigation.getMitigationID()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].vulnerabiltyID").value(hasItem(mitigation.getVulnerabiltyID().toString())))
+            .andExpect(jsonPath("$.[*].mitigationID").value(hasItem(mitigation.getMitigationID().toString())))
             .andExpect(jsonPath("$.[*].controlID").value(hasItem(DEFAULT_CONTROL_ID)))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))

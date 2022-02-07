@@ -27,15 +27,16 @@ export class ScenarioUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     scenarioID: [null, [Validators.required]],
-    actorID: [null, [Validators.required]],
-    technologyID: [null, [Validators.required]],
-    vulnerabilityID: [null, [Validators.required]],
+    actorFK: [],
+    technologyFK: [],
+    vulnerabilityFK: [],
     description: [null, [Validators.maxLength(1024)]],
     probability: [],
     qonsequence: [],
-    actorID: [],
-    technologyID: [],
-    vulnerabilityID: [],
+    riskValue: [],
+    actorFK: [],
+    technologyFK: [],
+    vulnerabilityFK: [],
   });
 
   constructor(
@@ -103,25 +104,26 @@ export class ScenarioUpdateComponent implements OnInit {
   protected updateForm(scenario: IScenario): void {
     this.editForm.patchValue({
       scenarioID: scenario.scenarioID,
-      actorID: scenario.actorID,
-      technologyID: scenario.technologyID,
-      vulnerabilityID: scenario.vulnerabilityID,
+      actorFK: scenario.actorFK,
+      technologyFK: scenario.technologyFK,
+      vulnerabilityFK: scenario.vulnerabilityFK,
       description: scenario.description,
       probability: scenario.probability,
       qonsequence: scenario.qonsequence,
-      actorID: scenario.actorID,
-      technologyID: scenario.technologyID,
-      vulnerabilityID: scenario.vulnerabilityID,
+      riskValue: scenario.riskValue,
+      actorFK: scenario.actorFK,
+      technologyFK: scenario.technologyFK,
+      vulnerabilityFK: scenario.vulnerabilityFK,
     });
 
-    this.actorsSharedCollection = this.actorService.addActorToCollectionIfMissing(this.actorsSharedCollection, scenario.actorID);
+    this.actorsSharedCollection = this.actorService.addActorToCollectionIfMissing(this.actorsSharedCollection, scenario.actorFK);
     this.technologiesSharedCollection = this.technologyService.addTechnologyToCollectionIfMissing(
       this.technologiesSharedCollection,
-      scenario.technologyID
+      scenario.technologyFK
     );
     this.vulnerabilitiesSharedCollection = this.vulnerabilityService.addVulnerabilityToCollectionIfMissing(
       this.vulnerabilitiesSharedCollection,
-      scenario.vulnerabilityID
+      scenario.vulnerabilityFK
     );
   }
 
@@ -129,7 +131,7 @@ export class ScenarioUpdateComponent implements OnInit {
     this.actorService
       .query()
       .pipe(map((res: HttpResponse<IActor[]>) => res.body ?? []))
-      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('actorID')!.value)))
+      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('actorFK')!.value)))
       .subscribe((actors: IActor[]) => (this.actorsSharedCollection = actors));
 
     this.technologyService
@@ -137,7 +139,7 @@ export class ScenarioUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ITechnology[]>) => res.body ?? []))
       .pipe(
         map((technologies: ITechnology[]) =>
-          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('technologyID')!.value)
+          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('technologyFK')!.value)
         )
       )
       .subscribe((technologies: ITechnology[]) => (this.technologiesSharedCollection = technologies));
@@ -147,7 +149,7 @@ export class ScenarioUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IVulnerability[]>) => res.body ?? []))
       .pipe(
         map((vulnerabilities: IVulnerability[]) =>
-          this.vulnerabilityService.addVulnerabilityToCollectionIfMissing(vulnerabilities, this.editForm.get('vulnerabilityID')!.value)
+          this.vulnerabilityService.addVulnerabilityToCollectionIfMissing(vulnerabilities, this.editForm.get('vulnerabilityFK')!.value)
         )
       )
       .subscribe((vulnerabilities: IVulnerability[]) => (this.vulnerabilitiesSharedCollection = vulnerabilities));
@@ -157,15 +159,16 @@ export class ScenarioUpdateComponent implements OnInit {
     return {
       ...new Scenario(),
       scenarioID: this.editForm.get(['scenarioID'])!.value,
-      actorID: this.editForm.get(['actorID'])!.value,
-      technologyID: this.editForm.get(['technologyID'])!.value,
-      vulnerabilityID: this.editForm.get(['vulnerabilityID'])!.value,
+      actorFK: this.editForm.get(['actorFK'])!.value,
+      technologyFK: this.editForm.get(['technologyFK'])!.value,
+      vulnerabilityFK: this.editForm.get(['vulnerabilityFK'])!.value,
       description: this.editForm.get(['description'])!.value,
       probability: this.editForm.get(['probability'])!.value,
       qonsequence: this.editForm.get(['qonsequence'])!.value,
-      actorID: this.editForm.get(['actorID'])!.value,
-      technologyID: this.editForm.get(['technologyID'])!.value,
-      vulnerabilityID: this.editForm.get(['vulnerabilityID'])!.value,
+      riskValue: this.editForm.get(['riskValue'])!.value,
+      actorFK: this.editForm.get(['actorFK'])!.value,
+      technologyFK: this.editForm.get(['technologyFK'])!.value,
+      vulnerabilityFK: this.editForm.get(['vulnerabilityFK'])!.value,
     };
   }
 }
