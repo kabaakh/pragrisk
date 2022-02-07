@@ -31,10 +31,6 @@
       "fieldValidateRulesMaxlength": "1024"
     },
     {
-      "fieldName": "inheritsFrom",
-      "fieldType": "UUID"
-    },
-    {
       "fieldName": "techStackType",
       "fieldType": "TechStack",
       "fieldValues": "JAVA (Java),NET (.NET),PHP (PHP)"
@@ -50,13 +46,13 @@
       "otherEntityName": "technology",
       "otherEntityRelationshipName": "technology",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentTechnology",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "technologyID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "technologyFK",
+      "relationshipName": "technologyID",
       "relationshipType": "one-to-many"
     }
   ],

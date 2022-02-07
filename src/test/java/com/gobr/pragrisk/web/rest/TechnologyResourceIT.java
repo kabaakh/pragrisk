@@ -47,9 +47,6 @@ class TechnologyResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final UUID DEFAULT_INHERITS_FROM = UUID.randomUUID();
-    private static final UUID UPDATED_INHERITS_FROM = UUID.randomUUID();
-
     private static final TechStack DEFAULT_TECH_STACK_TYPE = TechStack.JAVA;
     private static final TechStack UPDATED_TECH_STACK_TYPE = TechStack.NET;
 
@@ -87,7 +84,6 @@ class TechnologyResourceIT {
             .name(DEFAULT_NAME)
             .category(DEFAULT_CATEGORY)
             .description(DEFAULT_DESCRIPTION)
-            .inheritsFrom(DEFAULT_INHERITS_FROM)
             .techStackType(DEFAULT_TECH_STACK_TYPE);
         return technology;
     }
@@ -103,7 +99,6 @@ class TechnologyResourceIT {
             .name(UPDATED_NAME)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .techStackType(UPDATED_TECH_STACK_TYPE);
         return technology;
     }
@@ -129,7 +124,6 @@ class TechnologyResourceIT {
         assertThat(testTechnology.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTechnology.getCategory()).isEqualTo(DEFAULT_CATEGORY);
         assertThat(testTechnology.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testTechnology.getInheritsFrom()).isEqualTo(DEFAULT_INHERITS_FROM);
         assertThat(testTechnology.getTechStackType()).isEqualTo(DEFAULT_TECH_STACK_TYPE);
 
         // Validate the Technology in Elasticsearch
@@ -206,7 +200,6 @@ class TechnologyResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
             .andExpect(jsonPath("$.[*].techStackType").value(hasItem(DEFAULT_TECH_STACK_TYPE.toString())));
     }
 
@@ -225,7 +218,6 @@ class TechnologyResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.inheritsFrom").value(DEFAULT_INHERITS_FROM.toString()))
             .andExpect(jsonPath("$.techStackType").value(DEFAULT_TECH_STACK_TYPE.toString()));
     }
 
@@ -252,7 +244,6 @@ class TechnologyResourceIT {
             .name(UPDATED_NAME)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .techStackType(UPDATED_TECH_STACK_TYPE);
 
         restTechnologyMockMvc
@@ -270,7 +261,6 @@ class TechnologyResourceIT {
         assertThat(testTechnology.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTechnology.getCategory()).isEqualTo(UPDATED_CATEGORY);
         assertThat(testTechnology.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testTechnology.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
         assertThat(testTechnology.getTechStackType()).isEqualTo(UPDATED_TECH_STACK_TYPE);
 
         // Validate the Technology in Elasticsearch
@@ -371,7 +361,6 @@ class TechnologyResourceIT {
         assertThat(testTechnology.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTechnology.getCategory()).isEqualTo(DEFAULT_CATEGORY);
         assertThat(testTechnology.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testTechnology.getInheritsFrom()).isEqualTo(DEFAULT_INHERITS_FROM);
         assertThat(testTechnology.getTechStackType()).isEqualTo(DEFAULT_TECH_STACK_TYPE);
     }
 
@@ -391,7 +380,6 @@ class TechnologyResourceIT {
             .name(UPDATED_NAME)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .techStackType(UPDATED_TECH_STACK_TYPE);
 
         restTechnologyMockMvc
@@ -409,7 +397,6 @@ class TechnologyResourceIT {
         assertThat(testTechnology.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTechnology.getCategory()).isEqualTo(UPDATED_CATEGORY);
         assertThat(testTechnology.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testTechnology.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
         assertThat(testTechnology.getTechStackType()).isEqualTo(UPDATED_TECH_STACK_TYPE);
     }
 
@@ -518,7 +505,6 @@ class TechnologyResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
             .andExpect(jsonPath("$.[*].techStackType").value(hasItem(DEFAULT_TECH_STACK_TYPE.toString())));
     }
 }

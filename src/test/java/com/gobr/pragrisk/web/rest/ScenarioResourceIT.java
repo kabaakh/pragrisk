@@ -38,15 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ScenarioResourceIT {
 
-    private static final UUID DEFAULT_ACTOR_ID = UUID.randomUUID();
-    private static final UUID UPDATED_ACTOR_ID = UUID.randomUUID();
-
-    private static final UUID DEFAULT_TECHNOLOGY_ID = UUID.randomUUID();
-    private static final UUID UPDATED_TECHNOLOGY_ID = UUID.randomUUID();
-
-    private static final UUID DEFAULT_VULNERABILITY_ID = UUID.randomUUID();
-    private static final UUID UPDATED_VULNERABILITY_ID = UUID.randomUUID();
-
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -55,6 +46,9 @@ class ScenarioResourceIT {
 
     private static final BigDecimal DEFAULT_QONSEQUENCE = new BigDecimal(1);
     private static final BigDecimal UPDATED_QONSEQUENCE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_RISK_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_RISK_VALUE = new BigDecimal(2);
 
     private static final String ENTITY_API_URL = "/api/scenarios";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{scenarioID}";
@@ -87,12 +81,10 @@ class ScenarioResourceIT {
      */
     public static Scenario createEntity(EntityManager em) {
         Scenario scenario = new Scenario()
-            .actorID(DEFAULT_ACTOR_ID)
-            .technologyID(DEFAULT_TECHNOLOGY_ID)
-            .vulnerabilityID(DEFAULT_VULNERABILITY_ID)
             .description(DEFAULT_DESCRIPTION)
             .probability(DEFAULT_PROBABILITY)
-            .qonsequence(DEFAULT_QONSEQUENCE);
+            .qonsequence(DEFAULT_QONSEQUENCE)
+            .riskValue(DEFAULT_RISK_VALUE);
         return scenario;
     }
 
@@ -104,12 +96,10 @@ class ScenarioResourceIT {
      */
     public static Scenario createUpdatedEntity(EntityManager em) {
         Scenario scenario = new Scenario()
-            .actorID(UPDATED_ACTOR_ID)
-            .technologyID(UPDATED_TECHNOLOGY_ID)
-            .vulnerabilityID(UPDATED_VULNERABILITY_ID)
             .description(UPDATED_DESCRIPTION)
             .probability(UPDATED_PROBABILITY)
-            .qonsequence(UPDATED_QONSEQUENCE);
+            .qonsequence(UPDATED_QONSEQUENCE)
+            .riskValue(UPDATED_RISK_VALUE);
         return scenario;
     }
 
@@ -131,12 +121,10 @@ class ScenarioResourceIT {
         List<Scenario> scenarioList = scenarioRepository.findAll();
         assertThat(scenarioList).hasSize(databaseSizeBeforeCreate + 1);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
-        assertThat(testScenario.getActorID()).isEqualTo(DEFAULT_ACTOR_ID);
-        assertThat(testScenario.getTechnologyID()).isEqualTo(DEFAULT_TECHNOLOGY_ID);
-        assertThat(testScenario.getVulnerabilityID()).isEqualTo(DEFAULT_VULNERABILITY_ID);
         assertThat(testScenario.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testScenario.getProbability()).isEqualByComparingTo(DEFAULT_PROBABILITY);
         assertThat(testScenario.getQonsequence()).isEqualByComparingTo(DEFAULT_QONSEQUENCE);
+        assertThat(testScenario.getRiskValue()).isEqualByComparingTo(DEFAULT_RISK_VALUE);
 
         // Validate the Scenario in Elasticsearch
         verify(mockScenarioSearchRepository, times(1)).save(testScenario);
@@ -165,57 +153,6 @@ class ScenarioResourceIT {
 
     @Test
     @Transactional
-    void checkActorIDIsRequired() throws Exception {
-        int databaseSizeBeforeTest = scenarioRepository.findAll().size();
-        // set the field null
-        scenario.setActorID(null);
-
-        // Create the Scenario, which fails.
-
-        restScenarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scenario)))
-            .andExpect(status().isBadRequest());
-
-        List<Scenario> scenarioList = scenarioRepository.findAll();
-        assertThat(scenarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkTechnologyIDIsRequired() throws Exception {
-        int databaseSizeBeforeTest = scenarioRepository.findAll().size();
-        // set the field null
-        scenario.setTechnologyID(null);
-
-        // Create the Scenario, which fails.
-
-        restScenarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scenario)))
-            .andExpect(status().isBadRequest());
-
-        List<Scenario> scenarioList = scenarioRepository.findAll();
-        assertThat(scenarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkVulnerabilityIDIsRequired() throws Exception {
-        int databaseSizeBeforeTest = scenarioRepository.findAll().size();
-        // set the field null
-        scenario.setVulnerabilityID(null);
-
-        // Create the Scenario, which fails.
-
-        restScenarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scenario)))
-            .andExpect(status().isBadRequest());
-
-        List<Scenario> scenarioList = scenarioRepository.findAll();
-        assertThat(scenarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllScenarios() throws Exception {
         // Initialize the database
         scenarioRepository.saveAndFlush(scenario);
@@ -226,12 +163,10 @@ class ScenarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].scenarioID").value(hasItem(scenario.getScenarioID().toString())))
-            .andExpect(jsonPath("$.[*].actorID").value(hasItem(DEFAULT_ACTOR_ID.toString())))
-            .andExpect(jsonPath("$.[*].technologyID").value(hasItem(DEFAULT_TECHNOLOGY_ID.toString())))
-            .andExpect(jsonPath("$.[*].vulnerabilityID").value(hasItem(DEFAULT_VULNERABILITY_ID.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].probability").value(hasItem(sameNumber(DEFAULT_PROBABILITY))))
-            .andExpect(jsonPath("$.[*].qonsequence").value(hasItem(sameNumber(DEFAULT_QONSEQUENCE))));
+            .andExpect(jsonPath("$.[*].qonsequence").value(hasItem(sameNumber(DEFAULT_QONSEQUENCE))))
+            .andExpect(jsonPath("$.[*].riskValue").value(hasItem(sameNumber(DEFAULT_RISK_VALUE))));
     }
 
     @Test
@@ -246,12 +181,10 @@ class ScenarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.scenarioID").value(scenario.getScenarioID().toString()))
-            .andExpect(jsonPath("$.actorID").value(DEFAULT_ACTOR_ID.toString()))
-            .andExpect(jsonPath("$.technologyID").value(DEFAULT_TECHNOLOGY_ID.toString()))
-            .andExpect(jsonPath("$.vulnerabilityID").value(DEFAULT_VULNERABILITY_ID.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.probability").value(sameNumber(DEFAULT_PROBABILITY)))
-            .andExpect(jsonPath("$.qonsequence").value(sameNumber(DEFAULT_QONSEQUENCE)));
+            .andExpect(jsonPath("$.qonsequence").value(sameNumber(DEFAULT_QONSEQUENCE)))
+            .andExpect(jsonPath("$.riskValue").value(sameNumber(DEFAULT_RISK_VALUE)));
     }
 
     @Test
@@ -274,12 +207,10 @@ class ScenarioResourceIT {
         // Disconnect from session so that the updates on updatedScenario are not directly saved in db
         em.detach(updatedScenario);
         updatedScenario
-            .actorID(UPDATED_ACTOR_ID)
-            .technologyID(UPDATED_TECHNOLOGY_ID)
-            .vulnerabilityID(UPDATED_VULNERABILITY_ID)
             .description(UPDATED_DESCRIPTION)
             .probability(UPDATED_PROBABILITY)
-            .qonsequence(UPDATED_QONSEQUENCE);
+            .qonsequence(UPDATED_QONSEQUENCE)
+            .riskValue(UPDATED_RISK_VALUE);
 
         restScenarioMockMvc
             .perform(
@@ -293,12 +224,10 @@ class ScenarioResourceIT {
         List<Scenario> scenarioList = scenarioRepository.findAll();
         assertThat(scenarioList).hasSize(databaseSizeBeforeUpdate);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
-        assertThat(testScenario.getActorID()).isEqualTo(UPDATED_ACTOR_ID);
-        assertThat(testScenario.getTechnologyID()).isEqualTo(UPDATED_TECHNOLOGY_ID);
-        assertThat(testScenario.getVulnerabilityID()).isEqualTo(UPDATED_VULNERABILITY_ID);
         assertThat(testScenario.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testScenario.getProbability()).isEqualByComparingTo(UPDATED_PROBABILITY);
         assertThat(testScenario.getQonsequence()).isEqualByComparingTo(UPDATED_QONSEQUENCE);
+        assertThat(testScenario.getRiskValue()).isEqualByComparingTo(UPDATED_RISK_VALUE);
 
         // Validate the Scenario in Elasticsearch
         verify(mockScenarioSearchRepository).save(testScenario);
@@ -381,11 +310,7 @@ class ScenarioResourceIT {
         Scenario partialUpdatedScenario = new Scenario();
         partialUpdatedScenario.setScenarioID(scenario.getScenarioID());
 
-        partialUpdatedScenario
-            .vulnerabilityID(UPDATED_VULNERABILITY_ID)
-            .description(UPDATED_DESCRIPTION)
-            .probability(UPDATED_PROBABILITY)
-            .qonsequence(UPDATED_QONSEQUENCE);
+        partialUpdatedScenario.qonsequence(UPDATED_QONSEQUENCE).riskValue(UPDATED_RISK_VALUE);
 
         restScenarioMockMvc
             .perform(
@@ -399,12 +324,10 @@ class ScenarioResourceIT {
         List<Scenario> scenarioList = scenarioRepository.findAll();
         assertThat(scenarioList).hasSize(databaseSizeBeforeUpdate);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
-        assertThat(testScenario.getActorID()).isEqualTo(DEFAULT_ACTOR_ID);
-        assertThat(testScenario.getTechnologyID()).isEqualTo(DEFAULT_TECHNOLOGY_ID);
-        assertThat(testScenario.getVulnerabilityID()).isEqualTo(UPDATED_VULNERABILITY_ID);
-        assertThat(testScenario.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testScenario.getProbability()).isEqualByComparingTo(UPDATED_PROBABILITY);
+        assertThat(testScenario.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testScenario.getProbability()).isEqualByComparingTo(DEFAULT_PROBABILITY);
         assertThat(testScenario.getQonsequence()).isEqualByComparingTo(UPDATED_QONSEQUENCE);
+        assertThat(testScenario.getRiskValue()).isEqualByComparingTo(UPDATED_RISK_VALUE);
     }
 
     @Test
@@ -420,12 +343,10 @@ class ScenarioResourceIT {
         partialUpdatedScenario.setScenarioID(scenario.getScenarioID());
 
         partialUpdatedScenario
-            .actorID(UPDATED_ACTOR_ID)
-            .technologyID(UPDATED_TECHNOLOGY_ID)
-            .vulnerabilityID(UPDATED_VULNERABILITY_ID)
             .description(UPDATED_DESCRIPTION)
             .probability(UPDATED_PROBABILITY)
-            .qonsequence(UPDATED_QONSEQUENCE);
+            .qonsequence(UPDATED_QONSEQUENCE)
+            .riskValue(UPDATED_RISK_VALUE);
 
         restScenarioMockMvc
             .perform(
@@ -439,12 +360,10 @@ class ScenarioResourceIT {
         List<Scenario> scenarioList = scenarioRepository.findAll();
         assertThat(scenarioList).hasSize(databaseSizeBeforeUpdate);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
-        assertThat(testScenario.getActorID()).isEqualTo(UPDATED_ACTOR_ID);
-        assertThat(testScenario.getTechnologyID()).isEqualTo(UPDATED_TECHNOLOGY_ID);
-        assertThat(testScenario.getVulnerabilityID()).isEqualTo(UPDATED_VULNERABILITY_ID);
         assertThat(testScenario.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testScenario.getProbability()).isEqualByComparingTo(UPDATED_PROBABILITY);
         assertThat(testScenario.getQonsequence()).isEqualByComparingTo(UPDATED_QONSEQUENCE);
+        assertThat(testScenario.getRiskValue()).isEqualByComparingTo(UPDATED_RISK_VALUE);
     }
 
     @Test
@@ -547,11 +466,9 @@ class ScenarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].scenarioID").value(hasItem(scenario.getScenarioID().toString())))
-            .andExpect(jsonPath("$.[*].actorID").value(hasItem(DEFAULT_ACTOR_ID.toString())))
-            .andExpect(jsonPath("$.[*].technologyID").value(hasItem(DEFAULT_TECHNOLOGY_ID.toString())))
-            .andExpect(jsonPath("$.[*].vulnerabilityID").value(hasItem(DEFAULT_VULNERABILITY_ID.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].probability").value(hasItem(sameNumber(DEFAULT_PROBABILITY))))
-            .andExpect(jsonPath("$.[*].qonsequence").value(hasItem(sameNumber(DEFAULT_QONSEQUENCE))));
+            .andExpect(jsonPath("$.[*].qonsequence").value(hasItem(sameNumber(DEFAULT_QONSEQUENCE))))
+            .andExpect(jsonPath("$.[*].riskValue").value(hasItem(sameNumber(DEFAULT_RISK_VALUE))));
     }
 }

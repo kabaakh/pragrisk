@@ -12,7 +12,7 @@ export class MitigationRoutingResolveService implements Resolve<IMitigation> {
   constructor(protected service: MitigationService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IMitigation> | Observable<never> {
-    const id = route.params['vulnerabiltyID'];
+    const id = route.params['mitigationID'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((mitigation: HttpResponse<Mitigation>) => {

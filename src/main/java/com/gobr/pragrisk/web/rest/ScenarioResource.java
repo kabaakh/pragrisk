@@ -136,15 +136,6 @@ public class ScenarioResource {
         Optional<Scenario> result = scenarioRepository
             .findById(scenario.getScenarioID())
             .map(existingScenario -> {
-                if (scenario.getActorID() != null) {
-                    existingScenario.setActorID(scenario.getActorID());
-                }
-                if (scenario.getTechnologyID() != null) {
-                    existingScenario.setTechnologyID(scenario.getTechnologyID());
-                }
-                if (scenario.getVulnerabilityID() != null) {
-                    existingScenario.setVulnerabilityID(scenario.getVulnerabilityID());
-                }
                 if (scenario.getDescription() != null) {
                     existingScenario.setDescription(scenario.getDescription());
                 }
@@ -153,6 +144,9 @@ public class ScenarioResource {
                 }
                 if (scenario.getQonsequence() != null) {
                     existingScenario.setQonsequence(scenario.getQonsequence());
+                }
+                if (scenario.getRiskValue() != null) {
+                    existingScenario.setRiskValue(scenario.getRiskValue());
                 }
 
                 return existingScenario;

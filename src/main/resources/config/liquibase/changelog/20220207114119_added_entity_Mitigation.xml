@@ -11,7 +11,7 @@
     -->
     <changeSet id="20220207114119-1" author="jhipster">
         <createTable tableName="mitigation">
-            <column name="vulnerabilty_id" type="${uuidType}">
+            <column name="mitigation_id" type="${uuidType}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="control_id" type="varchar(255)">
@@ -46,7 +46,7 @@
                   separator=";"
                   tableName="mitigation"
                   usePreparedStatements="true">
-            <column name="vulnerabilty_id" type="${uuidType}"/>
+            <column name="mitigation_id" type="${uuidType}"/>
             <column name="control_id" type="string"/>
             <column name="reference" type="string"/>
             <column name="type" type="string"/>

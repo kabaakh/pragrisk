@@ -42,22 +42,19 @@ public class Technology implements Serializable {
     @Column(name = "description", length = 1024)
     private String description;
 
-    @Column(name = "inherits_from")
-    private UUID inheritsFrom;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "tech_stack_type")
     private TechStack techStackType;
 
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentTechnology", "technologyIDS" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private Technology inheritsFrom;
+    private Technology parentTechnology;
 
-    @OneToMany(mappedBy = "technologyID")
+    @OneToMany(mappedBy = "technologyFK")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "actorID", "technologyID", "vulnerabilityID" }, allowSetters = true)
-    private Set<Scenario> scenarios = new HashSet<>();
+    @JsonIgnoreProperties(value = { "actorFK", "technologyFK", "vulnerabilityFK" }, allowSetters = true)
+    private Set<Scenario> technologyIDS = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -113,19 +110,6 @@ public class Technology implements Serializable {
         this.description = description;
     }
 
-    public UUID getInheritsFrom() {
-        return this.inheritsFrom;
-    }
-
-    public Technology inheritsFrom(UUID inheritsFrom) {
-        this.setInheritsFrom(inheritsFrom);
-        return this;
-    }
-
-    public void setInheritsFrom(UUID inheritsFrom) {
-        this.inheritsFrom = inheritsFrom;
-    }
-
     public TechStack getTechStackType() {
         return this.techStackType;
     }
@@ -139,47 +123,47 @@ public class Technology implements Serializable {
         this.techStackType = techStackType;
     }
 
-    public Technology getInheritsFrom() {
-        return this.inheritsFrom;
+    public Technology getParentTechnology() {
+        return this.parentTechnology;
     }
 
-    public void setInheritsFrom(Technology technology) {
-        this.inheritsFrom = technology;
+    public void setParentTechnology(Technology technology) {
+        this.parentTechnology = technology;
     }
 
-    public Technology inheritsFrom(Technology technology) {
-        this.setInheritsFrom(technology);
+    public Technology parentTechnology(Technology technology) {
+        this.setParentTechnology(technology);
         return this;
     }
 
-    public Set<Scenario> getScenarios() {
-        return this.scenarios;
+    public Set<Scenario> getTechnologyIDS() {
+        return this.technologyIDS;
     }
 
-    public void setScenarios(Set<Scenario> scenarios) {
-        if (this.scenarios != null) {
-            this.scenarios.forEach(i -> i.setTechnologyID(null));
+    public void setTechnologyIDS(Set<Scenario> scenarios) {
+        if (this.technologyIDS != null) {
+            this.technologyIDS.forEach(i -> i.setTechnologyFK(null));
         }
         if (scenarios != null) {
-            scenarios.forEach(i -> i.setTechnologyID(this));
+            scenarios.forEach(i -> i.setTechnologyFK(this));
         }
-        this.scenarios = scenarios;
+        this.technologyIDS = scenarios;
     }
 
-    public Technology scenarios(Set<Scenario> scenarios) {
-        this.setScenarios(scenarios);
+    public Technology technologyIDS(Set<Scenario> scenarios) {
+        this.setTechnologyIDS(scenarios);
         return this;
     }
 
-    public Technology addScenario(Scenario scenario) {
-        this.scenarios.add(scenario);
-        scenario.setTechnologyID(this);
+    public Technology addTechnologyID(Scenario scenario) {
+        this.technologyIDS.add(scenario);
+        scenario.setTechnologyFK(this);
         return this;
     }
 
-    public Technology removeScenario(Scenario scenario) {
-        this.scenarios.remove(scenario);
-        scenario.setTechnologyID(null);
+    public Technology removeTechnologyID(Scenario scenario) {
+        this.technologyIDS.remove(scenario);
+        scenario.setTechnologyFK(null);
         return this;
     }
 
@@ -210,7 +194,6 @@ public class Technology implements Serializable {
             ", name='" + getName() + "'" +
             ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
-            ", inheritsFrom='" + getInheritsFrom() + "'" +
             ", techStackType='" + getTechStackType() + "'" +
             "}";
     }

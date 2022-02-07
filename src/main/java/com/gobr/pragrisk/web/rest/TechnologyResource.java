@@ -145,9 +145,6 @@ public class TechnologyResource {
                 if (technology.getDescription() != null) {
                     existingTechnology.setDescription(technology.getDescription());
                 }
-                if (technology.getInheritsFrom() != null) {
-                    existingTechnology.setInheritsFrom(technology.getInheritsFrom());
-                }
                 if (technology.getTechStackType() != null) {
                     existingTechnology.setTechStackType(technology.getTechStackType());
                 }

@@ -18,7 +18,7 @@
       "detail": {
         "title": "Mitigation"
       },
-      "vulnerabiltyID": "Vulnerabilty ID",
+      "mitigationID": "Mitigation ID",
       "controlID": "Control ID",
       "reference": "Reference",
       "type": "Type",

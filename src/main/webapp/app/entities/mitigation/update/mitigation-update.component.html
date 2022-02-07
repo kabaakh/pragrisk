@@ -8,27 +8,25 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('vulnerabiltyID')!.value == null">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.vulnerabiltyID" for="field_vulnerabiltyID"
-            >Vulnerabilty ID</label
+        <div class="form-group" [hidden]="editForm.get('mitigationID')!.value == null">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.mitigationID" for="field_mitigationID"
+            >Mitigation ID</label
           >
           <input
             type="text"
             class="form-control"
-            name="vulnerabiltyID"
-            id="field_vulnerabiltyID"
-            data-cy="vulnerabiltyID"
-            formControlName="vulnerabiltyID"
+            name="mitigationID"
+            id="field_mitigationID"
+            data-cy="mitigationID"
+            formControlName="mitigationID"
             [readonly]="true"
           />
           <div
-            *ngIf="
-              editForm.get('vulnerabiltyID')!.invalid && (editForm.get('vulnerabiltyID')!.dirty || editForm.get('vulnerabiltyID')!.touched)
-            "
+            *ngIf="editForm.get('mitigationID')!.invalid && (editForm.get('mitigationID')!.dirty || editForm.get('mitigationID')!.touched)"
           >
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('vulnerabiltyID')?.errors?.required"
+              *ngIf="editForm.get('mitigationID')?.errors?.required"
               jhiTranslate="entity.validation.required"
             >
               This field is required.
