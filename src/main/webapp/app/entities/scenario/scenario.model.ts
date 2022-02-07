@@ -4,29 +4,29 @@ import { IVulnerability } from 'app/entities/vulnerability/vulnerability.model';
 
 export interface IScenario {
   scenarioID?: string;
-  actorID?: string;
-  technologyID?: string;
-  vulnerabilityID?: string;
+  actorFK?: string;
+  technologyFK?: string;
+  vulnerabilityFK?: string;
   description?: string | null;
   probability?: number | null;
   qonsequence?: number | null;
-  actorID?: IActor | null;
-  technologyID?: ITechnology | null;
-  vulnerabilityID?: IVulnerability | null;
+  actorFK?: IActor | null;
+  technologyFK?: ITechnology | null;
+  vulnerabilityFK?: IVulnerability | null;
 }
 
 export class Scenario implements IScenario {
   constructor(
     public scenarioID?: string,
-    public actorID?: string,
-    public technologyID?: string,
-    public vulnerabilityID?: string,
+    public actorFK?: string,
+    public technologyFK?: string,
+    public vulnerabilityFK?: string,
     public description?: string | null,
     public probability?: number | null,
     public qonsequence?: number | null,
-    public actorID?: IActor | null,
-    public technologyID?: ITechnology | null,
-    public vulnerabilityID?: IVulnerability | null
+    public actorFK?: IActor | null,
+    public technologyFK?: ITechnology | null,
+    public vulnerabilityFK?: IVulnerability | null
   ) {}
 }
 

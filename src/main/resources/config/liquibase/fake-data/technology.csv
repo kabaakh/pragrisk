@@ -1,4 +1,4 @@
-technology_id;name;category;description;inherits_from;tech_stack_type
+technology_id;name;category;description;parent_technology;tech_stack_type
 4a33dacc-38f3-4108-abd5-d523e26e83af;salmon;FEL;Falkland;cbb8a1d9-02ce-4c15-b22a-bc5ea803ad32;PHP
 8abfefc4-8694-4984-9afa-d1fa5c27945b;superstructure Synchronised;FAG;circuit Shirt Rubber;2b7bcb35-bfb4-470e-821b-21d897c298d3;PHP
 67dce166-0f0f-4d51-959d-55d98ff0a7bf;Lead invoice Ocean;FEL;Producer;c690d206-dc62-40ea-98f5-830c8ef7682f;JAVA

@@ -21,9 +21,9 @@ describe('Scenario Service', () => {
 
     elemDefault = {
       scenarioID: 'AAAAAAA',
-      actorID: 'AAAAAAA',
-      technologyID: 'AAAAAAA',
-      vulnerabilityID: 'AAAAAAA',
+      actorFK: 'AAAAAAA',
+      technologyFK: 'AAAAAAA',
+      vulnerabilityFK: 'AAAAAAA',
       description: 'AAAAAAA',
       probability: 0,
       qonsequence: 0,
@@ -62,9 +62,9 @@ describe('Scenario Service', () => {
       const returnedFromService = Object.assign(
         {
           scenarioID: 'BBBBBB',
-          actorID: 'BBBBBB',
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
+          actorFK: 'BBBBBB',
+          technologyFK: 'BBBBBB',
+          vulnerabilityFK: 'BBBBBB',
           description: 'BBBBBB',
           probability: 1,
           qonsequence: 1,
@@ -84,8 +84,8 @@ describe('Scenario Service', () => {
     it('should partial update a Scenario', () => {
       const patchObject = Object.assign(
         {
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
+          technologyFK: 'BBBBBB',
+          vulnerabilityFK: 'BBBBBB',
           probability: 1,
           qonsequence: 1,
         },
@@ -107,9 +107,9 @@ describe('Scenario Service', () => {
       const returnedFromService = Object.assign(
         {
           scenarioID: 'BBBBBB',
-          actorID: 'BBBBBB',
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
+          actorFK: 'BBBBBB',
+          technologyFK: 'BBBBBB',
+          vulnerabilityFK: 'BBBBBB',
           description: 'BBBBBB',
           probability: 1,
           qonsequence: 1,

@@ -31,7 +31,7 @@
       "fieldValidateRulesMaxlength": "1024"
     },
     {
-      "fieldName": "inheritsFrom",
+      "fieldName": "parentTechnology",
       "fieldType": "UUID"
     },
     {
@@ -50,12 +50,12 @@
       "otherEntityName": "technology",
       "otherEntityRelationshipName": "technology",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentTech",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "technologyID",
+      "otherEntityRelationshipName": "technologyFK",
       "relationshipName": "scenario",
       "relationshipType": "one-to-many"
     }

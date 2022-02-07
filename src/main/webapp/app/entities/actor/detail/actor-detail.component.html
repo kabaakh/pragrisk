@@ -30,18 +30,18 @@
         <dd>
           <span jhiTranslate="{{ 'pragRiskApp.Environment.' + actor.environMent }}">{{ actor.environMent }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></dt>
         <dd>
-          <span>{{ actor.inheritsFrom }}</span>
+          <span>{{ actor.parentActor }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.actor.description">Description</span></dt>
         <dd>
           <span>{{ actor.description }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.actor.parentAct">Parent Act</span></dt>
         <dd>
-          <div *ngIf="actor.inheritsFrom">
-            <a [routerLink]="['/actor', actor.inheritsFrom?.actorID, 'view']">{{ actor.inheritsFrom?.actorID }}</a>
+          <div *ngIf="actor.parentAct">
+            <a [routerLink]="['/actor', actor.parentAct?.actorID, 'view']">{{ actor.parentAct?.actorID }}</a>
           </div>
         </dd>
       </dl>
