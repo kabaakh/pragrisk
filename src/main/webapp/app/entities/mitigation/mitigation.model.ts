@@ -3,7 +3,7 @@ import { MitigationType } from 'app/entities/enumerations/mitigation-type.model'
 import { MitigationStatus } from 'app/entities/enumerations/mitigation-status.model';
 
 export interface IMitigation {
-  vulnerabiltyID?: string;
+  mitigationID?: string;
   controlID?: string;
   reference?: string | null;
   type?: MitigationType;
@@ -13,7 +13,7 @@ export interface IMitigation {
 
 export class Mitigation implements IMitigation {
   constructor(
-    public vulnerabiltyID?: string,
+    public mitigationID?: string,
     public controlID?: string,
     public reference?: string | null,
     public type?: MitigationType,
@@ -23,5 +23,5 @@ export class Mitigation implements IMitigation {
 }
 
 export function getMitigationIdentifier(mitigation: IMitigation): string | undefined {
-  return mitigation.vulnerabiltyID;
+  return mitigation.mitigationID;
 }

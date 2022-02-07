@@ -59,8 +59,8 @@ export class MitigationComponent implements OnInit {
     this.loadAll();
   }
 
-  trackVulnerabiltyID(index: number, item: IMitigation): string {
-    return item.vulnerabiltyID!;
+  trackMitigationID(index: number, item: IMitigation): string {
+    return item.mitigationID!;
   }
 
   delete(mitigation: IMitigation): void {

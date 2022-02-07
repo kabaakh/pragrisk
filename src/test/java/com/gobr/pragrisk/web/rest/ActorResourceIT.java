@@ -49,9 +49,6 @@ class ActorResourceIT {
     private static final Environment DEFAULT_ENVIRON_MENT = Environment.KOM;
     private static final Environment UPDATED_ENVIRON_MENT = Environment.KS;
 
-    private static final UUID DEFAULT_INHERITS_FROM = UUID.randomUUID();
-    private static final UUID UPDATED_INHERITS_FROM = UUID.randomUUID();
-
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -90,7 +87,6 @@ class ActorResourceIT {
             .lastName(DEFAULT_LAST_NAME)
             .nickName(DEFAULT_NICK_NAME)
             .environMent(DEFAULT_ENVIRON_MENT)
-            .inheritsFrom(DEFAULT_INHERITS_FROM)
             .description(DEFAULT_DESCRIPTION);
         return actor;
     }
@@ -107,7 +103,6 @@ class ActorResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
             .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .description(UPDATED_DESCRIPTION);
         return actor;
     }
@@ -134,7 +129,6 @@ class ActorResourceIT {
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testActor.getEnvironMent()).isEqualTo(DEFAULT_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(DEFAULT_INHERITS_FROM);
         assertThat(testActor.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -246,7 +240,6 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
             .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
@@ -266,7 +259,6 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME))
             .andExpect(jsonPath("$.environMent").value(DEFAULT_ENVIRON_MENT.toString()))
-            .andExpect(jsonPath("$.inheritsFrom").value(DEFAULT_INHERITS_FROM.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
@@ -294,7 +286,6 @@ class ActorResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
             .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -313,7 +304,6 @@ class ActorResourceIT {
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -401,7 +391,6 @@ class ActorResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .nickName(UPDATED_NICK_NAME)
             .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -420,7 +409,6 @@ class ActorResourceIT {
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -441,7 +429,6 @@ class ActorResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
             .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -460,7 +447,6 @@ class ActorResourceIT {
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -568,7 +554,6 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
             .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 }

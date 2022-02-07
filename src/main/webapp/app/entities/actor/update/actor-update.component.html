@@ -92,18 +92,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.actor.inheritsFrom" for="field_inheritsFrom">Inherits From</label>
-          <input
-            type="text"
-            class="form-control"
-            name="inheritsFrom"
-            id="field_inheritsFrom"
-            data-cy="inheritsFrom"
-            formControlName="inheritsFrom"
-          />
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pragRiskApp.actor.description" for="field_description">Description</label>
           <input
             type="text"
@@ -126,14 +114,14 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.actor.inheritsFrom" for="field_inheritsFrom">Inherits From</label>
-          <select class="form-control" id="field_inheritsFrom" data-cy="inheritsFrom" name="inheritsFrom" formControlName="inheritsFrom">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.actor.parentActor" for="field_parentActor">Parent Actor</label>
+          <select class="form-control" id="field_parentActor" data-cy="parentActor" name="parentActor" formControlName="parentActor">
             <option [ngValue]="null"></option>
             <option
               [ngValue]="
-                actorOption.actorID === editForm.get('inheritsFrom')!.value?.actorID ? editForm.get('inheritsFrom')!.value : actorOption
+                actorOption.actorID === editForm.get('parentActor')!.value?.actorID ? editForm.get('parentActor')!.value : actorOption
               "
-              *ngFor="let actorOption of inheritsFromsCollection; trackBy: trackActorByActorID"
+              *ngFor="let actorOption of parentActorsCollection; trackBy: trackActorByActorID"
             >
               {{ actorOption.actorID }}
             </option>

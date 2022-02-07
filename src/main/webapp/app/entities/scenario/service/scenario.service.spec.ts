@@ -21,12 +21,10 @@ describe('Scenario Service', () => {
 
     elemDefault = {
       scenarioID: 'AAAAAAA',
-      actorID: 'AAAAAAA',
-      technologyID: 'AAAAAAA',
-      vulnerabilityID: 'AAAAAAA',
       description: 'AAAAAAA',
       probability: 0,
       qonsequence: 0,
+      riskValue: 0,
     };
   });
 
@@ -62,12 +60,10 @@ describe('Scenario Service', () => {
       const returnedFromService = Object.assign(
         {
           scenarioID: 'BBBBBB',
-          actorID: 'BBBBBB',
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
           description: 'BBBBBB',
           probability: 1,
           qonsequence: 1,
+          riskValue: 1,
         },
         elemDefault
       );
@@ -84,8 +80,6 @@ describe('Scenario Service', () => {
     it('should partial update a Scenario', () => {
       const patchObject = Object.assign(
         {
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
           probability: 1,
           qonsequence: 1,
         },
@@ -107,12 +101,10 @@ describe('Scenario Service', () => {
       const returnedFromService = Object.assign(
         {
           scenarioID: 'BBBBBB',
-          actorID: 'BBBBBB',
-          technologyID: 'BBBBBB',
-          vulnerabilityID: 'BBBBBB',
           description: 'BBBBBB',
           probability: 1,
           qonsequence: 1,
+          riskValue: 1,
         },
         elemDefault
       );
@@ -167,7 +159,7 @@ describe('Scenario Service', () => {
         const scenarioArray: IScenario[] = [
           { scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' },
           { scenarioID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { scenarioID: '330287ba-7e7e-49bb-96f2-98fcaccb3c16' },
+          { scenarioID: 'ba330287-ba7e-47e9-bbd6-f298fcaccb3c' },
         ];
         const scenarioCollection: IScenario[] = [{ scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' }];
         expectedResult = service.addScenarioToCollectionIfMissing(scenarioCollection, ...scenarioArray);

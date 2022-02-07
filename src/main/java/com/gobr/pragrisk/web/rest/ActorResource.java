@@ -148,9 +148,6 @@ public class ActorResource {
                 if (actor.getEnvironMent() != null) {
                     existingActor.setEnvironMent(actor.getEnvironMent());
                 }
-                if (actor.getInheritsFrom() != null) {
-                    existingActor.setInheritsFrom(actor.getInheritsFrom());
-                }
                 if (actor.getDescription() != null) {
                     existingActor.setDescription(actor.getDescription());
                 }

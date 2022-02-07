@@ -59,41 +59,41 @@ public class MitigationResource {
     @PostMapping("/mitigations")
     public ResponseEntity<Mitigation> createMitigation(@Valid @RequestBody Mitigation mitigation) throws URISyntaxException {
         log.debug("REST request to save Mitigation : {}", mitigation);
-        if (mitigation.getVulnerabiltyID() != null) {
+        if (mitigation.getMitigationID() != null) {
             throw new BadRequestAlertException("A new mitigation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Mitigation result = mitigationRepository.save(mitigation);
         mitigationSearchRepository.save(result);
         return ResponseEntity
-            .created(new URI("/api/mitigations/" + result.getVulnerabiltyID()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getVulnerabiltyID().toString()))
+            .created(new URI("/api/mitigations/" + result.getMitigationID()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getMitigationID().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /mitigations/:vulnerabiltyID} : Updates an existing mitigation.
+     * {@code PUT  /mitigations/:mitigationID} : Updates an existing mitigation.
      *
-     * @param vulnerabiltyID the id of the mitigation to save.
+     * @param mitigationID the id of the mitigation to save.
      * @param mitigation the mitigation to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated mitigation,
      * or with status {@code 400 (Bad Request)} if the mitigation is not valid,
      * or with status {@code 500 (Internal Server Error)} if the mitigation couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/mitigations/{vulnerabiltyID}")
+    @PutMapping("/mitigations/{mitigationID}")
     public ResponseEntity<Mitigation> updateMitigation(
-        @PathVariable(value = "vulnerabiltyID", required = false) final UUID vulnerabiltyID,
+        @PathVariable(value = "mitigationID", required = false) final UUID mitigationID,
         @Valid @RequestBody Mitigation mitigation
     ) throws URISyntaxException {
-        log.debug("REST request to update Mitigation : {}, {}", vulnerabiltyID, mitigation);
-        if (mitigation.getVulnerabiltyID() == null) {
+        log.debug("REST request to update Mitigation : {}, {}", mitigationID, mitigation);
+        if (mitigation.getMitigationID() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(vulnerabiltyID, mitigation.getVulnerabiltyID())) {
+        if (!Objects.equals(mitigationID, mitigation.getMitigationID())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!mitigationRepository.existsById(vulnerabiltyID)) {
+        if (!mitigationRepository.existsById(mitigationID)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
@@ -101,14 +101,14 @@ public class MitigationResource {
         mitigationSearchRepository.save(result);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, mitigation.getVulnerabiltyID().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, mitigation.getMitigationID().toString()))
             .body(result);
     }
 
     /**
-     * {@code PATCH  /mitigations/:vulnerabiltyID} : Partial updates given fields of an existing mitigation, field will ignore if it is null
+     * {@code PATCH  /mitigations/:mitigationID} : Partial updates given fields of an existing mitigation, field will ignore if it is null
      *
-     * @param vulnerabiltyID the id of the mitigation to save.
+     * @param mitigationID the id of the mitigation to save.
      * @param mitigation the mitigation to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated mitigation,
      * or with status {@code 400 (Bad Request)} if the mitigation is not valid,
@@ -116,25 +116,25 @@ public class MitigationResource {
      * or with status {@code 500 (Internal Server Error)} if the mitigation couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/mitigations/{vulnerabiltyID}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/mitigations/{mitigationID}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Mitigation> partialUpdateMitigation(
-        @PathVariable(value = "vulnerabiltyID", required = false) final UUID vulnerabiltyID,
+        @PathVariable(value = "mitigationID", required = false) final UUID mitigationID,
         @NotNull @RequestBody Mitigation mitigation
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Mitigation partially : {}, {}", vulnerabiltyID, mitigation);
-        if (mitigation.getVulnerabiltyID() == null) {
+        log.debug("REST request to partial update Mitigation partially : {}, {}", mitigationID, mitigation);
+        if (mitigation.getMitigationID() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(vulnerabiltyID, mitigation.getVulnerabiltyID())) {
+        if (!Objects.equals(mitigationID, mitigation.getMitigationID())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!mitigationRepository.existsById(vulnerabiltyID)) {
+        if (!mitigationRepository.existsById(mitigationID)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<Mitigation> result = mitigationRepository
-            .findById(mitigation.getVulnerabiltyID())
+            .findById(mitigation.getMitigationID())
             .map(existingMitigation -> {
                 if (mitigation.getControlID() != null) {
                     existingMitigation.setControlID(mitigation.getControlID());
@@ -160,7 +160,7 @@ public class MitigationResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, mitigation.getVulnerabiltyID().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, mitigation.getMitigationID().toString())
         );
     }
 
