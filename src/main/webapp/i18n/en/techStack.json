@@ -2,8 +2,8 @@
   "pragRiskApp": {
     "TechStack": {
       "null": "",
-      "JAVA": "Java",
-      "NET": ".NET",
+      "JAVA": "JAVA",
+      "NET": "NET",
       "PHP": "PHP"
     }
   }

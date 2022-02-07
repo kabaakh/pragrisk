@@ -29,14 +29,9 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "environMent",
-      "fieldType": "Environment",
-      "fieldValidateRules": ["required"],
-      "fieldValues": "KOM (Kommune),KS (KS),UV (Uvedkommende),LEV (Leverandør)"
-    },
-    {
-      "fieldName": "inheritsFrom",
-      "fieldType": "UUID"
+      "fieldName": "environment",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "description",
@@ -48,22 +43,28 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Actor",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "actor",
       "otherEntityRelationshipName": "actor",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentActor",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "actorID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "actorFK",
+      "relationshipName": "actorID",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "environment",
+      "otherEntityRelationshipName": "name",
+      "relationshipName": "environment",
+      "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

@@ -11,6 +11,9 @@ const scenarioRoute: Routes = [
   {
     path: '',
     component: ScenarioComponent,
+    data: {
+      defaultSort: 'scenarioID,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {

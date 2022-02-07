@@ -11,6 +11,9 @@ const technologyRoute: Routes = [
   {
     path: '',
     component: TechnologyComponent,
+    data: {
+      defaultSort: 'technologyID,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {

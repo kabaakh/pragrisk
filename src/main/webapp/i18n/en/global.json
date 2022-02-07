@@ -12,6 +12,7 @@
         "vulnerability": "Vulnerability",
         "technology": "Technology",
         "mitigation": "Mitigation",
+        "environment": "Environment",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,16 +1,16 @@
 import { IScenario } from 'app/entities/scenario/scenario.model';
-import { Environment } from 'app/entities/enumerations/environment.model';
+import { IEnvironment } from 'app/entities/environment/environment.model';
 
 export interface IActor {
   actorID?: string;
   firstName?: string;
   lastName?: string;
   nickName?: string;
-  environMent?: Environment;
-  inheritsFrom?: string | null;
+  environment?: string;
   description?: string | null;
-  inheritsFrom?: IActor | null;
-  scenarios?: IScenario[] | null;
+  parentActor?: IActor | null;
+  actorIDS?: IScenario[] | null;
+  environment?: IEnvironment | null;
 }
 
 export class Actor implements IActor {
@@ -19,11 +19,11 @@ export class Actor implements IActor {
     public firstName?: string,
     public lastName?: string,
     public nickName?: string,
-    public environMent?: Environment,
-    public inheritsFrom?: string | null,
+    public environment?: string,
     public description?: string | null,
-    public inheritsFrom?: IActor | null,
-    public scenarios?: IScenario[] | null
+    public parentActor?: IActor | null,
+    public actorIDS?: IScenario[] | null,
+    public environment?: IEnvironment | null
   ) {}
 }
 
