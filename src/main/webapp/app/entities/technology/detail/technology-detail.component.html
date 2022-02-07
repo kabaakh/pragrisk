@@ -10,9 +10,9 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pragRiskApp.technology.technologyID">Technology ID</span></dt>
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
         <dd>
-          <span>{{ technology.technologyID }}</span>
+          <span>{{ technology.id }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.technology.name">Name</span></dt>
         <dd>
@@ -26,18 +26,14 @@
         <dd>
           <span>{{ technology.description }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></dt>
-        <dd>
-          <span>{{ technology.inheritsFrom }}</span>
-        </dd>
         <dt><span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span></dt>
         <dd>
           <span jhiTranslate="{{ 'pragRiskApp.TechStack.' + technology.techStackType }}">{{ technology.techStackType }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.technology.parentTechnology">Parent Technology</span></dt>
         <dd>
-          <div *ngIf="technology.inheritsFrom">
-            <a [routerLink]="['/technology', technology.inheritsFrom?.technologyID, 'view']">{{ technology.inheritsFrom?.technologyID }}</a>
+          <div *ngIf="technology.parentTechnology">
+            <a [routerLink]="['/technology', technology.parentTechnology?.id, 'view']">{{ technology.parentTechnology?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -46,7 +42,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/technology', technology.technologyID, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/technology', technology.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

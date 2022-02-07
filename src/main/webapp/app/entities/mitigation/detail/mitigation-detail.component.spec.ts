@@ -14,7 +14,7 @@ describe('Mitigation Management Detail Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { data: of({ mitigation: { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' } }) },
+          useValue: { data: of({ mitigation: { id: 123 } }) },
         },
       ],
     })
@@ -30,7 +30,7 @@ describe('Mitigation Management Detail Component', () => {
       comp.ngOnInit();
 
       // THEN
-      expect(comp.mitigation).toEqual(expect.objectContaining({ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+      expect(comp.mitigation).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

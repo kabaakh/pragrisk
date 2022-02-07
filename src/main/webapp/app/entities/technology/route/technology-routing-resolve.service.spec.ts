@@ -42,8 +42,8 @@ describe('Technology routing resolve service', () => {
   describe('resolve', () => {
     it('should return ITechnology returned by find', () => {
       // GIVEN
-      service.find = jest.fn(technologyID => of(new HttpResponse({ body: { technologyID } })));
-      mockActivatedRouteSnapshot.params = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
@@ -51,8 +51,8 @@ describe('Technology routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
-      expect(resultTechnology).toEqual({ technologyID: '9fec3727-3421-4967-b213-ba36557ca194' });
+      expect(service.find).toBeCalledWith(123);
+      expect(resultTechnology).toEqual({ id: 123 });
     });
 
     it('should return new ITechnology if id is not provided', () => {
@@ -73,7 +73,7 @@ describe('Technology routing resolve service', () => {
     it('should route to 404 page if data not found in server', () => {
       // GIVEN
       jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Technology })));
-      mockActivatedRouteSnapshot.params = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
@@ -81,7 +81,7 @@ describe('Technology routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.find).toBeCalledWith(123);
       expect(resultTechnology).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

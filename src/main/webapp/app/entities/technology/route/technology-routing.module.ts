@@ -11,10 +11,13 @@ const technologyRoute: Routes = [
   {
     path: '',
     component: TechnologyComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':technologyID/view',
+    path: ':id/view',
     component: TechnologyDetailComponent,
     resolve: {
       technology: TechnologyRoutingResolveService,
@@ -30,7 +33,7 @@ const technologyRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':technologyID/edit',
+    path: ':id/edit',
     component: TechnologyUpdateComponent,
     resolve: {
       technology: TechnologyRoutingResolveService,

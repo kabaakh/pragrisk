@@ -8,6 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { ActorService } from '../service/actor.service';
 import { IActor, Actor } from '../actor.model';
+import { IEnvironment } from 'app/entities/environment/environment.model';
+import { EnvironmentService } from 'app/entities/environment/service/environment.service';
 
 import { ActorUpdateComponent } from './actor-update.component';
 
@@ -16,6 +18,7 @@ describe('Actor Management Update Component', () => {
   let fixture: ComponentFixture<ActorUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let actorService: ActorService;
+  let environmentService: EnvironmentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,39 +40,62 @@ describe('Actor Management Update Component', () => {
     fixture = TestBed.createComponent(ActorUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     actorService = TestBed.inject(ActorService);
+    environmentService = TestBed.inject(EnvironmentService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call inheritsFrom query and add missing value', () => {
-      const actor: IActor = { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: IActor = { actorID: 'c48d3c12-6491-486a-8d3e-5773d0352521' };
-      actor.inheritsFrom = inheritsFrom;
+    it('Should call parentActor query and add missing value', () => {
+      const actor: IActor = { id: 456 };
+      const parentActor: IActor = { id: 75493 };
+      actor.parentActor = parentActor;
 
-      const inheritsFromCollection: IActor[] = [{ actorID: 'ac98cd46-018e-47ec-8793-ac5589028252' }];
-      jest.spyOn(actorService, 'query').mockReturnValue(of(new HttpResponse({ body: inheritsFromCollection })));
-      const expectedCollection: IActor[] = [inheritsFrom, ...inheritsFromCollection];
+      const parentActorCollection: IActor[] = [{ id: 26003 }];
+      jest.spyOn(actorService, 'query').mockReturnValue(of(new HttpResponse({ body: parentActorCollection })));
+      const expectedCollection: IActor[] = [parentActor, ...parentActorCollection];
       jest.spyOn(actorService, 'addActorToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ actor });
       comp.ngOnInit();
 
       expect(actorService.query).toHaveBeenCalled();
-      expect(actorService.addActorToCollectionIfMissing).toHaveBeenCalledWith(inheritsFromCollection, inheritsFrom);
-      expect(comp.inheritsFromsCollection).toEqual(expectedCollection);
+      expect(actorService.addActorToCollectionIfMissing).toHaveBeenCalledWith(parentActorCollection, parentActor);
+      expect(comp.parentActorsCollection).toEqual(expectedCollection);
+    });
+
+    it('Should call Environment query and add missing value', () => {
+      const actor: IActor = { id: 456 };
+      const group: IEnvironment = { id: 96092 };
+      actor.group = group;
+
+      const environmentCollection: IEnvironment[] = [{ id: 56263 }];
+      jest.spyOn(environmentService, 'query').mockReturnValue(of(new HttpResponse({ body: environmentCollection })));
+      const additionalEnvironments = [group];
+      const expectedCollection: IEnvironment[] = [...additionalEnvironments, ...environmentCollection];
+      jest.spyOn(environmentService, 'addEnvironmentToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ actor });
+      comp.ngOnInit();
+
+      expect(environmentService.query).toHaveBeenCalled();
+      expect(environmentService.addEnvironmentToCollectionIfMissing).toHaveBeenCalledWith(environmentCollection, ...additionalEnvironments);
+      expect(comp.environmentsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
-      const actor: IActor = { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: IActor = { actorID: '00935c91-14da-48b1-894e-9f59675a9637' };
-      actor.inheritsFrom = inheritsFrom;
+      const actor: IActor = { id: 456 };
+      const parentActor: IActor = { id: 52234 };
+      actor.parentActor = parentActor;
+      const group: IEnvironment = { id: 38733 };
+      actor.group = group;
 
       activatedRoute.data = of({ actor });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(actor));
-      expect(comp.inheritsFromsCollection).toContain(inheritsFrom);
+      expect(comp.parentActorsCollection).toContain(parentActor);
+      expect(comp.environmentsSharedCollection).toContain(group);
     });
   });
 
@@ -77,7 +103,7 @@ describe('Actor Management Update Component', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Actor>>();
-      const actor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const actor = { id: 123 };
       jest.spyOn(actorService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ actor });
@@ -119,7 +145,7 @@ describe('Actor Management Update Component', () => {
     it('Should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Actor>>();
-      const actor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const actor = { id: 123 };
       jest.spyOn(actorService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ actor });
@@ -138,11 +164,19 @@ describe('Actor Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
-    describe('trackActorByActorID', () => {
+    describe('trackActorById', () => {
       it('Should return tracked Actor primary key', () => {
-        const entity = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const trackResult = comp.trackActorByActorID(0, entity);
-        expect(trackResult).toEqual(entity.actorID);
+        const entity = { id: 123 };
+        const trackResult = comp.trackActorById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackEnvironmentById', () => {
+      it('Should return tracked Environment primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackEnvironmentById(0, entity);
+        expect(trackResult).toEqual(entity.id);
       });
     });
   });

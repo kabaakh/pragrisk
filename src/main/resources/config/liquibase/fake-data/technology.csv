@@ -1,11 +1,11 @@
-technology_id;name;category;description;inherits_from;tech_stack_type
-4a33dacc-38f3-4108-abd5-d523e26e83af;salmon;FEL;Falkland;cbb8a1d9-02ce-4c15-b22a-bc5ea803ad32;PHP
-8abfefc4-8694-4984-9afa-d1fa5c27945b;superstructure Synchronised;FAG;circuit Shirt Rubber;2b7bcb35-bfb4-470e-821b-21d897c298d3;PHP
-67dce166-0f0f-4d51-959d-55d98ff0a7bf;Lead invoice Ocean;FEL;Producer;c690d206-dc62-40ea-98f5-830c8ef7682f;JAVA
-251d5225-d536-4628-b231-4034305eba39;e-commerce generating;FEL;partnerships;82350393-3686-4838-837c-77ce2fe4a670;NET
-cfdcd751-e952-4717-8874-35e8c9edd15e;optical application;KOM;Accounts Borders Bedfordshire;1be8b4d2-ff88-4ebd-a349-f12492f25107;JAVA
-33ba7f97-ac15-4046-b18b-a4b9570f6fb1;Realigned;FAG;invoice;0aaded54-7a38-4115-bde1-716fc4ec64f8;NET
-ab7b6c8c-c198-471d-bfad-153de5764854;Distributed;KOM;structure District;051c6191-6ecd-48ef-98f3-9361a1603561;PHP
-0fae827a-36a1-414e-afef-1e01aed11afb;Yuan matrix;KOM;Belgium;2333c5b1-fa50-4914-9b08-3f490aa12334;NET
-2e5c1e76-ce97-4a1d-9b9f-e5616b9c6aaa;cross-media lime Micronesia;FEL;card;3d138c1c-35dc-4454-a329-262ae0087445;JAVA
-543f0095-c8c0-4a28-af23-e0578f223328;AI;FEL;strategic Right-sized;69aa60b7-90d7-4612-9772-2d07c1604117;NET
+id;name;category;description;tech_stack_type
+1;deposit;COMPONENT;transmit Cambridgeshire Small;PHP
+2;copying strategic Corporate;COMPONENT;olive Rubber;JAVA
+3;asynchronous monitor;SERVICE;generating;JAVA
+4;Forward cross-platform Rubber;COMPONENT;Branding Intelligent;JAVA
+5;Netherlands Representative open-source;SERVICE;Persevering group;PHP
+6;SDD Account;APPLICATION;Iowa system;PHP
+7;Synchronised;APPLICATION;circuit Shirt Rubber;JAVA
+8;Row microchip matrix;APPLICATION;Automotive Car;JAVA
+9;connecting;SERVICE;Towels overriding brand;PHP
+10;Practical Industrial Facilitator;APPLICATION;incubate framework Account;PHP

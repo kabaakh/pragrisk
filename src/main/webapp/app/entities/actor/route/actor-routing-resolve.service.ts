@@ -12,7 +12,7 @@ export class ActorRoutingResolveService implements Resolve<IActor> {
   constructor(protected service: ActorService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IActor> | Observable<never> {
-    const id = route.params['actorID'];
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((actor: HttpResponse<Actor>) => {
