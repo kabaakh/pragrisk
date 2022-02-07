@@ -49,11 +49,11 @@ public class Scenario implements Serializable {
     private BigDecimal qonsequence;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentAct", "scenarios" }, allowSetters = true)
     private Actor actorID;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentTech", "scenarios" }, allowSetters = true)
     private Technology technologyID;
 
     @ManyToOne

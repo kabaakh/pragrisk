@@ -19,16 +19,16 @@ export class TechnologyUpdateComponent implements OnInit {
   techCategoryValues = Object.keys(TechCategory);
   techStackValues = Object.keys(TechStack);
 
-  inheritsFromsCollection: ITechnology[] = [];
+  parentTechesCollection: ITechnology[] = [];
 
   editForm = this.fb.group({
     technologyID: [null, [Validators.required]],
     name: [null, [Validators.required]],
     category: [null, [Validators.required]],
     description: [null, [Validators.maxLength(1024)]],
-    inheritsFrom: [],
+    parentTechnology: [],
     techStackType: [],
-    inheritsFrom: [],
+    parentTech: [],
   });
 
   constructor(protected technologyService: TechnologyService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -84,14 +84,14 @@ export class TechnologyUpdateComponent implements OnInit {
       name: technology.name,
       category: technology.category,
       description: technology.description,
-      inheritsFrom: technology.inheritsFrom,
+      parentTechnology: technology.parentTechnology,
       techStackType: technology.techStackType,
-      inheritsFrom: technology.inheritsFrom,
+      parentTech: technology.parentTech,
     });
 
-    this.inheritsFromsCollection = this.technologyService.addTechnologyToCollectionIfMissing(
-      this.inheritsFromsCollection,
-      technology.inheritsFrom
+    this.parentTechesCollection = this.technologyService.addTechnologyToCollectionIfMissing(
+      this.parentTechesCollection,
+      technology.parentTech
     );
   }
 
@@ -101,10 +101,10 @@ export class TechnologyUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ITechnology[]>) => res.body ?? []))
       .pipe(
         map((technologies: ITechnology[]) =>
-          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('inheritsFrom')!.value)
+          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('parentTech')!.value)
         )
       )
-      .subscribe((technologies: ITechnology[]) => (this.inheritsFromsCollection = technologies));
+      .subscribe((technologies: ITechnology[]) => (this.parentTechesCollection = technologies));
   }
 
   protected createFromForm(): ITechnology {
@@ -114,9 +114,9 @@ export class TechnologyUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       category: this.editForm.get(['category'])!.value,
       description: this.editForm.get(['description'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentTechnology: this.editForm.get(['parentTechnology'])!.value,
       techStackType: this.editForm.get(['techStackType'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentTech: this.editForm.get(['parentTech'])!.value,
     };
   }
 }

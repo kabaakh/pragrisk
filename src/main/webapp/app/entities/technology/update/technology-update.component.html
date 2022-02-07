@@ -86,16 +86,16 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.inheritsFrom" for="field_inheritsFrom"
-            >Inherits From</label
+          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.parentTechnology" for="field_parentTechnology"
+            >Parent Technology</label
           >
           <input
             type="text"
             class="form-control"
-            name="inheritsFrom"
-            id="field_inheritsFrom"
-            data-cy="inheritsFrom"
-            formControlName="inheritsFrom"
+            name="parentTechnology"
+            id="field_parentTechnology"
+            data-cy="parentTechnology"
+            formControlName="parentTechnology"
           />
         </div>
 
@@ -118,18 +118,16 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.inheritsFrom" for="field_inheritsFrom"
-            >Inherits From</label
-          >
-          <select class="form-control" id="field_inheritsFrom" data-cy="inheritsFrom" name="inheritsFrom" formControlName="inheritsFrom">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.parentTech" for="field_parentTech">Parent Tech</label>
+          <select class="form-control" id="field_parentTech" data-cy="parentTech" name="parentTech" formControlName="parentTech">
             <option [ngValue]="null"></option>
             <option
               [ngValue]="
-                technologyOption.technologyID === editForm.get('inheritsFrom')!.value?.technologyID
-                  ? editForm.get('inheritsFrom')!.value
+                technologyOption.technologyID === editForm.get('parentTech')!.value?.technologyID
+                  ? editForm.get('parentTech')!.value
                   : technologyOption
               "
-              *ngFor="let technologyOption of inheritsFromsCollection; trackBy: trackTechnologyByTechnologyID"
+              *ngFor="let technologyOption of parentTechesCollection; trackBy: trackTechnologyByTechnologyID"
             >
               {{ technologyOption.technologyID }}
             </option>

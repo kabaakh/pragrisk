@@ -42,34 +42,34 @@ describe('Technology Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call inheritsFrom query and add missing value', () => {
+    it('Should call parentTech query and add missing value', () => {
       const technology: ITechnology = { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: ITechnology = { technologyID: '33746470-9f53-4489-ada3-c78bba18f050' };
-      technology.inheritsFrom = inheritsFrom;
+      const parentTech: ITechnology = { technologyID: '33746470-9f53-4489-ada3-c78bba18f050' };
+      technology.parentTech = parentTech;
 
-      const inheritsFromCollection: ITechnology[] = [{ technologyID: 'a98630a8-0947-4df4-a91b-8244d498a6ea' }];
-      jest.spyOn(technologyService, 'query').mockReturnValue(of(new HttpResponse({ body: inheritsFromCollection })));
-      const expectedCollection: ITechnology[] = [inheritsFrom, ...inheritsFromCollection];
+      const parentTechCollection: ITechnology[] = [{ technologyID: 'a98630a8-0947-4df4-a91b-8244d498a6ea' }];
+      jest.spyOn(technologyService, 'query').mockReturnValue(of(new HttpResponse({ body: parentTechCollection })));
+      const expectedCollection: ITechnology[] = [parentTech, ...parentTechCollection];
       jest.spyOn(technologyService, 'addTechnologyToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ technology });
       comp.ngOnInit();
 
       expect(technologyService.query).toHaveBeenCalled();
-      expect(technologyService.addTechnologyToCollectionIfMissing).toHaveBeenCalledWith(inheritsFromCollection, inheritsFrom);
-      expect(comp.inheritsFromsCollection).toEqual(expectedCollection);
+      expect(technologyService.addTechnologyToCollectionIfMissing).toHaveBeenCalledWith(parentTechCollection, parentTech);
+      expect(comp.parentTechesCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const technology: ITechnology = { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: ITechnology = { technologyID: 'f8f80981-46e9-4ae6-96a3-13f38e0703d5' };
-      technology.inheritsFrom = inheritsFrom;
+      const parentTech: ITechnology = { technologyID: 'f8f80981-46e9-4ae6-96a3-13f38e0703d5' };
+      technology.parentTech = parentTech;
 
       activatedRoute.data = of({ technology });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(technology));
-      expect(comp.inheritsFromsCollection).toContain(inheritsFrom);
+      expect(comp.parentTechesCollection).toContain(parentTech);
     });
   });
 

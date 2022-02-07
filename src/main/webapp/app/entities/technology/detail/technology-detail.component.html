@@ -26,18 +26,18 @@
         <dd>
           <span>{{ technology.description }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.technology.parentTechnology">Parent Technology</span></dt>
         <dd>
-          <span>{{ technology.inheritsFrom }}</span>
+          <span>{{ technology.parentTechnology }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span></dt>
         <dd>
           <span jhiTranslate="{{ 'pragRiskApp.TechStack.' + technology.techStackType }}">{{ technology.techStackType }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.technology.parentTech">Parent Tech</span></dt>
         <dd>
-          <div *ngIf="technology.inheritsFrom">
-            <a [routerLink]="['/technology', technology.inheritsFrom?.technologyID, 'view']">{{ technology.inheritsFrom?.technologyID }}</a>
+          <div *ngIf="technology.parentTech">
+            <a [routerLink]="['/technology', technology.parentTech?.technologyID, 'view']">{{ technology.parentTech?.technologyID }}</a>
           </div>
         </dd>
       </dl>
