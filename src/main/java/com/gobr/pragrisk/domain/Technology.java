@@ -42,17 +42,17 @@ public class Technology implements Serializable {
     @Column(name = "description", length = 1024)
     private String description;
 
-    @Column(name = "inherits_from")
-    private UUID inheritsFrom;
+    @Column(name = "parent_technology")
+    private UUID parentTechnology;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tech_stack_type")
     private TechStack techStackType;
 
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentTech", "scenarios" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private Technology inheritsFrom;
+    private Technology parentTech;
 
     @OneToMany(mappedBy = "technologyID")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -113,17 +113,17 @@ public class Technology implements Serializable {
         this.description = description;
     }
 
-    public UUID getInheritsFrom() {
-        return this.inheritsFrom;
+    public UUID getParentTechnology() {
+        return this.parentTechnology;
     }
 
-    public Technology inheritsFrom(UUID inheritsFrom) {
-        this.setInheritsFrom(inheritsFrom);
+    public Technology parentTechnology(UUID parentTechnology) {
+        this.setParentTechnology(parentTechnology);
         return this;
     }
 
-    public void setInheritsFrom(UUID inheritsFrom) {
-        this.inheritsFrom = inheritsFrom;
+    public void setParentTechnology(UUID parentTechnology) {
+        this.parentTechnology = parentTechnology;
     }
 
     public TechStack getTechStackType() {
@@ -139,16 +139,16 @@ public class Technology implements Serializable {
         this.techStackType = techStackType;
     }
 
-    public Technology getInheritsFrom() {
-        return this.inheritsFrom;
+    public Technology getParentTech() {
+        return this.parentTech;
     }
 
-    public void setInheritsFrom(Technology technology) {
-        this.inheritsFrom = technology;
+    public void setParentTech(Technology technology) {
+        this.parentTech = technology;
     }
 
-    public Technology inheritsFrom(Technology technology) {
-        this.setInheritsFrom(technology);
+    public Technology parentTech(Technology technology) {
+        this.setParentTech(technology);
         return this;
     }
 
@@ -210,7 +210,7 @@ public class Technology implements Serializable {
             ", name='" + getName() + "'" +
             ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
-            ", inheritsFrom='" + getInheritsFrom() + "'" +
+            ", parentTechnology='" + getParentTechnology() + "'" +
             ", techStackType='" + getTechStackType() + "'" +
             "}";
     }

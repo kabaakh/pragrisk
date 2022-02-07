@@ -42,34 +42,34 @@ describe('Actor Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call inheritsFrom query and add missing value', () => {
+    it('Should call parentAct query and add missing value', () => {
       const actor: IActor = { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: IActor = { actorID: 'c48d3c12-6491-486a-8d3e-5773d0352521' };
-      actor.inheritsFrom = inheritsFrom;
+      const parentAct: IActor = { actorID: 'c48d3c12-6491-486a-8d3e-5773d0352521' };
+      actor.parentAct = parentAct;
 
-      const inheritsFromCollection: IActor[] = [{ actorID: 'ac98cd46-018e-47ec-8793-ac5589028252' }];
-      jest.spyOn(actorService, 'query').mockReturnValue(of(new HttpResponse({ body: inheritsFromCollection })));
-      const expectedCollection: IActor[] = [inheritsFrom, ...inheritsFromCollection];
+      const parentActCollection: IActor[] = [{ actorID: 'ac98cd46-018e-47ec-8793-ac5589028252' }];
+      jest.spyOn(actorService, 'query').mockReturnValue(of(new HttpResponse({ body: parentActCollection })));
+      const expectedCollection: IActor[] = [parentAct, ...parentActCollection];
       jest.spyOn(actorService, 'addActorToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ actor });
       comp.ngOnInit();
 
       expect(actorService.query).toHaveBeenCalled();
-      expect(actorService.addActorToCollectionIfMissing).toHaveBeenCalledWith(inheritsFromCollection, inheritsFrom);
-      expect(comp.inheritsFromsCollection).toEqual(expectedCollection);
+      expect(actorService.addActorToCollectionIfMissing).toHaveBeenCalledWith(parentActCollection, parentAct);
+      expect(comp.parentActsCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const actor: IActor = { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: IActor = { actorID: '00935c91-14da-48b1-894e-9f59675a9637' };
-      actor.inheritsFrom = inheritsFrom;
+      const parentAct: IActor = { actorID: '00935c91-14da-48b1-894e-9f59675a9637' };
+      actor.parentAct = parentAct;
 
       activatedRoute.data = of({ actor });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(actor));
-      expect(comp.inheritsFromsCollection).toContain(inheritsFrom);
+      expect(comp.parentActsCollection).toContain(parentAct);
     });
   });
 

@@ -23,9 +23,9 @@
       "lastName": "Last Name",
       "nickName": "Nick Name",
       "environMent": "Environ Ment",
-      "inheritsFrom": "Inherits From",
+      "parentActor": "Parent Actor",
       "description": "Description",
-      "inheritsFrom": "Inherits From",
+      "parentAct": "Parent Act",
       "scenario": "Scenario"
     }
   }

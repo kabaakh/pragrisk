@@ -23,14 +23,14 @@
             <column name="description" type="varchar(1024)">
                 <constraints nullable="true" />
             </column>
-            <column name="inherits_from" type="${uuidType}">
+            <column name="parent_technology" type="${uuidType}">
                 <constraints nullable="true" />
             </column>
             <column name="tech_stack_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="inherits_from_technology_id" type="${uuidType}">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_technology__inherits_from_technology_id" />
+            <column name="parent_tech_technology_id" type="${uuidType}">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_technology__parent_tech_technology_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -56,7 +56,7 @@
             <column name="name" type="string"/>
             <column name="category" type="string"/>
             <column name="description" type="string"/>
-            <column name="inherits_from" type="${uuidType}"/>
+            <column name="parent_technology" type="${uuidType}"/>
             <column name="tech_stack_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

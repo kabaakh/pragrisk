@@ -26,7 +26,7 @@ describe('Actor Service', () => {
       lastName: 'AAAAAAA',
       nickName: 'AAAAAAA',
       environMent: Environment.KOM,
-      inheritsFrom: 'AAAAAAA',
+      parentActor: 'AAAAAAA',
       description: 'AAAAAAA',
     };
   });
@@ -67,7 +67,7 @@ describe('Actor Service', () => {
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
           environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          parentActor: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault
@@ -111,7 +111,7 @@ describe('Actor Service', () => {
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
           environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          parentActor: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault

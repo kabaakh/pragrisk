@@ -61,9 +61,9 @@
           <th scope="col"><span jhiTranslate="pragRiskApp.technology.name">Name</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.technology.category">Category</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.technology.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.technology.parentTechnology">Parent Technology</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.technology.parentTech">Parent Tech</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -75,13 +75,11 @@
           <td>{{ technology.name }}</td>
           <td jhiTranslate="{{ 'pragRiskApp.TechCategory.' + technology.category }}">{{ technology.category }}</td>
           <td>{{ technology.description }}</td>
-          <td>{{ technology.inheritsFrom }}</td>
+          <td>{{ technology.parentTechnology }}</td>
           <td jhiTranslate="{{ 'pragRiskApp.TechStack.' + technology.techStackType }}">{{ technology.techStackType }}</td>
           <td>
-            <div *ngIf="technology.inheritsFrom">
-              <a [routerLink]="['/technology', technology.inheritsFrom?.technologyID, 'view']">{{
-                technology.inheritsFrom?.technologyID
-              }}</a>
+            <div *ngIf="technology.parentTech">
+              <a [routerLink]="['/technology', technology.parentTech?.technologyID, 'view']">{{ technology.parentTech?.technologyID }}</a>
             </div>
           </td>
           <td class="text-right">
