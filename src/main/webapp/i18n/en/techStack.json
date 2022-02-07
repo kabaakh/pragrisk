@@ -1,0 +1,10 @@
+{
+  "pragRiskApp": {
+    "TechStack": {
+      "null": "",
+      "JAVA": "Java",
+      "NET": ".NET",
+      "PHP": "PHP"
+    }
+  }
+}

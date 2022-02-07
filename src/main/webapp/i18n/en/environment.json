@@ -1,0 +1,11 @@
+{
+  "pragRiskApp": {
+    "Environment": {
+      "null": "",
+      "KOM": "Kommune",
+      "KS": "KS",
+      "UV": "Uvedkommende",
+      "LEV": "Leverandør"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "applications": "*",
+  "changelogDate": "20220207114116",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "scenario",
+  "fields": [
+    {
+      "fieldName": "scenarioID",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "actorID",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "technologyID",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "vulnerabilityID",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1024"
+    },
+    {
+      "fieldName": "probability",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "qonsequence",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Scenario",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "actor",
+      "otherEntityRelationshipName": "scenario",
+      "relationshipName": "actorID",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "technology",
+      "otherEntityRelationshipName": "scenario",
+      "relationshipName": "technologyID",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "vulnerability",
+      "otherEntityRelationshipName": "scenario",
+      "relationshipName": "vulnerabilityID",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}
