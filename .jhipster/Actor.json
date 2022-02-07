@@ -1,0 +1,57 @@
+{
+  "applications": "*",
+  "changelogDate": "20220207164843",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "actor",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nickName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1024"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Actor",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "actor",
+      "otherEntityRelationshipName": "actor",
+      "ownerSide": true,
+      "relationshipName": "parentActor",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "scenario",
+      "otherEntityRelationshipName": "actorFK",
+      "relationshipName": "actorID",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "environment",
+      "otherEntityRelationshipName": "actor",
+      "relationshipName": "group",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

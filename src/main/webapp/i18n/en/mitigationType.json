@@ -1,0 +1,11 @@
+{
+  "pragRiskApp": {
+    "MitigationType": {
+      "null": "",
+      "PREVENTIVE": "PREVENTIVE",
+      "DETECTIVE": "DETECTIVE",
+      "CORRECTIVE": "CORRECTIVE",
+      "DETERRING": "DETERRING"
+    }
+  }
+}

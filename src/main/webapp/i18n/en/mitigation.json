@@ -1,0 +1,31 @@
+{
+  "pragRiskApp": {
+    "mitigation": {
+      "home": {
+        "title": "Mitigations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Mitigation",
+        "createOrEditLabel": "Create or edit a Mitigation",
+        "search": "Search for Mitigation",
+        "notFound": "No Mitigations found"
+      },
+      "created": "A new Mitigation is created with identifier {{ param }}",
+      "updated": "A Mitigation is updated with identifier {{ param }}",
+      "deleted": "A Mitigation is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Mitigation {{ id }}?"
+      },
+      "detail": {
+        "title": "Mitigation"
+      },
+      "id": "ID",
+      "controlID": "Control ID",
+      "title": "Title",
+      "description": "Description",
+      "frameworkReference": "Framework Reference",
+      "type": "Type",
+      "status": "Status",
+      "vulnerability": "Vulnerability"
+    }
+  }
+}

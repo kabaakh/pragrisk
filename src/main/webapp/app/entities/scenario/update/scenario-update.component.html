@@ -1,0 +1,148 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-scenario-heading" data-cy="ScenarioCreateUpdateHeading" jhiTranslate="pragRiskApp.scenario.home.createOrEditLabel">
+        Create or edit a Scenario
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.title" for="field_title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('description')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 1024 }"
+            >
+              This field cannot be longer than 1024 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.probability" for="field_probability">Probability</label>
+          <input
+            type="number"
+            class="form-control"
+            name="probability"
+            id="field_probability"
+            data-cy="probability"
+            formControlName="probability"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.qonsequence" for="field_qonsequence">Qonsequence</label>
+          <input
+            type="number"
+            class="form-control"
+            name="qonsequence"
+            id="field_qonsequence"
+            data-cy="qonsequence"
+            formControlName="qonsequence"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.riskValue" for="field_riskValue">Risk Value</label>
+          <input type="number" class="form-control" name="riskValue" id="field_riskValue" data-cy="riskValue" formControlName="riskValue" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.actorFK" for="field_actorFK">Actor FK</label>
+          <select class="form-control" id="field_actorFK" data-cy="actorFK" name="actorFK" formControlName="actorFK">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="actorOption.id === editForm.get('actorFK')!.value?.id ? editForm.get('actorFK')!.value : actorOption"
+              *ngFor="let actorOption of actorsSharedCollection; trackBy: trackActorById"
+            >
+              {{ actorOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.technologyFK" for="field_technologyFK">Technology FK</label>
+          <select class="form-control" id="field_technologyFK" data-cy="technologyFK" name="technologyFK" formControlName="technologyFK">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                technologyOption.id === editForm.get('technologyFK')!.value?.id ? editForm.get('technologyFK')!.value : technologyOption
+              "
+              *ngFor="let technologyOption of technologiesSharedCollection; trackBy: trackTechnologyById"
+            >
+              {{ technologyOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.scenario.vulnerabilityFK" for="field_vulnerabilityFK"
+            >Vulnerability FK</label
+          >
+          <select
+            class="form-control"
+            id="field_vulnerabilityFK"
+            data-cy="vulnerabilityFK"
+            name="vulnerabilityFK"
+            formControlName="vulnerabilityFK"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                vulnerabilityOption.id === editForm.get('vulnerabilityFK')!.value?.id
+                  ? editForm.get('vulnerabilityFK')!.value
+                  : vulnerabilityOption
+              "
+              *ngFor="let vulnerabilityOption of vulnerabilitiesSharedCollection; trackBy: trackVulnerabilityById"
+            >
+              {{ vulnerabilityOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

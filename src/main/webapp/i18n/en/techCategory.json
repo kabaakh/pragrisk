@@ -1,0 +1,10 @@
+{
+  "pragRiskApp": {
+    "TechCategory": {
+      "null": "",
+      "APPLICATION": "APPLICATION",
+      "SERVICE": "SERVICE",
+      "COMPONENT": "COMPONENT"
+    }
+  }
+}

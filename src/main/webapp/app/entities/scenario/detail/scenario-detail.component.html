@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="scenario">
+      <h2 data-cy="scenarioDetailsHeading"><span jhiTranslate="pragRiskApp.scenario.detail.title">Scenario</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ scenario.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.title">Title</span></dt>
+        <dd>
+          <span>{{ scenario.title }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.description">Description</span></dt>
+        <dd>
+          <span>{{ scenario.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.probability">Probability</span></dt>
+        <dd>
+          <span>{{ scenario.probability }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.qonsequence">Qonsequence</span></dt>
+        <dd>
+          <span>{{ scenario.qonsequence }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.riskValue">Risk Value</span></dt>
+        <dd>
+          <span>{{ scenario.riskValue }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.actorFK">Actor FK</span></dt>
+        <dd>
+          <div *ngIf="scenario.actorFK">
+            <a [routerLink]="['/actor', scenario.actorFK?.id, 'view']">{{ scenario.actorFK?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.technologyFK">Technology FK</span></dt>
+        <dd>
+          <div *ngIf="scenario.technologyFK">
+            <a [routerLink]="['/technology', scenario.technologyFK?.id, 'view']">{{ scenario.technologyFK?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.vulnerabilityFK">Vulnerability FK</span></dt>
+        <dd>
+          <div *ngIf="scenario.vulnerabilityFK">
+            <a [routerLink]="['/vulnerability', scenario.vulnerabilityFK?.id, 'view']">{{ scenario.vulnerabilityFK?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/scenario', scenario.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

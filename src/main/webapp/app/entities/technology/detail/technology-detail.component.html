@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="technology">
+      <h2 data-cy="technologyDetailsHeading"><span jhiTranslate="pragRiskApp.technology.detail.title">Technology</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ technology.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.technology.name">Name</span></dt>
+        <dd>
+          <span>{{ technology.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.technology.category">Category</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'pragRiskApp.TechCategory.' + technology.category }}">{{ technology.category }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.technology.description">Description</span></dt>
+        <dd>
+          <span>{{ technology.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'pragRiskApp.TechStack.' + technology.techStackType }}">{{ technology.techStackType }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.technology.parentTechnology">Parent Technology</span></dt>
+        <dd>
+          <div *ngIf="technology.parentTechnology">
+            <a [routerLink]="['/technology', technology.parentTechnology?.id, 'view']">{{ technology.parentTechnology?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/technology', technology.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

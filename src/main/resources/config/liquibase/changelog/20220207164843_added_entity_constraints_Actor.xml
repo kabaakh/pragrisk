@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Actor.
+    -->
+    <changeSet id="20220207164843-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="parent_actor_id"
+                                 baseTableName="actor"
+                                 constraintName="fk_actor__parent_actor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="actor"/>
+
+        <addForeignKeyConstraint baseColumnNames="group_id"
+                                 baseTableName="actor"
+                                 constraintName="fk_actor__group_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="environment"/>
+    </changeSet>
+</databaseChangeLog>

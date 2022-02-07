@@ -1,0 +1,58 @@
+{
+  "applications": "*",
+  "changelogDate": "20220207164845",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "scenario",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1024"
+    },
+    {
+      "fieldName": "probability",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "qonsequence",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "riskValue",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Scenario",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "actor",
+      "otherEntityRelationshipName": "actorID",
+      "relationshipName": "actorFK",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "technology",
+      "otherEntityRelationshipName": "technologyID",
+      "relationshipName": "technologyFK",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "vulnerability",
+      "otherEntityRelationshipName": "vulnerabilityID",
+      "relationshipName": "vulnerabilityFK",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

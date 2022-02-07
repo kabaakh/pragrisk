@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="actor">
+      <h2 data-cy="actorDetailsHeading"><span jhiTranslate="pragRiskApp.actor.detail.title">Actor</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ actor.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.firstName">First Name</span></dt>
+        <dd>
+          <span>{{ actor.firstName }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.lastName">Last Name</span></dt>
+        <dd>
+          <span>{{ actor.lastName }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.nickName">Nick Name</span></dt>
+        <dd>
+          <span>{{ actor.nickName }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.description">Description</span></dt>
+        <dd>
+          <span>{{ actor.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></dt>
+        <dd>
+          <div *ngIf="actor.parentActor">
+            <a [routerLink]="['/actor', actor.parentActor?.id, 'view']">{{ actor.parentActor?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.group">Group</span></dt>
+        <dd>
+          <div *ngIf="actor.group">
+            <a [routerLink]="['/environment', actor.group?.id, 'view']">{{ actor.group?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/actor', actor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

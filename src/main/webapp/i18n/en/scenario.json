@@ -1,0 +1,32 @@
+{
+  "pragRiskApp": {
+    "scenario": {
+      "home": {
+        "title": "Scenarios",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Scenario",
+        "createOrEditLabel": "Create or edit a Scenario",
+        "search": "Search for Scenario",
+        "notFound": "No Scenarios found"
+      },
+      "created": "A new Scenario is created with identifier {{ param }}",
+      "updated": "A Scenario is updated with identifier {{ param }}",
+      "deleted": "A Scenario is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Scenario {{ id }}?"
+      },
+      "detail": {
+        "title": "Scenario"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "probability": "Probability",
+      "qonsequence": "Qonsequence",
+      "riskValue": "Risk Value",
+      "actorFK": "Actor FK",
+      "technologyFK": "Technology FK",
+      "vulnerabilityFK": "Vulnerability FK"
+    }
+  }
+}
