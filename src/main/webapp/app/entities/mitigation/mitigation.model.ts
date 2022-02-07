@@ -3,9 +3,11 @@ import { MitigationType } from 'app/entities/enumerations/mitigation-type.model'
 import { MitigationStatus } from 'app/entities/enumerations/mitigation-status.model';
 
 export interface IMitigation {
-  vulnerabiltyID?: string;
+  id?: number;
   controlID?: string;
-  reference?: string | null;
+  title?: string;
+  description?: string | null;
+  frameworkReference?: string | null;
   type?: MitigationType;
   status?: MitigationStatus;
   vulnerabilities?: IVulnerability[] | null;
@@ -13,15 +15,17 @@ export interface IMitigation {
 
 export class Mitigation implements IMitigation {
   constructor(
-    public vulnerabiltyID?: string,
+    public id?: number,
     public controlID?: string,
-    public reference?: string | null,
+    public title?: string,
+    public description?: string | null,
+    public frameworkReference?: string | null,
     public type?: MitigationType,
     public status?: MitigationStatus,
     public vulnerabilities?: IVulnerability[] | null
   ) {}
 }
 
-export function getMitigationIdentifier(mitigation: IMitigation): string | undefined {
-  return mitigation.vulnerabiltyID;
+export function getMitigationIdentifier(mitigation: IMitigation): number | undefined {
+  return mitigation.id;
 }

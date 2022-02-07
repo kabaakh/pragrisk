@@ -8,13 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.gobr.pragrisk.IntegrationTest;
 import com.gobr.pragrisk.domain.Actor;
-import com.gobr.pragrisk.domain.enumeration.Environment;
 import com.gobr.pragrisk.repository.ActorRepository;
 import com.gobr.pragrisk.repository.search.ActorSearchRepository;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,18 +47,18 @@ class ActorResourceIT {
     private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
 
-    private static final Environment DEFAULT_ENVIRON_MENT = Environment.KOM;
-    private static final Environment UPDATED_ENVIRON_MENT = Environment.KS;
-
-    private static final UUID DEFAULT_INHERITS_FROM = UUID.randomUUID();
-    private static final UUID UPDATED_INHERITS_FROM = UUID.randomUUID();
+    private static final String DEFAULT_ENVIRONMENT = "AAAAAAAAAA";
+    private static final String UPDATED_ENVIRONMENT = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/actors";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{actorID}";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/actors";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private ActorRepository actorRepository;
@@ -89,8 +90,7 @@ class ActorResourceIT {
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .nickName(DEFAULT_NICK_NAME)
-            .environMent(DEFAULT_ENVIRON_MENT)
-            .inheritsFrom(DEFAULT_INHERITS_FROM)
+            .environment(DEFAULT_ENVIRONMENT)
             .description(DEFAULT_DESCRIPTION);
         return actor;
     }
@@ -106,8 +106,7 @@ class ActorResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
         return actor;
     }
@@ -133,8 +132,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(DEFAULT_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(DEFAULT_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(DEFAULT_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -145,7 +143,7 @@ class ActorResourceIT {
     @Transactional
     void createActorWithExistingId() throws Exception {
         // Create the Actor with an existing ID
-        actorRepository.saveAndFlush(actor);
+        actor.setId(1L);
 
         int databaseSizeBeforeCreate = actorRepository.findAll().size();
 
@@ -215,10 +213,10 @@ class ActorResourceIT {
 
     @Test
     @Transactional
-    void checkEnvironMentIsRequired() throws Exception {
+    void checkEnvironmentIsRequired() throws Exception {
         int databaseSizeBeforeTest = actorRepository.findAll().size();
         // set the field null
-        actor.setEnvironMent(null);
+        actor.setEnvironment(null);
 
         // Create the Actor, which fails.
 
@@ -238,15 +236,14 @@ class ActorResourceIT {
 
         // Get all the actorList
         restActorMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=actorID,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].actorID").value(hasItem(actor.getActorID().toString())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(actor.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
-            .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
+            .andExpect(jsonPath("$.[*].environment").value(hasItem(DEFAULT_ENVIRONMENT)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
@@ -258,15 +255,14 @@ class ActorResourceIT {
 
         // Get the actor
         restActorMockMvc
-            .perform(get(ENTITY_API_URL_ID, actor.getActorID()))
+            .perform(get(ENTITY_API_URL_ID, actor.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.actorID").value(actor.getActorID().toString()))
+            .andExpect(jsonPath("$.id").value(actor.getId().intValue()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME))
-            .andExpect(jsonPath("$.environMent").value(DEFAULT_ENVIRON_MENT.toString()))
-            .andExpect(jsonPath("$.inheritsFrom").value(DEFAULT_INHERITS_FROM.toString()))
+            .andExpect(jsonPath("$.environment").value(DEFAULT_ENVIRONMENT))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
@@ -274,7 +270,7 @@ class ActorResourceIT {
     @Transactional
     void getNonExistingActor() throws Exception {
         // Get the actor
-        restActorMockMvc.perform(get(ENTITY_API_URL_ID, UUID.randomUUID().toString())).andExpect(status().isNotFound());
+        restActorMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -286,20 +282,19 @@ class ActorResourceIT {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
 
         // Update the actor
-        Actor updatedActor = actorRepository.findById(actor.getActorID()).get();
+        Actor updatedActor = actorRepository.findById(actor.getId()).get();
         // Disconnect from session so that the updates on updatedActor are not directly saved in db
         em.detach(updatedActor);
         updatedActor
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedActor.getActorID())
+                put(ENTITY_API_URL_ID, updatedActor.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updatedActor))
             )
@@ -312,8 +307,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -324,12 +318,12 @@ class ActorResourceIT {
     @Transactional
     void putNonExistingActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActorMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, actor.getActorID())
+                put(ENTITY_API_URL_ID, actor.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(actor))
             )
@@ -347,12 +341,12 @@ class ActorResourceIT {
     @Transactional
     void putWithIdMismatchActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restActorMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID())
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(actor))
             )
@@ -370,7 +364,7 @@ class ActorResourceIT {
     @Transactional
     void putWithMissingIdPathParamActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restActorMockMvc
@@ -395,18 +389,17 @@ class ActorResourceIT {
 
         // Update the actor using partial update
         Actor partialUpdatedActor = new Actor();
-        partialUpdatedActor.setActorID(actor.getActorID());
+        partialUpdatedActor.setId(actor.getId());
 
         partialUpdatedActor
             .firstName(UPDATED_FIRST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedActor.getActorID())
+                patch(ENTITY_API_URL_ID, partialUpdatedActor.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedActor))
             )
@@ -419,8 +412,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -434,19 +426,18 @@ class ActorResourceIT {
 
         // Update the actor using partial update
         Actor partialUpdatedActor = new Actor();
-        partialUpdatedActor.setActorID(actor.getActorID());
+        partialUpdatedActor.setId(actor.getId());
 
         partialUpdatedActor
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedActor.getActorID())
+                patch(ENTITY_API_URL_ID, partialUpdatedActor.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedActor))
             )
@@ -459,8 +450,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -468,12 +458,12 @@ class ActorResourceIT {
     @Transactional
     void patchNonExistingActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActorMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, actor.getActorID())
+                patch(ENTITY_API_URL_ID, actor.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(actor))
             )
@@ -491,12 +481,12 @@ class ActorResourceIT {
     @Transactional
     void patchWithIdMismatchActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restActorMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, UUID.randomUUID())
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(actor))
             )
@@ -514,7 +504,7 @@ class ActorResourceIT {
     @Transactional
     void patchWithMissingIdPathParamActor() throws Exception {
         int databaseSizeBeforeUpdate = actorRepository.findAll().size();
-        actor.setActorID(UUID.randomUUID());
+        actor.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restActorMockMvc
@@ -539,7 +529,7 @@ class ActorResourceIT {
 
         // Delete the actor
         restActorMockMvc
-            .perform(delete(ENTITY_API_URL_ID, actor.getActorID().toString()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, actor.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -547,7 +537,7 @@ class ActorResourceIT {
         assertThat(actorList).hasSize(databaseSizeBeforeDelete - 1);
 
         // Validate the Actor in Elasticsearch
-        verify(mockActorSearchRepository, times(1)).deleteById(actor.getActorID());
+        verify(mockActorSearchRepository, times(1)).deleteById(actor.getId());
     }
 
     @Test
@@ -556,19 +546,19 @@ class ActorResourceIT {
         // Configure the mock search repository
         // Initialize the database
         actorRepository.saveAndFlush(actor);
-        when(mockActorSearchRepository.search("id:" + actor.getActorID())).thenReturn(Stream.of(actor));
+        when(mockActorSearchRepository.search("id:" + actor.getId(), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(actor), PageRequest.of(0, 1), 1));
 
         // Search the actor
         restActorMockMvc
-            .perform(get(ENTITY_SEARCH_API_URL + "?query=id:" + actor.getActorID()))
+            .perform(get(ENTITY_SEARCH_API_URL + "?query=id:" + actor.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].actorID").value(hasItem(actor.getActorID().toString())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(actor.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
-            .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
+            .andExpect(jsonPath("$.[*].environment").value(hasItem(DEFAULT_ENVIRONMENT)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 }

@@ -8,32 +8,9 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('vulnerabiltyID')!.value == null">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.vulnerabiltyID" for="field_vulnerabiltyID"
-            >Vulnerabilty ID</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="vulnerabiltyID"
-            id="field_vulnerabiltyID"
-            data-cy="vulnerabiltyID"
-            formControlName="vulnerabiltyID"
-            [readonly]="true"
-          />
-          <div
-            *ngIf="
-              editForm.get('vulnerabiltyID')!.invalid && (editForm.get('vulnerabiltyID')!.dirty || editForm.get('vulnerabiltyID')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('vulnerabiltyID')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
         <div class="form-group">
@@ -47,12 +24,51 @@
             >
               This field is required.
             </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('controlID')?.errors?.pattern"
+              jhiTranslate="entity.validation.pattern"
+              [translateValues]="{ pattern: 'Control ID' }"
+            >
+              This field should follow pattern for "Control ID".
+            </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.reference" for="field_reference">Reference</label>
-          <input type="text" class="form-control" name="reference" id="field_reference" data-cy="reference" formControlName="reference" />
+          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.title" for="field_title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pragRiskApp.mitigation.frameworkReference" for="field_frameworkReference"
+            >Framework Reference</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="frameworkReference"
+            id="field_frameworkReference"
+            data-cy="frameworkReference"
+            formControlName="frameworkReference"
+          />
         </div>
 
         <div class="form-group">

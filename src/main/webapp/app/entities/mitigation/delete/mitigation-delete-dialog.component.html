@@ -1,4 +1,4 @@
-<form *ngIf="mitigation" name="deleteForm" (ngSubmit)="confirmDelete(mitigation.vulnerabiltyID!)">
+<form *ngIf="mitigation" name="deleteForm" (ngSubmit)="confirmDelete(mitigation.id!)">
   <div class="modal-header">
     <h4 class="modal-title" data-cy="mitigationDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirm delete operation</h4>
 
@@ -8,11 +8,7 @@
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
 
-    <p
-      id="jhi-delete-mitigation-heading"
-      jhiTranslate="pragRiskApp.mitigation.delete.question"
-      [translateValues]="{ id: mitigation.vulnerabiltyID }"
-    >
+    <p id="jhi-delete-mitigation-heading" jhiTranslate="pragRiskApp.mitigation.delete.question" [translateValues]="{ id: mitigation.id }">
       Are you sure you want to delete this Mitigation?
     </p>
   </div>

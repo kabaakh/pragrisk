@@ -6,7 +6,6 @@ import com.gobr.pragrisk.domain.enumeration.MitigationType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -23,18 +22,26 @@ public class Mitigation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
-    @GeneratedValue
-    @Column(name = "vulnerabilty_id", nullable = false)
-    private UUID vulnerabiltyID;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
+    private Long id;
 
     @NotNull
-    @Column(name = "control_id", nullable = false)
+    @Pattern(regexp = "^R+\\d$")
+    @Column(name = "control_id", nullable = false, unique = true)
     private String controlID;
 
-    @Column(name = "reference")
-    private String reference;
+    @NotNull
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "framework_reference")
+    private String frameworkReference;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,22 +55,22 @@ public class Mitigation implements Serializable {
 
     @ManyToMany(mappedBy = "mitigations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "scenarios", "mitigations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "vulnerabilityIDS", "mitigations" }, allowSetters = true)
     private Set<Vulnerability> vulnerabilities = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public UUID getVulnerabiltyID() {
-        return this.vulnerabiltyID;
+    public Long getId() {
+        return this.id;
     }
 
-    public Mitigation vulnerabiltyID(UUID vulnerabiltyID) {
-        this.setVulnerabiltyID(vulnerabiltyID);
+    public Mitigation id(Long id) {
+        this.setId(id);
         return this;
     }
 
-    public void setVulnerabiltyID(UUID vulnerabiltyID) {
-        this.vulnerabiltyID = vulnerabiltyID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getControlID() {
@@ -79,17 +86,43 @@ public class Mitigation implements Serializable {
         this.controlID = controlID;
     }
 
-    public String getReference() {
-        return this.reference;
+    public String getTitle() {
+        return this.title;
     }
 
-    public Mitigation reference(String reference) {
-        this.setReference(reference);
+    public Mitigation title(String title) {
+        this.setTitle(title);
         return this;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Mitigation description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFrameworkReference() {
+        return this.frameworkReference;
+    }
+
+    public Mitigation frameworkReference(String frameworkReference) {
+        this.setFrameworkReference(frameworkReference);
+        return this;
+    }
+
+    public void setFrameworkReference(String frameworkReference) {
+        this.frameworkReference = frameworkReference;
     }
 
     public MitigationType getType() {
@@ -159,7 +192,7 @@ public class Mitigation implements Serializable {
         if (!(o instanceof Mitigation)) {
             return false;
         }
-        return vulnerabiltyID != null && vulnerabiltyID.equals(((Mitigation) o).vulnerabiltyID);
+        return id != null && id.equals(((Mitigation) o).id);
     }
 
     @Override
@@ -172,9 +205,11 @@ public class Mitigation implements Serializable {
     @Override
     public String toString() {
         return "Mitigation{" +
-            "vulnerabiltyID=" + getVulnerabiltyID() +
+            "id=" + getId() +
             ", controlID='" + getControlID() + "'" +
-            ", reference='" + getReference() + "'" +
+            ", title='" + getTitle() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", frameworkReference='" + getFrameworkReference() + "'" +
             ", type='" + getType() + "'" +
             ", status='" + getStatus() + "'" +
             "}";
