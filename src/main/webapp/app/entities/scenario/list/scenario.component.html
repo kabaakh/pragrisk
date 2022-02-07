@@ -58,15 +58,16 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="pragRiskApp.scenario.scenarioID">Scenario ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorFK">Actor FK</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyFK">Technology FK</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityFK">Vulnerability FK</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.scenario.description">Description</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.scenario.probability">Probability</span></th>
           <th scope="col"><span jhiTranslate="pragRiskApp.scenario.qonsequence">Qonsequence</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.riskValue">Risk Value</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorFK">Actor FK</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyFK">Technology FK</span></th>
+          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityFK">Vulnerability FK</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -75,26 +76,27 @@
           <td>
             <a [routerLink]="['/scenario', scenario.scenarioID, 'view']">{{ scenario.scenarioID }}</a>
           </td>
-          <td>{{ scenario.actorID }}</td>
-          <td>{{ scenario.technologyID }}</td>
-          <td>{{ scenario.vulnerabilityID }}</td>
+          <td>{{ scenario.actorFK }}</td>
+          <td>{{ scenario.technologyFK }}</td>
+          <td>{{ scenario.vulnerabilityFK }}</td>
           <td>{{ scenario.description }}</td>
           <td>{{ scenario.probability }}</td>
           <td>{{ scenario.qonsequence }}</td>
+          <td>{{ scenario.riskValue }}</td>
           <td>
-            <div *ngIf="scenario.actorID">
-              <a [routerLink]="['/actor', scenario.actorID?.actorID, 'view']">{{ scenario.actorID?.actorID }}</a>
+            <div *ngIf="scenario.actorFK">
+              <a [routerLink]="['/actor', scenario.actorFK?.actorID, 'view']">{{ scenario.actorFK?.actorID }}</a>
             </div>
           </td>
           <td>
-            <div *ngIf="scenario.technologyID">
-              <a [routerLink]="['/technology', scenario.technologyID?.technologyID, 'view']">{{ scenario.technologyID?.technologyID }}</a>
+            <div *ngIf="scenario.technologyFK">
+              <a [routerLink]="['/technology', scenario.technologyFK?.technologyID, 'view']">{{ scenario.technologyFK?.technologyID }}</a>
             </div>
           </td>
           <td>
-            <div *ngIf="scenario.vulnerabilityID">
-              <a [routerLink]="['/vulnerability', scenario.vulnerabilityID?.vulnerabilityID, 'view']">{{
-                scenario.vulnerabilityID?.vulnerabilityID
+            <div *ngIf="scenario.vulnerabilityFK">
+              <a [routerLink]="['/vulnerability', scenario.vulnerabilityFK?.vulnerabilityID, 'view']">{{
+                scenario.vulnerabilityFK?.vulnerabilityID
               }}</a>
             </div>
           </td>

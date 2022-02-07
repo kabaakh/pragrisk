@@ -14,7 +14,7 @@ const mitigationRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':vulnerabiltyID/view',
+    path: ':mitigationID/view',
     component: MitigationDetailComponent,
     resolve: {
       mitigation: MitigationRoutingResolveService,
@@ -30,7 +30,7 @@ const mitigationRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':vulnerabiltyID/edit',
+    path: ':mitigationID/edit',
     component: MitigationUpdateComponent,
     resolve: {
       mitigation: MitigationRoutingResolveService,

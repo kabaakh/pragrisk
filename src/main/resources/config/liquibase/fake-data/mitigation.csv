@@ -1,4 +1,4 @@
-vulnerabilty_id;control_id;reference;type;status
+mitigation_id;control_id;reference;type;status
 0e1c75ea-c29a-46fc-926b-3ac7984e424f;Shirt Strategist;fuchsia;PREV;MEAS
 bc15c0d6-4e98-40ce-9deb-650d7cfc6edd;Chief;back-end protocol navigating;CORR;ADHOC
 93ece897-bbce-4216-a9d4-d16d550a4dca;Quality visionary;Shirt access;CORR;MISS

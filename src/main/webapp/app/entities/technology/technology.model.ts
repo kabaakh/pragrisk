@@ -7,10 +7,10 @@ export interface ITechnology {
   name?: string;
   category?: TechCategory;
   description?: string | null;
-  inheritsFrom?: string | null;
+  parentTechnology?: string | null;
   techStackType?: TechStack | null;
-  inheritsFrom?: ITechnology | null;
-  scenarios?: IScenario[] | null;
+  parentTechnology?: ITechnology | null;
+  technologyIDS?: IScenario[] | null;
 }
 
 export class Technology implements ITechnology {
@@ -19,10 +19,10 @@ export class Technology implements ITechnology {
     public name?: string,
     public category?: TechCategory,
     public description?: string | null,
-    public inheritsFrom?: string | null,
+    public parentTechnology?: string | null,
     public techStackType?: TechStack | null,
-    public inheritsFrom?: ITechnology | null,
-    public scenarios?: IScenario[] | null
+    public parentTechnology?: ITechnology | null,
+    public technologyIDS?: IScenario[] | null
   ) {}
 }
 
