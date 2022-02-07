@@ -4,7 +4,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import com.gobr.pragrisk.domain.Actor;
 import com.gobr.pragrisk.repository.ActorRepository;
-import com.gobr.pragrisk.repository.search.ActorSearchRepository;
+import com.gobr.pragrisk.service.ActorService;
 import com.gobr.pragrisk.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,17 +12,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,7 +34,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ActorResource {
 
     private final Logger log = LoggerFactory.getLogger(ActorResource.class);
@@ -40,13 +43,13 @@ public class ActorResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ActorService actorService;
+
     private final ActorRepository actorRepository;
 
-    private final ActorSearchRepository actorSearchRepository;
-
-    public ActorResource(ActorRepository actorRepository, ActorSearchRepository actorSearchRepository) {
+    public ActorResource(ActorService actorService, ActorRepository actorRepository) {
+        this.actorService = actorService;
         this.actorRepository = actorRepository;
-        this.actorSearchRepository = actorSearchRepository;
     }
 
     /**
@@ -62,8 +65,7 @@ public class ActorResource {
         if (actor.getActorID() != null) {
             throw new BadRequestAlertException("A new actor cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Actor result = actorRepository.save(actor);
-        actorSearchRepository.save(result);
+        Actor result = actorService.save(actor);
         return ResponseEntity
             .created(new URI("/api/actors/" + result.getActorID()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getActorID().toString()))
@@ -97,8 +99,7 @@ public class ActorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Actor result = actorRepository.save(actor);
-        actorSearchRepository.save(result);
+        Actor result = actorService.save(actor);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, actor.getActorID().toString()))
@@ -133,36 +134,7 @@ public class ActorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Actor> result = actorRepository
-            .findById(actor.getActorID())
-            .map(existingActor -> {
-                if (actor.getFirstName() != null) {
-                    existingActor.setFirstName(actor.getFirstName());
-                }
-                if (actor.getLastName() != null) {
-                    existingActor.setLastName(actor.getLastName());
-                }
-                if (actor.getNickName() != null) {
-                    existingActor.setNickName(actor.getNickName());
-                }
-                if (actor.getEnvironMent() != null) {
-                    existingActor.setEnvironMent(actor.getEnvironMent());
-                }
-                if (actor.getInheritsFrom() != null) {
-                    existingActor.setInheritsFrom(actor.getInheritsFrom());
-                }
-                if (actor.getDescription() != null) {
-                    existingActor.setDescription(actor.getDescription());
-                }
-
-                return existingActor;
-            })
-            .map(actorRepository::save)
-            .map(savedActor -> {
-                actorSearchRepository.save(savedActor);
-
-                return savedActor;
-            });
+        Optional<Actor> result = actorService.partialUpdate(actor);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -173,12 +145,15 @@ public class ActorResource {
     /**
      * {@code GET  /actors} : get all the actors.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of actors in body.
      */
     @GetMapping("/actors")
-    public List<Actor> getAllActors() {
-        log.debug("REST request to get all Actors");
-        return actorRepository.findAll();
+    public ResponseEntity<List<Actor>> getAllActors(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Actors");
+        Page<Actor> page = actorService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -190,7 +165,7 @@ public class ActorResource {
     @GetMapping("/actors/{id}")
     public ResponseEntity<Actor> getActor(@PathVariable UUID id) {
         log.debug("REST request to get Actor : {}", id);
-        Optional<Actor> actor = actorRepository.findById(id);
+        Optional<Actor> actor = actorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(actor);
     }
 
@@ -203,8 +178,7 @@ public class ActorResource {
     @DeleteMapping("/actors/{id}")
     public ResponseEntity<Void> deleteActor(@PathVariable UUID id) {
         log.debug("REST request to delete Actor : {}", id);
-        actorRepository.deleteById(id);
-        actorSearchRepository.deleteById(id);
+        actorService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
@@ -216,11 +190,17 @@ public class ActorResource {
      * to the query.
      *
      * @param query the query of the actor search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/actors")
-    public List<Actor> searchActors(@RequestParam String query) {
-        log.debug("REST request to search Actors for query {}", query);
-        return StreamSupport.stream(actorSearchRepository.search(query).spliterator(), false).collect(Collectors.toList());
+    public ResponseEntity<List<Actor>> searchActors(
+        @RequestParam String query,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to search for a page of Actors for query {}", query);
+        Page<Actor> page = actorService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

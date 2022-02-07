@@ -4,7 +4,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import com.gobr.pragrisk.domain.Scenario;
 import com.gobr.pragrisk.repository.ScenarioRepository;
-import com.gobr.pragrisk.repository.search.ScenarioSearchRepository;
+import com.gobr.pragrisk.service.ScenarioService;
 import com.gobr.pragrisk.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,17 +12,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,7 +34,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ScenarioResource {
 
     private final Logger log = LoggerFactory.getLogger(ScenarioResource.class);
@@ -40,13 +43,13 @@ public class ScenarioResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ScenarioService scenarioService;
+
     private final ScenarioRepository scenarioRepository;
 
-    private final ScenarioSearchRepository scenarioSearchRepository;
-
-    public ScenarioResource(ScenarioRepository scenarioRepository, ScenarioSearchRepository scenarioSearchRepository) {
+    public ScenarioResource(ScenarioService scenarioService, ScenarioRepository scenarioRepository) {
+        this.scenarioService = scenarioService;
         this.scenarioRepository = scenarioRepository;
-        this.scenarioSearchRepository = scenarioSearchRepository;
     }
 
     /**
@@ -62,8 +65,7 @@ public class ScenarioResource {
         if (scenario.getScenarioID() != null) {
             throw new BadRequestAlertException("A new scenario cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Scenario result = scenarioRepository.save(scenario);
-        scenarioSearchRepository.save(result);
+        Scenario result = scenarioService.save(scenario);
         return ResponseEntity
             .created(new URI("/api/scenarios/" + result.getScenarioID()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getScenarioID().toString()))
@@ -97,8 +99,7 @@ public class ScenarioResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Scenario result = scenarioRepository.save(scenario);
-        scenarioSearchRepository.save(result);
+        Scenario result = scenarioService.save(scenario);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, scenario.getScenarioID().toString()))
@@ -133,36 +134,7 @@ public class ScenarioResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Scenario> result = scenarioRepository
-            .findById(scenario.getScenarioID())
-            .map(existingScenario -> {
-                if (scenario.getActorID() != null) {
-                    existingScenario.setActorID(scenario.getActorID());
-                }
-                if (scenario.getTechnologyID() != null) {
-                    existingScenario.setTechnologyID(scenario.getTechnologyID());
-                }
-                if (scenario.getVulnerabilityID() != null) {
-                    existingScenario.setVulnerabilityID(scenario.getVulnerabilityID());
-                }
-                if (scenario.getDescription() != null) {
-                    existingScenario.setDescription(scenario.getDescription());
-                }
-                if (scenario.getProbability() != null) {
-                    existingScenario.setProbability(scenario.getProbability());
-                }
-                if (scenario.getQonsequence() != null) {
-                    existingScenario.setQonsequence(scenario.getQonsequence());
-                }
-
-                return existingScenario;
-            })
-            .map(scenarioRepository::save)
-            .map(savedScenario -> {
-                scenarioSearchRepository.save(savedScenario);
-
-                return savedScenario;
-            });
+        Optional<Scenario> result = scenarioService.partialUpdate(scenario);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -173,12 +145,15 @@ public class ScenarioResource {
     /**
      * {@code GET  /scenarios} : get all the scenarios.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of scenarios in body.
      */
     @GetMapping("/scenarios")
-    public List<Scenario> getAllScenarios() {
-        log.debug("REST request to get all Scenarios");
-        return scenarioRepository.findAll();
+    public ResponseEntity<List<Scenario>> getAllScenarios(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Scenarios");
+        Page<Scenario> page = scenarioService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -190,7 +165,7 @@ public class ScenarioResource {
     @GetMapping("/scenarios/{id}")
     public ResponseEntity<Scenario> getScenario(@PathVariable UUID id) {
         log.debug("REST request to get Scenario : {}", id);
-        Optional<Scenario> scenario = scenarioRepository.findById(id);
+        Optional<Scenario> scenario = scenarioService.findOne(id);
         return ResponseUtil.wrapOrNotFound(scenario);
     }
 
@@ -203,8 +178,7 @@ public class ScenarioResource {
     @DeleteMapping("/scenarios/{id}")
     public ResponseEntity<Void> deleteScenario(@PathVariable UUID id) {
         log.debug("REST request to delete Scenario : {}", id);
-        scenarioRepository.deleteById(id);
-        scenarioSearchRepository.deleteById(id);
+        scenarioService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
@@ -216,11 +190,17 @@ public class ScenarioResource {
      * to the query.
      *
      * @param query the query of the scenario search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/scenarios")
-    public List<Scenario> searchScenarios(@RequestParam String query) {
-        log.debug("REST request to search Scenarios for query {}", query);
-        return StreamSupport.stream(scenarioSearchRepository.search(query).spliterator(), false).collect(Collectors.toList());
+    public ResponseEntity<List<Scenario>> searchScenarios(
+        @RequestParam String query,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to search for a page of Scenarios for query {}", query);
+        Page<Scenario> page = scenarioService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

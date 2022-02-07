@@ -6,11 +6,10 @@ export interface IActor {
   firstName?: string;
   lastName?: string;
   nickName?: string;
-  environMent?: Environment;
-  inheritsFrom?: string | null;
+  group?: Environment;
   description?: string | null;
-  inheritsFrom?: IActor | null;
-  scenarios?: IScenario[] | null;
+  parentActor?: IActor | null;
+  actorIDS?: IScenario[] | null;
 }
 
 export class Actor implements IActor {
@@ -19,11 +18,10 @@ export class Actor implements IActor {
     public firstName?: string,
     public lastName?: string,
     public nickName?: string,
-    public environMent?: Environment,
-    public inheritsFrom?: string | null,
+    public group?: Environment,
     public description?: string | null,
-    public inheritsFrom?: IActor | null,
-    public scenarios?: IScenario[] | null
+    public parentActor?: IActor | null,
+    public actorIDS?: IScenario[] | null
   ) {}
 }
 

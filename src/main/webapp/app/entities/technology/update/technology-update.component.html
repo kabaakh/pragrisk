@@ -86,20 +86,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.inheritsFrom" for="field_inheritsFrom"
-            >Inherits From</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="inheritsFrom"
-            id="field_inheritsFrom"
-            data-cy="inheritsFrom"
-            formControlName="inheritsFrom"
-          />
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pragRiskApp.technology.techStackType" for="field_techStackType"
             >Tech Stack Type</label
           >
@@ -115,21 +101,40 @@
               {{ 'pragRiskApp.TechStack.' + techStack | translate }}
             </option>
           </select>
+          <div
+            *ngIf="
+              editForm.get('techStackType')!.invalid && (editForm.get('techStackType')!.dirty || editForm.get('techStackType')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('techStackType')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.inheritsFrom" for="field_inheritsFrom"
-            >Inherits From</label
+          <label class="form-control-label" jhiTranslate="pragRiskApp.technology.parentTechnology" for="field_parentTechnology"
+            >Parent Technology</label
           >
-          <select class="form-control" id="field_inheritsFrom" data-cy="inheritsFrom" name="inheritsFrom" formControlName="inheritsFrom">
+          <select
+            class="form-control"
+            id="field_parentTechnology"
+            data-cy="parentTechnology"
+            name="parentTechnology"
+            formControlName="parentTechnology"
+          >
             <option [ngValue]="null"></option>
             <option
               [ngValue]="
-                technologyOption.technologyID === editForm.get('inheritsFrom')!.value?.technologyID
-                  ? editForm.get('inheritsFrom')!.value
+                technologyOption.technologyID === editForm.get('parentTechnology')!.value?.technologyID
+                  ? editForm.get('parentTechnology')!.value
                   : technologyOption
               "
-              *ngFor="let technologyOption of inheritsFromsCollection; trackBy: trackTechnologyByTechnologyID"
+              *ngFor="let technologyOption of parentTechnologiesCollection; trackBy: trackTechnologyByTechnologyID"
             >
               {{ technologyOption.technologyID }}
             </option>

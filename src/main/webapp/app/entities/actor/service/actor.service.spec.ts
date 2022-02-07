@@ -25,8 +25,7 @@ describe('Actor Service', () => {
       firstName: 'AAAAAAA',
       lastName: 'AAAAAAA',
       nickName: 'AAAAAAA',
-      environMent: Environment.KOM,
-      inheritsFrom: 'AAAAAAA',
+      group: Environment.KOM,
       description: 'AAAAAAA',
     };
   });
@@ -66,8 +65,7 @@ describe('Actor Service', () => {
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
-          environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          group: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault
@@ -87,7 +85,6 @@ describe('Actor Service', () => {
         {
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
-          description: 'BBBBBB',
         },
         new Actor()
       );
@@ -110,8 +107,7 @@ describe('Actor Service', () => {
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
-          environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          group: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault
@@ -167,7 +163,7 @@ describe('Actor Service', () => {
         const actorArray: IActor[] = [
           { actorID: '9fec3727-3421-4967-b213-ba36557ca194' },
           { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { actorID: 'd7f2eedb-0eed-4d6c-9799-9f7b5116334d' },
+          { actorID: 'ad7f2eed-b0ee-4dd6-8579-99f7b5116334' },
         ];
         const actorCollection: IActor[] = [{ actorID: '9fec3727-3421-4967-b213-ba36557ca194' }];
         expectedResult = service.addActorToCollectionIfMissing(actorCollection, ...actorArray);

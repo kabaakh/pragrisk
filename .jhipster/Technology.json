@@ -31,34 +31,31 @@
       "fieldValidateRulesMaxlength": "1024"
     },
     {
-      "fieldName": "inheritsFrom",
-      "fieldType": "UUID"
-    },
-    {
       "fieldName": "techStackType",
       "fieldType": "TechStack",
+      "fieldValidateRules": ["required"],
       "fieldValues": "JAVA (Java),NET (.NET),PHP (PHP)"
     }
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Technology",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "technology",
       "otherEntityRelationshipName": "technology",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentTechnology",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "technologyID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "technologyFK",
+      "relationshipName": "technologyID",
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }
