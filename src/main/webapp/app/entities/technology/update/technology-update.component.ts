@@ -19,16 +19,15 @@ export class TechnologyUpdateComponent implements OnInit {
   techCategoryValues = Object.keys(TechCategory);
   techStackValues = Object.keys(TechStack);
 
-  inheritsFromsCollection: ITechnology[] = [];
+  parentTechnologiesCollection: ITechnology[] = [];
 
   editForm = this.fb.group({
-    technologyID: [null, [Validators.required]],
+    id: [],
     name: [null, [Validators.required]],
     category: [null, [Validators.required]],
     description: [null, [Validators.maxLength(1024)]],
-    inheritsFrom: [],
-    techStackType: [],
-    inheritsFrom: [],
+    techStackType: [null, [Validators.required]],
+    parentTechnology: [],
   });
 
   constructor(protected technologyService: TechnologyService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -48,15 +47,15 @@ export class TechnologyUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const technology = this.createFromForm();
-    if (technology.technologyID !== undefined) {
+    if (technology.id !== undefined) {
       this.subscribeToSaveResponse(this.technologyService.update(technology));
     } else {
       this.subscribeToSaveResponse(this.technologyService.create(technology));
     }
   }
 
-  trackTechnologyByTechnologyID(index: number, item: ITechnology): string {
-    return item.technologyID!;
+  trackTechnologyById(index: number, item: ITechnology): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITechnology>>): void {
@@ -80,18 +79,17 @@ export class TechnologyUpdateComponent implements OnInit {
 
   protected updateForm(technology: ITechnology): void {
     this.editForm.patchValue({
-      technologyID: technology.technologyID,
+      id: technology.id,
       name: technology.name,
       category: technology.category,
       description: technology.description,
-      inheritsFrom: technology.inheritsFrom,
       techStackType: technology.techStackType,
-      inheritsFrom: technology.inheritsFrom,
+      parentTechnology: technology.parentTechnology,
     });
 
-    this.inheritsFromsCollection = this.technologyService.addTechnologyToCollectionIfMissing(
-      this.inheritsFromsCollection,
-      technology.inheritsFrom
+    this.parentTechnologiesCollection = this.technologyService.addTechnologyToCollectionIfMissing(
+      this.parentTechnologiesCollection,
+      technology.parentTechnology
     );
   }
 
@@ -101,22 +99,21 @@ export class TechnologyUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ITechnology[]>) => res.body ?? []))
       .pipe(
         map((technologies: ITechnology[]) =>
-          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('inheritsFrom')!.value)
+          this.technologyService.addTechnologyToCollectionIfMissing(technologies, this.editForm.get('parentTechnology')!.value)
         )
       )
-      .subscribe((technologies: ITechnology[]) => (this.inheritsFromsCollection = technologies));
+      .subscribe((technologies: ITechnology[]) => (this.parentTechnologiesCollection = technologies));
   }
 
   protected createFromForm(): ITechnology {
     return {
       ...new Technology(),
-      technologyID: this.editForm.get(['technologyID'])!.value,
+      id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       category: this.editForm.get(['category'])!.value,
       description: this.editForm.get(['description'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
       techStackType: this.editForm.get(['techStackType'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentTechnology: this.editForm.get(['parentTechnology'])!.value,
     };
   }
 }

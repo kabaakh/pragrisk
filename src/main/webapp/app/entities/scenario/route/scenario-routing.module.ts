@@ -11,10 +11,13 @@ const scenarioRoute: Routes = [
   {
     path: '',
     component: ScenarioComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':scenarioID/view',
+    path: ':id/view',
     component: ScenarioDetailComponent,
     resolve: {
       scenario: ScenarioRoutingResolveService,
@@ -30,7 +33,7 @@ const scenarioRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':scenarioID/edit',
+    path: ':id/edit',
     component: ScenarioUpdateComponent,
     resolve: {
       scenario: ScenarioRoutingResolveService,

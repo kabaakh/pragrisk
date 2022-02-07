@@ -20,9 +20,11 @@ export class MitigationUpdateComponent implements OnInit {
   mitigationStatusValues = Object.keys(MitigationStatus);
 
   editForm = this.fb.group({
-    vulnerabiltyID: [null, [Validators.required]],
-    controlID: [null, [Validators.required]],
-    reference: [],
+    id: [],
+    controlID: [null, [Validators.required, Validators.pattern('^R+\\d$')]],
+    title: [null, [Validators.required]],
+    description: [],
+    frameworkReference: [],
     type: [null, [Validators.required]],
     status: [null, [Validators.required]],
   });
@@ -42,7 +44,7 @@ export class MitigationUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const mitigation = this.createFromForm();
-    if (mitigation.vulnerabiltyID !== undefined) {
+    if (mitigation.id !== undefined) {
       this.subscribeToSaveResponse(this.mitigationService.update(mitigation));
     } else {
       this.subscribeToSaveResponse(this.mitigationService.create(mitigation));
@@ -70,9 +72,11 @@ export class MitigationUpdateComponent implements OnInit {
 
   protected updateForm(mitigation: IMitigation): void {
     this.editForm.patchValue({
-      vulnerabiltyID: mitigation.vulnerabiltyID,
+      id: mitigation.id,
       controlID: mitigation.controlID,
-      reference: mitigation.reference,
+      title: mitigation.title,
+      description: mitigation.description,
+      frameworkReference: mitigation.frameworkReference,
       type: mitigation.type,
       status: mitigation.status,
     });
@@ -81,9 +85,11 @@ export class MitigationUpdateComponent implements OnInit {
   protected createFromForm(): IMitigation {
     return {
       ...new Mitigation(),
-      vulnerabiltyID: this.editForm.get(['vulnerabiltyID'])!.value,
+      id: this.editForm.get(['id'])!.value,
       controlID: this.editForm.get(['controlID'])!.value,
-      reference: this.editForm.get(['reference'])!.value,
+      title: this.editForm.get(['title'])!.value,
+      description: this.editForm.get(['description'])!.value,
+      frameworkReference: this.editForm.get(['frameworkReference'])!.value,
       type: this.editForm.get(['type'])!.value,
       status: this.editForm.get(['status'])!.value,
     };

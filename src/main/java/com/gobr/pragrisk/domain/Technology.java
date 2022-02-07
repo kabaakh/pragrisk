@@ -6,7 +6,6 @@ import com.gobr.pragrisk.domain.enumeration.TechStack;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -23,11 +22,11 @@ public class Technology implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
-    @GeneratedValue
-    @Column(name = "technology_id", nullable = false, unique = true)
-    private UUID technologyID;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
+    private Long id;
 
     @NotNull
     @Column(name = "name", nullable = false)
@@ -42,36 +41,34 @@ public class Technology implements Serializable {
     @Column(name = "description", length = 1024)
     private String description;
 
-    @Column(name = "inherits_from")
-    private UUID inheritsFrom;
-
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "tech_stack_type")
+    @Column(name = "tech_stack_type", nullable = false)
     private TechStack techStackType;
 
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentTechnology", "technologyIDS" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private Technology inheritsFrom;
+    private Technology parentTechnology;
 
-    @OneToMany(mappedBy = "technologyID")
+    @OneToMany(mappedBy = "technologyFK")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "actorID", "technologyID", "vulnerabilityID" }, allowSetters = true)
-    private Set<Scenario> scenarios = new HashSet<>();
+    @JsonIgnoreProperties(value = { "actorFK", "technologyFK", "vulnerabilityFK" }, allowSetters = true)
+    private Set<Scenario> technologyIDS = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public UUID getTechnologyID() {
-        return this.technologyID;
+    public Long getId() {
+        return this.id;
     }
 
-    public Technology technologyID(UUID technologyID) {
-        this.setTechnologyID(technologyID);
+    public Technology id(Long id) {
+        this.setId(id);
         return this;
     }
 
-    public void setTechnologyID(UUID technologyID) {
-        this.technologyID = technologyID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -113,19 +110,6 @@ public class Technology implements Serializable {
         this.description = description;
     }
 
-    public UUID getInheritsFrom() {
-        return this.inheritsFrom;
-    }
-
-    public Technology inheritsFrom(UUID inheritsFrom) {
-        this.setInheritsFrom(inheritsFrom);
-        return this;
-    }
-
-    public void setInheritsFrom(UUID inheritsFrom) {
-        this.inheritsFrom = inheritsFrom;
-    }
-
     public TechStack getTechStackType() {
         return this.techStackType;
     }
@@ -139,47 +123,47 @@ public class Technology implements Serializable {
         this.techStackType = techStackType;
     }
 
-    public Technology getInheritsFrom() {
-        return this.inheritsFrom;
+    public Technology getParentTechnology() {
+        return this.parentTechnology;
     }
 
-    public void setInheritsFrom(Technology technology) {
-        this.inheritsFrom = technology;
+    public void setParentTechnology(Technology technology) {
+        this.parentTechnology = technology;
     }
 
-    public Technology inheritsFrom(Technology technology) {
-        this.setInheritsFrom(technology);
+    public Technology parentTechnology(Technology technology) {
+        this.setParentTechnology(technology);
         return this;
     }
 
-    public Set<Scenario> getScenarios() {
-        return this.scenarios;
+    public Set<Scenario> getTechnologyIDS() {
+        return this.technologyIDS;
     }
 
-    public void setScenarios(Set<Scenario> scenarios) {
-        if (this.scenarios != null) {
-            this.scenarios.forEach(i -> i.setTechnologyID(null));
+    public void setTechnologyIDS(Set<Scenario> scenarios) {
+        if (this.technologyIDS != null) {
+            this.technologyIDS.forEach(i -> i.setTechnologyFK(null));
         }
         if (scenarios != null) {
-            scenarios.forEach(i -> i.setTechnologyID(this));
+            scenarios.forEach(i -> i.setTechnologyFK(this));
         }
-        this.scenarios = scenarios;
+        this.technologyIDS = scenarios;
     }
 
-    public Technology scenarios(Set<Scenario> scenarios) {
-        this.setScenarios(scenarios);
+    public Technology technologyIDS(Set<Scenario> scenarios) {
+        this.setTechnologyIDS(scenarios);
         return this;
     }
 
-    public Technology addScenario(Scenario scenario) {
-        this.scenarios.add(scenario);
-        scenario.setTechnologyID(this);
+    public Technology addTechnologyID(Scenario scenario) {
+        this.technologyIDS.add(scenario);
+        scenario.setTechnologyFK(this);
         return this;
     }
 
-    public Technology removeScenario(Scenario scenario) {
-        this.scenarios.remove(scenario);
-        scenario.setTechnologyID(null);
+    public Technology removeTechnologyID(Scenario scenario) {
+        this.technologyIDS.remove(scenario);
+        scenario.setTechnologyFK(null);
         return this;
     }
 
@@ -193,7 +177,7 @@ public class Technology implements Serializable {
         if (!(o instanceof Technology)) {
             return false;
         }
-        return technologyID != null && technologyID.equals(((Technology) o).technologyID);
+        return id != null && id.equals(((Technology) o).id);
     }
 
     @Override
@@ -206,11 +190,10 @@ public class Technology implements Serializable {
     @Override
     public String toString() {
         return "Technology{" +
-            "technologyID=" + getTechnologyID() +
+            "id=" + getId() +
             ", name='" + getName() + "'" +
             ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
-            ", inheritsFrom='" + getInheritsFrom() + "'" +
             ", techStackType='" + getTechStackType() + "'" +
             "}";
     }

@@ -1,32 +1,32 @@
 import { IScenario } from 'app/entities/scenario/scenario.model';
-import { Environment } from 'app/entities/enumerations/environment.model';
+import { IEnvironment } from 'app/entities/environment/environment.model';
 
 export interface IActor {
-  actorID?: string;
+  id?: number;
   firstName?: string;
   lastName?: string;
   nickName?: string;
-  environMent?: Environment;
-  inheritsFrom?: string | null;
+  environment?: string;
   description?: string | null;
-  inheritsFrom?: IActor | null;
-  scenarios?: IScenario[] | null;
+  parentActor?: IActor | null;
+  actorIDS?: IScenario[] | null;
+  environment?: IEnvironment | null;
 }
 
 export class Actor implements IActor {
   constructor(
-    public actorID?: string,
+    public id?: number,
     public firstName?: string,
     public lastName?: string,
     public nickName?: string,
-    public environMent?: Environment,
-    public inheritsFrom?: string | null,
+    public environment?: string,
     public description?: string | null,
-    public inheritsFrom?: IActor | null,
-    public scenarios?: IScenario[] | null
+    public parentActor?: IActor | null,
+    public actorIDS?: IScenario[] | null,
+    public environment?: IEnvironment | null
   ) {}
 }
 
-export function getActorIdentifier(actor: IActor): string | undefined {
-  return actor.actorID;
+export function getActorIdentifier(actor: IActor): number | undefined {
+  return actor.id;
 }

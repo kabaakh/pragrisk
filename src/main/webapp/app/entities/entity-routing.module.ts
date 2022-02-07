@@ -29,6 +29,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'pragRiskApp.mitigation.home.title' },
         loadChildren: () => import('./mitigation/mitigation.module').then(m => m.MitigationModule),
       },
+      {
+        path: 'environment',
+        data: { pageTitle: 'pragRiskApp.environment.home.title' },
+        loadChildren: () => import('./environment/environment.module').then(m => m.EnvironmentModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

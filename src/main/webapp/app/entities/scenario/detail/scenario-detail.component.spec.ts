@@ -14,7 +14,7 @@ describe('Scenario Management Detail Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { data: of({ scenario: { scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' } }) },
+          useValue: { data: of({ scenario: { id: 123 } }) },
         },
       ],
     })
@@ -30,7 +30,7 @@ describe('Scenario Management Detail Component', () => {
       comp.ngOnInit();
 
       // THEN
-      expect(comp.scenario).toEqual(expect.objectContaining({ scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+      expect(comp.scenario).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

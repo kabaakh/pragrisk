@@ -8,10 +8,16 @@
     -->
     <changeSet id="20220207114115-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="inherits_from_actor_id"
+        <addForeignKeyConstraint baseColumnNames="parent_actor_id"
                                  baseTableName="actor"
-                                 constraintName="fk_actor__inherits_from_id"
-                                 referencedColumnNames="actor_id"
+                                 constraintName="fk_actor__parent_actor_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="actor"/>
+
+        <addForeignKeyConstraint baseColumnNames="environment_id"
+                                 baseTableName="actor"
+                                 constraintName="fk_actor__environment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="environment"/>
     </changeSet>
 </databaseChangeLog>

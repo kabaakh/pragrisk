@@ -1,7 +1,6 @@
 package com.gobr.pragrisk.repository;
 
 import com.gobr.pragrisk.domain.Actor;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ActorRepository extends JpaRepository<Actor, UUID> {}
+public interface ActorRepository extends JpaRepository<Actor, Long> {}
