@@ -1,0 +1,103 @@
+
+entity Actor {
+//	@id actorID UUID required unique,
+	firstName String required,
+    lastName String required,
+    nickName String required,
+//    group String required,
+//    parentActor UUID,
+    description String maxlength(1024)
+}
+
+entity Environment {
+    name String required unique,
+    description String
+}
+
+entity Scenario {
+//	@id scenarioID UUID required unique,
+//    actorFK String,
+//    technologyFK String,
+//    vulnerabilityFK String,
+    title String required unique,
+    description String maxlength(1024),
+    probability BigDecimal,
+	qonsequence BigDecimal,
+    riskValue BigDecimal
+}
+
+entity Vulnerability {
+//	@id vulnerabilityID UUID required unique,
+	name String required,
+	cweReference String,
+    cvss String
+}
+
+entity Technology {
+//	@id technologyID UUID required unique,
+    name String required,
+    category TechCategory required,
+    description String maxlength(1024),
+    //parentTechnology UUID,
+    techStackType TechStack required,
+}
+
+enum TechCategory {
+    APPLICATION,
+    SERVICE,
+    COMPONENT
+}
+
+enum TechStack {
+	JAVA,
+    NET,
+    PHP
+}
+
+entity Mitigation {
+//	@id mitigationID UUID required unique,
+    controlID String pattern(/^R+\d$/) required unique ,
+    title String required,
+    description String,
+    frameworkReference String,
+    type MitigationType required,
+    status MitigationStatus required
+}
+
+enum MitigationType {
+	PREVENTIVE,
+    DETECTIVE,
+    CORRECTIVE,
+    DETERRING
+}
+
+enum MitigationStatus {
+	NOT_PERFORMED,
+    AD_HOC,
+    PLANNED_AND_TRACKED,
+    WELL_DEFINED,
+    QUANTITATIVELY_CONTROLLED,
+    CONTINUOUSLY_IMPROVED
+}
+
+relationship OneToOne {
+	Actor{parentActor} to Actor,
+    Technology{parentTechnology} to Technology
+}
+
+relationship OneToMany {
+	Actor{actorID} to Scenario{actorFK},
+	Technology{technologyID} to Scenario{technologyFK},
+    Vulnerability{vulnerabilityID} to Scenario{vulnerabilityFK}
+}
+
+relationship ManyToOne {
+	Actor{group} to Environment
+}
+
+relationship ManyToMany {
+	Vulnerability to Mitigation
+}
+
+service * with serviceClass
+paginate Actor, Technology, Scenario, Vulnerability, Mitigation with pagination
