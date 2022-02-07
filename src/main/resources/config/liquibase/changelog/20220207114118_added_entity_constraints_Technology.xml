@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Technology.
+    -->
+    <changeSet id="20220207114118-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="inherits_from_technology_id"
+                                 baseTableName="technology"
+                                 constraintName="fk_technology__inherits_from_id"
+                                 referencedColumnNames="technology_id"
+                                 referencedTableName="technology"/>
+    </changeSet>
+</databaseChangeLog>

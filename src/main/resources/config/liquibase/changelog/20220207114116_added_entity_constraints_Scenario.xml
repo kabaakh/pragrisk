@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Scenario.
+    -->
+    <changeSet id="20220207114116-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="actorid_actor_id"
+                                 baseTableName="scenario"
+                                 constraintName="fk_scenario__actorid_id"
+                                 referencedColumnNames="actor_id"
+                                 referencedTableName="actor"/>
+
+        <addForeignKeyConstraint baseColumnNames="technologyid_technology_id"
+                                 baseTableName="scenario"
+                                 constraintName="fk_scenario__technologyid_id"
+                                 referencedColumnNames="technology_id"
+                                 referencedTableName="technology"/>
+
+        <addForeignKeyConstraint baseColumnNames="vulnerabilityid_vulnerability_id"
+                                 baseTableName="scenario"
+                                 constraintName="fk_scenario__vulnerabilityid_id"
+                                 referencedColumnNames="vulnerability_id"
+                                 referencedTableName="vulnerability"/>
+    </changeSet>
+</databaseChangeLog>

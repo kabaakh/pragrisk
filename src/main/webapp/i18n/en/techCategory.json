@@ -1,0 +1,10 @@
+{
+  "pragRiskApp": {
+    "TechCategory": {
+      "null": "",
+      "FAG": "Fagsystem",
+      "FEL": "Fellestjeneste",
+      "KOM": "Komponent"
+    }
+  }
+}
