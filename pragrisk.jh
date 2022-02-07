@@ -1,94 +1,103 @@
 
 entity Actor {
-	@id actorID UUID required unique,
+	//@id actorID UUID required unique,
 	firstName String required,
     lastName String required,
     nickName String required,
-    environMent Environment required,
-    inheritsFrom UUID,
+    environment String required,
+    //parentActor UUID,
     description String maxlength(1024)
 }
 
-enum Environment {
-	KOM (Kommune),
-    KS (KS),
-    UV (Uvedkommende),
-    LEV ("Leverandør")
+entity Environment {
+    name String required unique,
+    description String
 }
 
 entity Scenario {
-	@id scenarioID UUID required,
-    actorID UUID required,
-    technologyID UUID required,
-    vulnerabilityID UUID required,
-    description String maxlength(1024)
+//	@id scenarioID UUID required unique,
+//    actorFK String,
+//    technologyFK String,
+//    vulnerabilityFK String,
+    title String required unique,
+    description String maxlength(1024),
     probability BigDecimal,
-	qonsequence BigDecimal
+	qonsequence BigDecimal,
+    riskValue BigDecimal
 }
 
 entity Vulnerability {
-	@id vulnerabilityID UUID required unique,
+//	@id vulnerabilityID UUID required unique,
 	name String required,
-	cweReference String
+	cweReference String,
+    cvss String
 }
 
 entity Technology {
-	@id technologyID UUID required unique,
+//	@id technologyID UUID required unique,
     name String required,
     category TechCategory required,
     description String maxlength(1024),
-    inheritsFrom UUID,
-    techStackType TechStack,
+    //parentTechnology UUID,
+    techStackType TechStack required,
 }
 
 enum TechCategory {
-    FAG (Fagsystem),
-    FEL (Fellestjeneste),
-    KOM (Komponent)
+    APPLICATION,
+    SERVICE,
+    COMPONENT
 }
 
 enum TechStack {
-	JAVA (Java),
-    NET (".NET"),
-    PHP (PHP)
+	JAVA,
+    NET,
+    PHP
 }
 
 entity Mitigation {
-	@id vulnerabiltyID UUID required,
-    controlID String required,
-    reference String,
+//	@id mitigationID UUID required unique,
+    controlID String pattern(/^R+\d$/) required unique ,
+    title String required,
+    description String,
+    frameworkReference String,
     type MitigationType required,
     status MitigationStatus required
 }
 
 enum MitigationType {
-	PREV (Preventive),
-    DETECT (Detective),
-    CORR (Corrective),
-    DETER (Deterrent)
+	PREVENTIVE,
+    DETECTIVE,
+    CORRECTIVE,
+    DETERRING
 }
 
 enum MitigationStatus {
-	MISS ("Not performed"),
-    ADHOC ("Performed informally"),
-    REPT ("Planned & tracked"),
-    DEF ("Well defined"),
-    MEAS ("Quantitatively controlled"),
-    CONT ("Continuously improved")
+	NOT_PERFORMED,
+    AD_HOC,
+    PLANNED_AND_TRACKED,
+    WELL_DEFINED,
+    QUANTITATIVELY_CONTROLLED,
+    CONTINUOUSLY_IMPROVED
 }
 
 relationship OneToOne {
-	Actor{inheritsFrom} to Actor,
-    Technology{inheritsFrom} to Technology
+	Actor{parentActor} to Actor,
+    Technology{parentTechnology} to Technology
 }
 
-// defining multiple OneToMany relationships with comments
 relationship OneToMany {
-	Actor to Scenario{actorID},
-	Technology to Scenario{technologyID},
-    Vulnerability to Scenario{vulnerabilityID}
+	Actor{actorID} to Scenario{actorFK},
+	Technology{technologyID} to Scenario{technologyFK},
+    Vulnerability{vulnerabilityID} to Scenario{vulnerabilityFK}
+}
+
+relationship ManyToOne {
+	Actor to Environment
 }
 
 relationship ManyToMany {
-	Vulnerability{mitigation} to Mitigation{vulnerability}
+	Vulnerability to Mitigation
 }
+
+service * with serviceClass
+paginate Actor, Technology, Scenario, Vulnerability, Mitigation with pagination
