@@ -42,8 +42,8 @@ describe('Actor routing resolve service', () => {
   describe('resolve', () => {
     it('should return IActor returned by find', () => {
       // GIVEN
-      service.find = jest.fn(actorID => of(new HttpResponse({ body: { actorID } })));
-      mockActivatedRouteSnapshot.params = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
@@ -51,8 +51,8 @@ describe('Actor routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
-      expect(resultActor).toEqual({ actorID: '9fec3727-3421-4967-b213-ba36557ca194' });
+      expect(service.find).toBeCalledWith(123);
+      expect(resultActor).toEqual({ id: 123 });
     });
 
     it('should return new IActor if id is not provided', () => {
@@ -73,7 +73,7 @@ describe('Actor routing resolve service', () => {
     it('should route to 404 page if data not found in server', () => {
       // GIVEN
       jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Actor })));
-      mockActivatedRouteSnapshot.params = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
@@ -81,7 +81,7 @@ describe('Actor routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.find).toBeCalledWith(123);
       expect(resultActor).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

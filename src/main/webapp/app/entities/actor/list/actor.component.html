@@ -3,7 +3,7 @@
     <span jhiTranslate="pragRiskApp.actor.home.title">Actors</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pragRiskApp.actor.home.refreshListLabel">Refresh List</span>
       </button>
@@ -56,52 +56,56 @@
   <div class="table-responsive" id="entities" *ngIf="actors && actors.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.actorID">Actor ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.firstName">First Name</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.lastName">Last Name</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.nickName">Nick Name</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.environMent">Environ Ment</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="firstName">
+            <span jhiTranslate="pragRiskApp.actor.firstName">First Name</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastName">
+            <span jhiTranslate="pragRiskApp.actor.lastName">Last Name</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="nickName">
+            <span jhiTranslate="pragRiskApp.actor.nickName">Nick Name</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <span jhiTranslate="pragRiskApp.actor.description">Description</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="parentActor.id">
+            <span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="group.id">
+            <span jhiTranslate="pragRiskApp.actor.group">Group</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let actor of actors; trackBy: trackActorID" data-cy="entityTable">
+        <tr *ngFor="let actor of actors; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/actor', actor.actorID, 'view']">{{ actor.actorID }}</a>
+            <a [routerLink]="['/actor', actor.id, 'view']">{{ actor.id }}</a>
           </td>
           <td>{{ actor.firstName }}</td>
           <td>{{ actor.lastName }}</td>
           <td>{{ actor.nickName }}</td>
-          <td jhiTranslate="{{ 'pragRiskApp.Environment.' + actor.environMent }}">{{ actor.environMent }}</td>
-          <td>{{ actor.inheritsFrom }}</td>
           <td>{{ actor.description }}</td>
           <td>
-            <div *ngIf="actor.inheritsFrom">
-              <a [routerLink]="['/actor', actor.inheritsFrom?.actorID, 'view']">{{ actor.inheritsFrom?.actorID }}</a>
+            <div *ngIf="actor.parentActor">
+              <a [routerLink]="['/actor', actor.parentActor?.id, 'view']">{{ actor.parentActor?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="actor.group">
+              <a [routerLink]="['/environment', actor.group?.id, 'view']">{{ actor.group?.id }}</a>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/actor', actor.actorID, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
+              <button type="submit" [routerLink]="['/actor', actor.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>
 
-              <button
-                type="submit"
-                [routerLink]="['/actor', actor.actorID, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
+              <button type="submit" [routerLink]="['/actor', actor.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
@@ -115,5 +119,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="actors && actors.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

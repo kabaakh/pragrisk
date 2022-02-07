@@ -10,21 +10,13 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pragRiskApp.scenario.scenarioID">Scenario ID</span></dt>
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
         <dd>
-          <span>{{ scenario.scenarioID }}</span>
+          <span>{{ scenario.id }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.scenario.title">Title</span></dt>
         <dd>
-          <span>{{ scenario.actorID }}</span>
-        </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></dt>
-        <dd>
-          <span>{{ scenario.technologyID }}</span>
-        </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></dt>
-        <dd>
-          <span>{{ scenario.vulnerabilityID }}</span>
+          <span>{{ scenario.title }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.scenario.description">Description</span></dt>
         <dd>
@@ -38,24 +30,26 @@
         <dd>
           <span>{{ scenario.qonsequence }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.scenario.riskValue">Risk Value</span></dt>
         <dd>
-          <div *ngIf="scenario.actorID">
-            <a [routerLink]="['/actor', scenario.actorID?.actorID, 'view']">{{ scenario.actorID?.actorID }}</a>
+          <span>{{ scenario.riskValue }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.scenario.actorFK">Actor FK</span></dt>
+        <dd>
+          <div *ngIf="scenario.actorFK">
+            <a [routerLink]="['/actor', scenario.actorFK?.id, 'view']">{{ scenario.actorFK?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.scenario.technologyFK">Technology FK</span></dt>
         <dd>
-          <div *ngIf="scenario.technologyID">
-            <a [routerLink]="['/technology', scenario.technologyID?.technologyID, 'view']">{{ scenario.technologyID?.technologyID }}</a>
+          <div *ngIf="scenario.technologyFK">
+            <a [routerLink]="['/technology', scenario.technologyFK?.id, 'view']">{{ scenario.technologyFK?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.scenario.vulnerabilityFK">Vulnerability FK</span></dt>
         <dd>
-          <div *ngIf="scenario.vulnerabilityID">
-            <a [routerLink]="['/vulnerability', scenario.vulnerabilityID?.vulnerabilityID, 'view']">{{
-              scenario.vulnerabilityID?.vulnerabilityID
-            }}</a>
+          <div *ngIf="scenario.vulnerabilityFK">
+            <a [routerLink]="['/vulnerability', scenario.vulnerabilityFK?.id, 'view']">{{ scenario.vulnerabilityFK?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -64,7 +58,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/scenario', scenario.scenarioID, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/scenario', scenario.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

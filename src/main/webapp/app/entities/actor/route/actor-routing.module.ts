@@ -11,10 +11,13 @@ const actorRoute: Routes = [
   {
     path: '',
     component: ActorComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':actorID/view',
+    path: ':id/view',
     component: ActorDetailComponent,
     resolve: {
       actor: ActorRoutingResolveService,
@@ -30,7 +33,7 @@ const actorRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':actorID/edit',
+    path: ':id/edit',
     component: ActorUpdateComponent,
     resolve: {
       actor: ActorRoutingResolveService,

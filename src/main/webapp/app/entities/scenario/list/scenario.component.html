@@ -3,7 +3,7 @@
     <span jhiTranslate="pragRiskApp.scenario.home.title">Scenarios</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pragRiskApp.scenario.home.refreshListLabel">Refresh List</span>
       </button>
@@ -56,53 +56,65 @@
   <div class="table-responsive" id="entities" *ngIf="scenarios && scenarios.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.scenarioID">Scenario ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.probability">Probability</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.qonsequence">Qonsequence</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.actorID">Actor ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.technologyID">Technology ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.scenario.vulnerabilityID">Vulnerability ID</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="title">
+            <span jhiTranslate="pragRiskApp.scenario.title">Title</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <span jhiTranslate="pragRiskApp.scenario.description">Description</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="probability">
+            <span jhiTranslate="pragRiskApp.scenario.probability">Probability</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="qonsequence">
+            <span jhiTranslate="pragRiskApp.scenario.qonsequence">Qonsequence</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="riskValue">
+            <span jhiTranslate="pragRiskApp.scenario.riskValue">Risk Value</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="actorFK.id">
+            <span jhiTranslate="pragRiskApp.scenario.actorFK">Actor FK</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="technologyFK.id">
+            <span jhiTranslate="pragRiskApp.scenario.technologyFK">Technology FK</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="vulnerabilityFK.id">
+            <span jhiTranslate="pragRiskApp.scenario.vulnerabilityFK">Vulnerability FK</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let scenario of scenarios; trackBy: trackScenarioID" data-cy="entityTable">
+        <tr *ngFor="let scenario of scenarios; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/scenario', scenario.scenarioID, 'view']">{{ scenario.scenarioID }}</a>
+            <a [routerLink]="['/scenario', scenario.id, 'view']">{{ scenario.id }}</a>
           </td>
-          <td>{{ scenario.actorID }}</td>
-          <td>{{ scenario.technologyID }}</td>
-          <td>{{ scenario.vulnerabilityID }}</td>
+          <td>{{ scenario.title }}</td>
           <td>{{ scenario.description }}</td>
           <td>{{ scenario.probability }}</td>
           <td>{{ scenario.qonsequence }}</td>
+          <td>{{ scenario.riskValue }}</td>
           <td>
-            <div *ngIf="scenario.actorID">
-              <a [routerLink]="['/actor', scenario.actorID?.actorID, 'view']">{{ scenario.actorID?.actorID }}</a>
+            <div *ngIf="scenario.actorFK">
+              <a [routerLink]="['/actor', scenario.actorFK?.id, 'view']">{{ scenario.actorFK?.id }}</a>
             </div>
           </td>
           <td>
-            <div *ngIf="scenario.technologyID">
-              <a [routerLink]="['/technology', scenario.technologyID?.technologyID, 'view']">{{ scenario.technologyID?.technologyID }}</a>
+            <div *ngIf="scenario.technologyFK">
+              <a [routerLink]="['/technology', scenario.technologyFK?.id, 'view']">{{ scenario.technologyFK?.id }}</a>
             </div>
           </td>
           <td>
-            <div *ngIf="scenario.vulnerabilityID">
-              <a [routerLink]="['/vulnerability', scenario.vulnerabilityID?.vulnerabilityID, 'view']">{{
-                scenario.vulnerabilityID?.vulnerabilityID
-              }}</a>
+            <div *ngIf="scenario.vulnerabilityFK">
+              <a [routerLink]="['/vulnerability', scenario.vulnerabilityFK?.id, 'view']">{{ scenario.vulnerabilityFK?.id }}</a>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/scenario', scenario.scenarioID, 'view']"
+                [routerLink]="['/scenario', scenario.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -112,7 +124,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/scenario', scenario.scenarioID, 'edit']"
+                [routerLink]="['/scenario', scenario.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -129,5 +141,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="scenarios && scenarios.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

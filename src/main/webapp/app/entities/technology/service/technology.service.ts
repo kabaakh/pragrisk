@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { Search } from 'app/core/request/request.model';
+import { SearchWithPagination } from 'app/core/request/request.model';
 import { ITechnology, getTechnologyIdentifier } from '../technology.model';
 
 export type EntityResponseType = HttpResponse<ITechnology>;
@@ -23,18 +23,18 @@ export class TechnologyService {
   }
 
   update(technology: ITechnology): Observable<EntityResponseType> {
-    return this.http.put<ITechnology>(`${this.resourceUrl}/${getTechnologyIdentifier(technology) as string}`, technology, {
+    return this.http.put<ITechnology>(`${this.resourceUrl}/${getTechnologyIdentifier(technology) as number}`, technology, {
       observe: 'response',
     });
   }
 
   partialUpdate(technology: ITechnology): Observable<EntityResponseType> {
-    return this.http.patch<ITechnology>(`${this.resourceUrl}/${getTechnologyIdentifier(technology) as string}`, technology, {
+    return this.http.patch<ITechnology>(`${this.resourceUrl}/${getTechnologyIdentifier(technology) as number}`, technology, {
       observe: 'response',
     });
   }
 
-  find(id: string): Observable<EntityResponseType> {
+  find(id: number): Observable<EntityResponseType> {
     return this.http.get<ITechnology>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
@@ -43,11 +43,11 @@ export class TechnologyService {
     return this.http.get<ITechnology[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: string): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req: Search): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ITechnology[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

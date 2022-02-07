@@ -11,7 +11,7 @@
     -->
     <changeSet id="20220207114115-1" author="jhipster">
         <createTable tableName="actor">
-            <column name="actor_id" type="${uuidType}">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="first_name" type="varchar(255)">
@@ -23,17 +23,14 @@
             <column name="nick_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="environ_ment" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="inherits_from" type="${uuidType}">
-                <constraints nullable="true" />
-            </column>
             <column name="description" type="varchar(1024)">
                 <constraints nullable="true" />
             </column>
-            <column name="inherits_from_actor_id" type="${uuidType}">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_actor__inherits_from_actor_id" />
+            <column name="parent_actor_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_actor__parent_actor_id" />
+            </column>
+            <column name="group_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -55,12 +52,10 @@
                   separator=";"
                   tableName="actor"
                   usePreparedStatements="true">
-            <column name="actor_id" type="${uuidType}"/>
+            <column name="id" type="numeric"/>
             <column name="first_name" type="string"/>
             <column name="last_name" type="string"/>
             <column name="nick_name" type="string"/>
-            <column name="environ_ment" type="string"/>
-            <column name="inherits_from" type="${uuidType}"/>
             <column name="description" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

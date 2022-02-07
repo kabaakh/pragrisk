@@ -12,7 +12,7 @@ export class TechnologyRoutingResolveService implements Resolve<ITechnology> {
   constructor(protected service: TechnologyService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ITechnology> | Observable<never> {
-    const id = route.params['technologyID'];
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((technology: HttpResponse<Technology>) => {
