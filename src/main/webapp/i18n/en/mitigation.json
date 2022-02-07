@@ -18,9 +18,11 @@
       "detail": {
         "title": "Mitigation"
       },
-      "vulnerabiltyID": "Vulnerabilty ID",
+      "id": "ID",
       "controlID": "Control ID",
-      "reference": "Reference",
+      "title": "Title",
+      "description": "Description",
+      "frameworkReference": "Framework Reference",
       "type": "Type",
       "status": "Status",
       "vulnerability": "Vulnerability"

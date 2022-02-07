@@ -42,34 +42,34 @@ describe('Technology Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call inheritsFrom query and add missing value', () => {
-      const technology: ITechnology = { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: ITechnology = { technologyID: '33746470-9f53-4489-ada3-c78bba18f050' };
-      technology.inheritsFrom = inheritsFrom;
+    it('Should call parentTechnology query and add missing value', () => {
+      const technology: ITechnology = { id: 456 };
+      const parentTechnology: ITechnology = { id: 22986 };
+      technology.parentTechnology = parentTechnology;
 
-      const inheritsFromCollection: ITechnology[] = [{ technologyID: 'a98630a8-0947-4df4-a91b-8244d498a6ea' }];
-      jest.spyOn(technologyService, 'query').mockReturnValue(of(new HttpResponse({ body: inheritsFromCollection })));
-      const expectedCollection: ITechnology[] = [inheritsFrom, ...inheritsFromCollection];
+      const parentTechnologyCollection: ITechnology[] = [{ id: 22870 }];
+      jest.spyOn(technologyService, 'query').mockReturnValue(of(new HttpResponse({ body: parentTechnologyCollection })));
+      const expectedCollection: ITechnology[] = [parentTechnology, ...parentTechnologyCollection];
       jest.spyOn(technologyService, 'addTechnologyToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ technology });
       comp.ngOnInit();
 
       expect(technologyService.query).toHaveBeenCalled();
-      expect(technologyService.addTechnologyToCollectionIfMissing).toHaveBeenCalledWith(inheritsFromCollection, inheritsFrom);
-      expect(comp.inheritsFromsCollection).toEqual(expectedCollection);
+      expect(technologyService.addTechnologyToCollectionIfMissing).toHaveBeenCalledWith(parentTechnologyCollection, parentTechnology);
+      expect(comp.parentTechnologiesCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
-      const technology: ITechnology = { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const inheritsFrom: ITechnology = { technologyID: 'f8f80981-46e9-4ae6-96a3-13f38e0703d5' };
-      technology.inheritsFrom = inheritsFrom;
+      const technology: ITechnology = { id: 456 };
+      const parentTechnology: ITechnology = { id: 45910 };
+      technology.parentTechnology = parentTechnology;
 
       activatedRoute.data = of({ technology });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(technology));
-      expect(comp.inheritsFromsCollection).toContain(inheritsFrom);
+      expect(comp.parentTechnologiesCollection).toContain(parentTechnology);
     });
   });
 
@@ -77,7 +77,7 @@ describe('Technology Management Update Component', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Technology>>();
-      const technology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const technology = { id: 123 };
       jest.spyOn(technologyService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ technology });
@@ -119,7 +119,7 @@ describe('Technology Management Update Component', () => {
     it('Should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<Technology>>();
-      const technology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      const technology = { id: 123 };
       jest.spyOn(technologyService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ technology });
@@ -138,11 +138,11 @@ describe('Technology Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
-    describe('trackTechnologyByTechnologyID', () => {
+    describe('trackTechnologyById', () => {
       it('Should return tracked Technology primary key', () => {
-        const entity = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const trackResult = comp.trackTechnologyByTechnologyID(0, entity);
-        expect(trackResult).toEqual(entity.technologyID);
+        const entity = { id: 123 };
+        const trackResult = comp.trackTechnologyById(0, entity);
+        expect(trackResult).toEqual(entity.id);
       });
     });
   });

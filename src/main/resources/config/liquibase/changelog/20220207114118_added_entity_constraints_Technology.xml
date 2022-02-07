@@ -8,10 +8,10 @@
     -->
     <changeSet id="20220207114118-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="inherits_from_technology_id"
+        <addForeignKeyConstraint baseColumnNames="parent_technology_id"
                                  baseTableName="technology"
-                                 constraintName="fk_technology__inherits_from_id"
-                                 referencedColumnNames="technology_id"
+                                 constraintName="fk_technology__parent_technology_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="technology"/>
     </changeSet>
 </databaseChangeLog>

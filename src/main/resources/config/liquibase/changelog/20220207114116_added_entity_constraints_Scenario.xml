@@ -8,22 +8,22 @@
     -->
     <changeSet id="20220207114116-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="actorid_actor_id"
+        <addForeignKeyConstraint baseColumnNames="actorfk_id"
                                  baseTableName="scenario"
-                                 constraintName="fk_scenario__actorid_id"
-                                 referencedColumnNames="actor_id"
+                                 constraintName="fk_scenario__actorfk_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="actor"/>
 
-        <addForeignKeyConstraint baseColumnNames="technologyid_technology_id"
+        <addForeignKeyConstraint baseColumnNames="technologyfk_id"
                                  baseTableName="scenario"
-                                 constraintName="fk_scenario__technologyid_id"
-                                 referencedColumnNames="technology_id"
+                                 constraintName="fk_scenario__technologyfk_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="technology"/>
 
-        <addForeignKeyConstraint baseColumnNames="vulnerabilityid_vulnerability_id"
+        <addForeignKeyConstraint baseColumnNames="vulnerabilityfk_id"
                                  baseTableName="scenario"
-                                 constraintName="fk_scenario__vulnerabilityid_id"
-                                 referencedColumnNames="vulnerability_id"
+                                 constraintName="fk_scenario__vulnerabilityfk_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="vulnerability"/>
     </changeSet>
 </databaseChangeLog>

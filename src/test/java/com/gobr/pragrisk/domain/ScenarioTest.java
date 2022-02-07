@@ -3,7 +3,6 @@ package com.gobr.pragrisk.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gobr.pragrisk.web.rest.TestUtil;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class ScenarioTest {
@@ -12,13 +11,13 @@ class ScenarioTest {
     void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Scenario.class);
         Scenario scenario1 = new Scenario();
-        scenario1.setScenarioID(UUID.randomUUID());
+        scenario1.setId(1L);
         Scenario scenario2 = new Scenario();
-        scenario2.setScenarioID(scenario1.getScenarioID());
+        scenario2.setId(scenario1.getId());
         assertThat(scenario1).isEqualTo(scenario2);
-        scenario2.setScenarioID(UUID.randomUUID());
+        scenario2.setId(2L);
         assertThat(scenario1).isNotEqualTo(scenario2);
-        scenario1.setScenarioID(null);
+        scenario1.setId(null);
         assertThat(scenario1).isNotEqualTo(scenario2);
     }
 }

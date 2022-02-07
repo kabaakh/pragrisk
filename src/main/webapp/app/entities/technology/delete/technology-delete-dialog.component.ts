@@ -16,7 +16,7 @@ export class TechnologyDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: string): void {
+  confirmDelete(id: number): void {
     this.technologyService.delete(id).subscribe(() => {
       this.activeModal.close('deleted');
     });
