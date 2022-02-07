@@ -1,0 +1,94 @@
+
+entity Actor {
+	@id actorID UUID required unique,
+	firstName String required,
+    lastName String required,
+    nickName String required,
+    environMent Environment required,
+    inheritsFrom UUID,
+    description String maxlength(1024)
+}
+
+enum Environment {
+	KOM (Kommune),
+    KS (KS),
+    UV (Uvedkommende),
+    LEV ("Leverandør")
+}
+
+entity Scenario {
+	@id scenarioID UUID required,
+    actorID UUID required,
+    technologyID UUID required,
+    vulnerabilityID UUID required,
+    description String maxlength(1024)
+    probability BigDecimal,
+	qonsequence BigDecimal
+}
+
+entity Vulnerability {
+	@id vulnerabilityID UUID required unique,
+	name String required,
+	cweReference String
+}
+
+entity Technology {
+	@id technologyID UUID required unique,
+    name String required,
+    category TechCategory required,
+    description String maxlength(1024),
+    inheritsFrom UUID,
+    techStackType TechStack,
+}
+
+enum TechCategory {
+    FAG (Fagsystem),
+    FEL (Fellestjeneste),
+    KOM (Komponent)
+}
+
+enum TechStack {
+	JAVA (Java),
+    NET (".NET"),
+    PHP (PHP)
+}
+
+entity Mitigation {
+	@id vulnerabiltyID UUID required,
+    controlID String required,
+    reference String,
+    type MitigationType required,
+    status MitigationStatus required
+}
+
+enum MitigationType {
+	PREV (Preventive),
+    DETECT (Detective),
+    CORR (Corrective),
+    DETER (Deterrent)
+}
+
+enum MitigationStatus {
+	MISS ("Not performed"),
+    ADHOC ("Performed informally"),
+    REPT ("Planned & tracked"),
+    DEF ("Well defined"),
+    MEAS ("Quantitatively controlled"),
+    CONT ("Continuously improved")
+}
+
+relationship OneToOne {
+	Actor{inheritsFrom} to Actor,
+    Technology{inheritsFrom} to Technology
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Actor to Scenario{actorID},
+	Technology to Scenario{technologyID},
+    Vulnerability to Scenario{vulnerabilityID}
+}
+
+relationship ManyToMany {
+	Vulnerability{mitigation} to Mitigation{vulnerability}
+}
