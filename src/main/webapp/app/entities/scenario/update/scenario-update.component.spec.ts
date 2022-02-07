@@ -56,12 +56,12 @@ describe('Scenario Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Actor query and add missing value', () => {
       const scenario: IScenario = { scenarioID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const actorID: IActor = { actorID: '1ce9e107-a500-4f35-ae16-81f9ecb67b7b' };
-      scenario.actorID = actorID;
+      const actorFK: IActor = { actorID: '1ce9e107-a500-4f35-ae16-81f9ecb67b7b' };
+      scenario.actorFK = actorFK;
 
       const actorCollection: IActor[] = [{ actorID: '5e2b736a-7694-42cc-b866-7661aa86b5d0' }];
       jest.spyOn(actorService, 'query').mockReturnValue(of(new HttpResponse({ body: actorCollection })));
-      const additionalActors = [actorID];
+      const additionalActors = [actorFK];
       const expectedCollection: IActor[] = [...additionalActors, ...actorCollection];
       jest.spyOn(actorService, 'addActorToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -75,12 +75,12 @@ describe('Scenario Management Update Component', () => {
 
     it('Should call Technology query and add missing value', () => {
       const scenario: IScenario = { scenarioID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const technologyID: ITechnology = { technologyID: '523512eb-fd26-47ea-9b23-0a8246de7979' };
-      scenario.technologyID = technologyID;
+      const technologyFK: ITechnology = { technologyID: '523512eb-fd26-47ea-9b23-0a8246de7979' };
+      scenario.technologyFK = technologyFK;
 
       const technologyCollection: ITechnology[] = [{ technologyID: '2f5f80f8-3355-4b98-baad-243b842a7228' }];
       jest.spyOn(technologyService, 'query').mockReturnValue(of(new HttpResponse({ body: technologyCollection })));
-      const additionalTechnologies = [technologyID];
+      const additionalTechnologies = [technologyFK];
       const expectedCollection: ITechnology[] = [...additionalTechnologies, ...technologyCollection];
       jest.spyOn(technologyService, 'addTechnologyToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -94,12 +94,12 @@ describe('Scenario Management Update Component', () => {
 
     it('Should call Vulnerability query and add missing value', () => {
       const scenario: IScenario = { scenarioID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const vulnerabilityID: IVulnerability = { vulnerabilityID: '82f8bcb9-5a69-4228-b720-928fb578b47b' };
-      scenario.vulnerabilityID = vulnerabilityID;
+      const vulnerabilityFK: IVulnerability = { vulnerabilityID: '82f8bcb9-5a69-4228-b720-928fb578b47b' };
+      scenario.vulnerabilityFK = vulnerabilityFK;
 
       const vulnerabilityCollection: IVulnerability[] = [{ vulnerabilityID: 'eee503fa-6942-4b13-b7ab-d5afe0aad546' }];
       jest.spyOn(vulnerabilityService, 'query').mockReturnValue(of(new HttpResponse({ body: vulnerabilityCollection })));
-      const additionalVulnerabilities = [vulnerabilityID];
+      const additionalVulnerabilities = [vulnerabilityFK];
       const expectedCollection: IVulnerability[] = [...additionalVulnerabilities, ...vulnerabilityCollection];
       jest.spyOn(vulnerabilityService, 'addVulnerabilityToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -116,20 +116,20 @@ describe('Scenario Management Update Component', () => {
 
     it('Should update editForm', () => {
       const scenario: IScenario = { scenarioID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
-      const actorID: IActor = { actorID: 'b0120454-2542-4415-a0c7-6acff86b0e97' };
-      scenario.actorID = actorID;
-      const technologyID: ITechnology = { technologyID: '5a99f1f2-0629-4145-8065-e2ef410aeb1c' };
-      scenario.technologyID = technologyID;
-      const vulnerabilityID: IVulnerability = { vulnerabilityID: 'a64e48c0-7686-425d-813e-53a0a289a37e' };
-      scenario.vulnerabilityID = vulnerabilityID;
+      const actorFK: IActor = { actorID: 'b0120454-2542-4415-a0c7-6acff86b0e97' };
+      scenario.actorFK = actorFK;
+      const technologyFK: ITechnology = { technologyID: '5a99f1f2-0629-4145-8065-e2ef410aeb1c' };
+      scenario.technologyFK = technologyFK;
+      const vulnerabilityFK: IVulnerability = { vulnerabilityID: 'a64e48c0-7686-425d-813e-53a0a289a37e' };
+      scenario.vulnerabilityFK = vulnerabilityFK;
 
       activatedRoute.data = of({ scenario });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(scenario));
-      expect(comp.actorsSharedCollection).toContain(actorID);
-      expect(comp.technologiesSharedCollection).toContain(technologyID);
-      expect(comp.vulnerabilitiesSharedCollection).toContain(vulnerabilityID);
+      expect(comp.actorsSharedCollection).toContain(actorFK);
+      expect(comp.technologiesSharedCollection).toContain(technologyFK);
+      expect(comp.vulnerabilitiesSharedCollection).toContain(vulnerabilityFK);
     });
   });
 

@@ -22,11 +22,11 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "nickName": "Nick Name",
-      "environMent": "Environ Ment",
-      "inheritsFrom": "Inherits From",
+      "environment": "Environment",
       "description": "Description",
-      "inheritsFrom": "Inherits From",
-      "scenario": "Scenario"
+      "parentActor": "Parent Actor",
+      "actorID": "Actor ID",
+      "environment": "Environment"
     }
   }
 }

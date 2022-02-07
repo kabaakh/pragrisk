@@ -6,9 +6,9 @@
   "entityTableName": "mitigation",
   "fields": [
     {
-      "fieldName": "vulnerabiltyID",
+      "fieldName": "mitigationID",
       "fieldType": "UUID",
-      "fieldValidateRules": ["required"],
+      "fieldValidateRules": ["required", "unique"],
       "options": {
         "id": true
       }
@@ -26,19 +26,19 @@
       "fieldName": "type",
       "fieldType": "MitigationType",
       "fieldValidateRules": ["required"],
-      "fieldValues": "PREV (Preventive),DETECT (Detective),CORR (Corrective),DETER (Deterrent)"
+      "fieldValues": "PREVENTIVE,DETECTIVE,CORRECTIVE,DETERRING"
     },
     {
       "fieldName": "status",
       "fieldType": "MitigationStatus",
       "fieldValidateRules": ["required"],
-      "fieldValues": "MISS (Not performed),ADHOC (Performed informally),REPT (Planned & tracked),DEF (Well defined),MEAS (Quantitatively controlled),CONT (Continuously improved)"
+      "fieldValues": "NOT_PERFORMED,AD_HOC,PLANNED_AND_TRACKED,WELL_DEFINED,QUANTITATIVELY_CONTROLLED,CONTINUOUSLY_IMPROVED"
     }
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Mitigation",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -49,5 +49,5 @@
       "relationshipType": "many-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

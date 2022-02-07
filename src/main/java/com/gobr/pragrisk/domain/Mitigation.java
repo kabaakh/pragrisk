@@ -26,8 +26,8 @@ public class Mitigation implements Serializable {
     @NotNull
     @Id
     @GeneratedValue
-    @Column(name = "vulnerabilty_id", nullable = false)
-    private UUID vulnerabiltyID;
+    @Column(name = "mitigation_id", nullable = false, unique = true)
+    private UUID mitigationID;
 
     @NotNull
     @Column(name = "control_id", nullable = false)
@@ -48,22 +48,22 @@ public class Mitigation implements Serializable {
 
     @ManyToMany(mappedBy = "mitigations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "scenarios", "mitigations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "vulnerabilityIDS", "mitigations" }, allowSetters = true)
     private Set<Vulnerability> vulnerabilities = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public UUID getVulnerabiltyID() {
-        return this.vulnerabiltyID;
+    public UUID getMitigationID() {
+        return this.mitigationID;
     }
 
-    public Mitigation vulnerabiltyID(UUID vulnerabiltyID) {
-        this.setVulnerabiltyID(vulnerabiltyID);
+    public Mitigation mitigationID(UUID mitigationID) {
+        this.setMitigationID(mitigationID);
         return this;
     }
 
-    public void setVulnerabiltyID(UUID vulnerabiltyID) {
-        this.vulnerabiltyID = vulnerabiltyID;
+    public void setMitigationID(UUID mitigationID) {
+        this.mitigationID = mitigationID;
     }
 
     public String getControlID() {
@@ -159,7 +159,7 @@ public class Mitigation implements Serializable {
         if (!(o instanceof Mitigation)) {
             return false;
         }
-        return vulnerabiltyID != null && vulnerabiltyID.equals(((Mitigation) o).vulnerabiltyID);
+        return mitigationID != null && mitigationID.equals(((Mitigation) o).mitigationID);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class Mitigation implements Serializable {
     @Override
     public String toString() {
         return "Mitigation{" +
-            "vulnerabiltyID=" + getVulnerabiltyID() +
+            "mitigationID=" + getMitigationID() +
             ", controlID='" + getControlID() + "'" +
             ", reference='" + getReference() + "'" +
             ", type='" + getType() + "'" +

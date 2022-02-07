@@ -20,7 +20,7 @@ export class MitigationUpdateComponent implements OnInit {
   mitigationStatusValues = Object.keys(MitigationStatus);
 
   editForm = this.fb.group({
-    vulnerabiltyID: [null, [Validators.required]],
+    mitigationID: [null, [Validators.required]],
     controlID: [null, [Validators.required]],
     reference: [],
     type: [null, [Validators.required]],
@@ -42,7 +42,7 @@ export class MitigationUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const mitigation = this.createFromForm();
-    if (mitigation.vulnerabiltyID !== undefined) {
+    if (mitigation.mitigationID !== undefined) {
       this.subscribeToSaveResponse(this.mitigationService.update(mitigation));
     } else {
       this.subscribeToSaveResponse(this.mitigationService.create(mitigation));
@@ -70,7 +70,7 @@ export class MitigationUpdateComponent implements OnInit {
 
   protected updateForm(mitigation: IMitigation): void {
     this.editForm.patchValue({
-      vulnerabiltyID: mitigation.vulnerabiltyID,
+      mitigationID: mitigation.mitigationID,
       controlID: mitigation.controlID,
       reference: mitigation.reference,
       type: mitigation.type,
@@ -81,7 +81,7 @@ export class MitigationUpdateComponent implements OnInit {
   protected createFromForm(): IMitigation {
     return {
       ...new Mitigation(),
-      vulnerabiltyID: this.editForm.get(['vulnerabiltyID'])!.value,
+      mitigationID: this.editForm.get(['mitigationID'])!.value,
       controlID: this.editForm.get(['controlID'])!.value,
       reference: this.editForm.get(['reference'])!.value,
       type: this.editForm.get(['type'])!.value,

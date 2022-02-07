@@ -22,11 +22,11 @@ describe('Mitigation Service', () => {
     httpMock = TestBed.inject(HttpTestingController);
 
     elemDefault = {
-      vulnerabiltyID: 'AAAAAAA',
+      mitigationID: 'AAAAAAA',
       controlID: 'AAAAAAA',
       reference: 'AAAAAAA',
-      type: MitigationType.PREV,
-      status: MitigationStatus.MISS,
+      type: MitigationType.PREVENTIVE,
+      status: MitigationStatus.NOT_PERFORMED,
     };
   });
 
@@ -61,7 +61,7 @@ describe('Mitigation Service', () => {
     it('should update a Mitigation', () => {
       const returnedFromService = Object.assign(
         {
-          vulnerabiltyID: 'BBBBBB',
+          mitigationID: 'BBBBBB',
           controlID: 'BBBBBB',
           reference: 'BBBBBB',
           type: 'BBBBBB',
@@ -102,7 +102,7 @@ describe('Mitigation Service', () => {
     it('should return a list of Mitigation', () => {
       const returnedFromService = Object.assign(
         {
-          vulnerabiltyID: 'BBBBBB',
+          mitigationID: 'BBBBBB',
           controlID: 'BBBBBB',
           reference: 'BBBBBB',
           type: 'BBBBBB',
@@ -131,27 +131,27 @@ describe('Mitigation Service', () => {
 
     describe('addMitigationToCollectionIfMissing', () => {
       it('should add a Mitigation to an empty array', () => {
-        const mitigation: IMitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const mitigation: IMitigation = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
         expectedResult = service.addMitigationToCollectionIfMissing([], mitigation);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(mitigation);
       });
 
       it('should not add a Mitigation to an array that contains it', () => {
-        const mitigation: IMitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const mitigation: IMitigation = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
         const mitigationCollection: IMitigation[] = [
           {
             ...mitigation,
           },
-          { vulnerabiltyID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
+          { mitigationID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
         ];
         expectedResult = service.addMitigationToCollectionIfMissing(mitigationCollection, mitigation);
         expect(expectedResult).toHaveLength(2);
       });
 
       it("should add a Mitigation to an array that doesn't contain it", () => {
-        const mitigation: IMitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const mitigationCollection: IMitigation[] = [{ vulnerabiltyID: '1361f429-3817-4123-8ee3-fdf8943310b2' }];
+        const mitigation: IMitigation = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const mitigationCollection: IMitigation[] = [{ mitigationID: '1361f429-3817-4123-8ee3-fdf8943310b2' }];
         expectedResult = service.addMitigationToCollectionIfMissing(mitigationCollection, mitigation);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(mitigation);
@@ -159,18 +159,18 @@ describe('Mitigation Service', () => {
 
       it('should add only unique Mitigation to an array', () => {
         const mitigationArray: IMitigation[] = [
-          { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' },
-          { vulnerabiltyID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { vulnerabiltyID: 'd0a1720e-f5a9-4aa2-ba05-3b2183b1743b' },
+          { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' },
+          { mitigationID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
+          { mitigationID: 'd0a1720e-f5a9-4aa2-ba05-3b2183b1743b' },
         ];
-        const mitigationCollection: IMitigation[] = [{ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const mitigationCollection: IMitigation[] = [{ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' }];
         expectedResult = service.addMitigationToCollectionIfMissing(mitigationCollection, ...mitigationArray);
         expect(expectedResult).toHaveLength(3);
       });
 
       it('should accept varargs', () => {
-        const mitigation: IMitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const mitigation2: IMitigation = { vulnerabiltyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
+        const mitigation: IMitigation = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const mitigation2: IMitigation = { mitigationID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
         expectedResult = service.addMitigationToCollectionIfMissing([], mitigation, mitigation2);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(mitigation);
@@ -178,14 +178,14 @@ describe('Mitigation Service', () => {
       });
 
       it('should accept null and undefined values', () => {
-        const mitigation: IMitigation = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const mitigation: IMitigation = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
         expectedResult = service.addMitigationToCollectionIfMissing([], null, mitigation, undefined);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(mitigation);
       });
 
       it('should return initial array if no Mitigation is added', () => {
-        const mitigationCollection: IMitigation[] = [{ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const mitigationCollection: IMitigation[] = [{ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' }];
         expectedResult = service.addMitigationToCollectionIfMissing(mitigationCollection, undefined, null);
         expect(expectedResult).toEqual(mitigationCollection);
       });

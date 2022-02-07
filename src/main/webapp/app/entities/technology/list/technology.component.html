@@ -3,7 +3,7 @@
     <span jhiTranslate="pragRiskApp.technology.home.title">Technologies</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pragRiskApp.technology.home.refreshListLabel">Refresh List</span>
       </button>
@@ -56,14 +56,28 @@
   <div class="table-responsive" id="entities" *ngIf="technologies && technologies.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.technologyID">Technology ID</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.category">Category</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span></th>
-          <th scope="col"><span jhiTranslate="pragRiskApp.technology.inheritsFrom">Inherits From</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="technologyID">
+            <span jhiTranslate="pragRiskApp.technology.technologyID">Technology ID</span>
+            <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <span jhiTranslate="pragRiskApp.technology.name">Name</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="category">
+            <span jhiTranslate="pragRiskApp.technology.category">Category</span> <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <span jhiTranslate="pragRiskApp.technology.description">Description</span>
+            <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="techStackType">
+            <span jhiTranslate="pragRiskApp.technology.techStackType">Tech Stack Type</span>
+            <fa-icon *ngIf="!currentSearch" icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="parentTechnology.technologyID">
+            <span jhiTranslate="pragRiskApp.technology.parentTechnology">Parent Technology</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -75,12 +89,11 @@
           <td>{{ technology.name }}</td>
           <td jhiTranslate="{{ 'pragRiskApp.TechCategory.' + technology.category }}">{{ technology.category }}</td>
           <td>{{ technology.description }}</td>
-          <td>{{ technology.inheritsFrom }}</td>
           <td jhiTranslate="{{ 'pragRiskApp.TechStack.' + technology.techStackType }}">{{ technology.techStackType }}</td>
           <td>
-            <div *ngIf="technology.inheritsFrom">
-              <a [routerLink]="['/technology', technology.inheritsFrom?.technologyID, 'view']">{{
-                technology.inheritsFrom?.technologyID
+            <div *ngIf="technology.parentTechnology">
+              <a [routerLink]="['/technology', technology.parentTechnology?.technologyID, 'view']">{{
+                technology.parentTechnology?.technologyID
               }}</a>
             </div>
           </td>
@@ -115,5 +128,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="technologies && technologies.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

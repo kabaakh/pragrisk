@@ -8,13 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.gobr.pragrisk.IntegrationTest;
 import com.gobr.pragrisk.domain.Actor;
-import com.gobr.pragrisk.domain.enumeration.Environment;
 import com.gobr.pragrisk.repository.ActorRepository;
 import com.gobr.pragrisk.repository.search.ActorSearchRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +21,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,11 +46,8 @@ class ActorResourceIT {
     private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
 
-    private static final Environment DEFAULT_ENVIRON_MENT = Environment.KOM;
-    private static final Environment UPDATED_ENVIRON_MENT = Environment.KS;
-
-    private static final UUID DEFAULT_INHERITS_FROM = UUID.randomUUID();
-    private static final UUID UPDATED_INHERITS_FROM = UUID.randomUUID();
+    private static final String DEFAULT_ENVIRONMENT = "AAAAAAAAAA";
+    private static final String UPDATED_ENVIRONMENT = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -89,8 +86,7 @@ class ActorResourceIT {
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .nickName(DEFAULT_NICK_NAME)
-            .environMent(DEFAULT_ENVIRON_MENT)
-            .inheritsFrom(DEFAULT_INHERITS_FROM)
+            .environment(DEFAULT_ENVIRONMENT)
             .description(DEFAULT_DESCRIPTION);
         return actor;
     }
@@ -106,8 +102,7 @@ class ActorResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
         return actor;
     }
@@ -133,8 +128,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(DEFAULT_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(DEFAULT_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(DEFAULT_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -215,10 +209,10 @@ class ActorResourceIT {
 
     @Test
     @Transactional
-    void checkEnvironMentIsRequired() throws Exception {
+    void checkEnvironmentIsRequired() throws Exception {
         int databaseSizeBeforeTest = actorRepository.findAll().size();
         // set the field null
-        actor.setEnvironMent(null);
+        actor.setEnvironment(null);
 
         // Create the Actor, which fails.
 
@@ -245,8 +239,7 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
-            .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
+            .andExpect(jsonPath("$.[*].environment").value(hasItem(DEFAULT_ENVIRONMENT)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
@@ -265,8 +258,7 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME))
-            .andExpect(jsonPath("$.environMent").value(DEFAULT_ENVIRON_MENT.toString()))
-            .andExpect(jsonPath("$.inheritsFrom").value(DEFAULT_INHERITS_FROM.toString()))
+            .andExpect(jsonPath("$.environment").value(DEFAULT_ENVIRONMENT))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
@@ -293,8 +285,7 @@ class ActorResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -312,8 +303,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 
         // Validate the Actor in Elasticsearch
@@ -400,8 +390,7 @@ class ActorResourceIT {
         partialUpdatedActor
             .firstName(UPDATED_FIRST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -419,8 +408,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -440,8 +428,7 @@ class ActorResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .nickName(UPDATED_NICK_NAME)
-            .environMent(UPDATED_ENVIRON_MENT)
-            .inheritsFrom(UPDATED_INHERITS_FROM)
+            .environment(UPDATED_ENVIRONMENT)
             .description(UPDATED_DESCRIPTION);
 
         restActorMockMvc
@@ -459,8 +446,7 @@ class ActorResourceIT {
         assertThat(testActor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testActor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testActor.getNickName()).isEqualTo(UPDATED_NICK_NAME);
-        assertThat(testActor.getEnvironMent()).isEqualTo(UPDATED_ENVIRON_MENT);
-        assertThat(testActor.getInheritsFrom()).isEqualTo(UPDATED_INHERITS_FROM);
+        assertThat(testActor.getEnvironment()).isEqualTo(UPDATED_ENVIRONMENT);
         assertThat(testActor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
@@ -556,7 +542,8 @@ class ActorResourceIT {
         // Configure the mock search repository
         // Initialize the database
         actorRepository.saveAndFlush(actor);
-        when(mockActorSearchRepository.search("id:" + actor.getActorID())).thenReturn(Stream.of(actor));
+        when(mockActorSearchRepository.search("id:" + actor.getActorID(), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(actor), PageRequest.of(0, 1), 1));
 
         // Search the actor
         restActorMockMvc
@@ -567,8 +554,7 @@ class ActorResourceIT {
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME)))
-            .andExpect(jsonPath("$.[*].environMent").value(hasItem(DEFAULT_ENVIRON_MENT.toString())))
-            .andExpect(jsonPath("$.[*].inheritsFrom").value(hasItem(DEFAULT_INHERITS_FROM.toString())))
+            .andExpect(jsonPath("$.[*].environment").value(hasItem(DEFAULT_ENVIRONMENT)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 }

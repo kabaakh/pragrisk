@@ -26,22 +26,24 @@
         <dd>
           <span>{{ actor.nickName }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.environMent">Environ Ment</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.actor.environment">Environment</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'pragRiskApp.Environment.' + actor.environMent }}">{{ actor.environMent }}</span>
-        </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
-        <dd>
-          <span>{{ actor.inheritsFrom }}</span>
+          <span>{{ actor.environment }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.actor.description">Description</span></dt>
         <dd>
           <span>{{ actor.description }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></dt>
         <dd>
-          <div *ngIf="actor.inheritsFrom">
-            <a [routerLink]="['/actor', actor.inheritsFrom?.actorID, 'view']">{{ actor.inheritsFrom?.actorID }}</a>
+          <div *ngIf="actor.parentActor">
+            <a [routerLink]="['/actor', actor.parentActor?.actorID, 'view']">{{ actor.parentActor?.actorID }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.environment">Environment</span></dt>
+        <dd>
+          <div *ngIf="actor.environment">
+            <a [routerLink]="['/environment', actor.environment?.id, 'view']">{{ actor.environment?.id }}</a>
           </div>
         </dd>
       </dl>

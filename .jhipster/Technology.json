@@ -22,7 +22,7 @@
       "fieldName": "category",
       "fieldType": "TechCategory",
       "fieldValidateRules": ["required"],
-      "fieldValues": "FAG (Fagsystem),FEL (Fellestjeneste),KOM (Komponent)"
+      "fieldValues": "APPLICATION,SERVICE,COMPONENT"
     },
     {
       "fieldName": "description",
@@ -31,34 +31,31 @@
       "fieldValidateRulesMaxlength": "1024"
     },
     {
-      "fieldName": "inheritsFrom",
-      "fieldType": "UUID"
-    },
-    {
       "fieldName": "techStackType",
       "fieldType": "TechStack",
-      "fieldValues": "JAVA (Java),NET (.NET),PHP (PHP)"
+      "fieldValidateRules": ["required"],
+      "fieldValues": "JAVA,NET,PHP"
     }
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Technology",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "technology",
       "otherEntityRelationshipName": "technology",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentTechnology",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "technologyID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "technologyFK",
+      "relationshipName": "technologyID",
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

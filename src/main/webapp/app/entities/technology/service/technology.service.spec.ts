@@ -24,9 +24,8 @@ describe('Technology Service', () => {
     elemDefault = {
       technologyID: 'AAAAAAA',
       name: 'AAAAAAA',
-      category: TechCategory.FAG,
+      category: TechCategory.APPLICATION,
       description: 'AAAAAAA',
-      inheritsFrom: 'AAAAAAA',
       techStackType: TechStack.JAVA,
     };
   });
@@ -66,7 +65,6 @@ describe('Technology Service', () => {
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault
@@ -85,7 +83,6 @@ describe('Technology Service', () => {
       const patchObject = Object.assign(
         {
           category: 'BBBBBB',
-          techStackType: 'BBBBBB',
         },
         new Technology()
       );
@@ -108,7 +105,6 @@ describe('Technology Service', () => {
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault
@@ -164,7 +160,7 @@ describe('Technology Service', () => {
         const technologyArray: ITechnology[] = [
           { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' },
           { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { technologyID: '4858b994-988f-4fe1-8802-9b0a96bc5508' },
+          { technologyID: 'e4858b99-4988-4ffe-9880-29b0a96bc550' },
         ];
         const technologyCollection: ITechnology[] = [{ technologyID: '9fec3727-3421-4967-b213-ba36557ca194' }];
         expectedResult = service.addTechnologyToCollectionIfMissing(technologyCollection, ...technologyArray);

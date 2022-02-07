@@ -1,11 +1,11 @@
-vulnerabilty_id;control_id;reference;type;status
-0e1c75ea-c29a-46fc-926b-3ac7984e424f;Shirt Strategist;fuchsia;PREV;MEAS
-bc15c0d6-4e98-40ce-9deb-650d7cfc6edd;Chief;back-end protocol navigating;CORR;ADHOC
-93ece897-bbce-4216-a9d4-d16d550a4dca;Quality visionary;Shirt access;CORR;MISS
-7c23d600-9259-4e26-8409-6189cfad28f1;Bike;Bedfordshire;DETECT;DEF
-57b05963-ac90-4807-9a79-68aebb0ce8ad;Dynamic Front-line Cove;Hat holistic;CORR;MISS
-ae0e040a-2443-434d-85d8-d3059265c381;seize;Program;CORR;REPT
-65f3e3c8-ff17-44ba-8ca1-0c8bb1a91903;Chips violet;Computer;PREV;MEAS
-17071cae-30ff-4b1c-899f-ad97e8548377;Markets Intelligent;Implementation adapter;CORR;ADHOC
-aae7aa19-aa6b-4145-9134-15fd89d2eb55;Denar Borders bus;enterprise;DETECT;REPT
-3809bf8d-dece-47bf-a430-d9d7fbad3969;scalable;Garden;DETECT;ADHOC
+mitigation_id;control_id;reference;type;status
+0e1c75ea-c29a-46fc-926b-3ac7984e424f;Shirt Strategist;fuchsia;PREVENTIVE;QUANTITATIVELY_CONTROLLED
+bc15c0d6-4e98-40ce-9deb-650d7cfc6edd;Chief;back-end protocol navigating;CORRECTIVE;AD_HOC
+93ece897-bbce-4216-a9d4-d16d550a4dca;Quality visionary;Shirt access;CORRECTIVE;NOT_PERFORMED
+7c23d600-9259-4e26-8409-6189cfad28f1;Bike;Bedfordshire;DETECTIVE;WELL_DEFINED
+57b05963-ac90-4807-9a79-68aebb0ce8ad;Dynamic Front-line Cove;Hat holistic;CORRECTIVE;NOT_PERFORMED
+ae0e040a-2443-434d-85d8-d3059265c381;seize;Program;CORRECTIVE;PLANNED_AND_TRACKED
+65f3e3c8-ff17-44ba-8ca1-0c8bb1a91903;Chips violet;Computer;PREVENTIVE;QUANTITATIVELY_CONTROLLED
+17071cae-30ff-4b1c-899f-ad97e8548377;Markets Intelligent;Implementation adapter;CORRECTIVE;AD_HOC
+aae7aa19-aa6b-4145-9134-15fd89d2eb55;Denar Borders bus;enterprise;DETECTIVE;PLANNED_AND_TRACKED
+3809bf8d-dece-47bf-a430-d9d7fbad3969;scalable;Garden;DETECTIVE;AD_HOC
