@@ -16,7 +16,7 @@ export class MitigationDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: string): void {
+  confirmDelete(id: number): void {
     this.mitigationService.delete(id).subscribe(() => {
       this.activeModal.close('deleted');
     });

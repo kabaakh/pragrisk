@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { Search } from 'app/core/request/request.model';
+import { SearchWithPagination } from 'app/core/request/request.model';
 import { IScenario, getScenarioIdentifier } from '../scenario.model';
 
 export type EntityResponseType = HttpResponse<IScenario>;
@@ -23,16 +23,16 @@ export class ScenarioService {
   }
 
   update(scenario: IScenario): Observable<EntityResponseType> {
-    return this.http.put<IScenario>(`${this.resourceUrl}/${getScenarioIdentifier(scenario) as string}`, scenario, { observe: 'response' });
+    return this.http.put<IScenario>(`${this.resourceUrl}/${getScenarioIdentifier(scenario) as number}`, scenario, { observe: 'response' });
   }
 
   partialUpdate(scenario: IScenario): Observable<EntityResponseType> {
-    return this.http.patch<IScenario>(`${this.resourceUrl}/${getScenarioIdentifier(scenario) as string}`, scenario, {
+    return this.http.patch<IScenario>(`${this.resourceUrl}/${getScenarioIdentifier(scenario) as number}`, scenario, {
       observe: 'response',
     });
   }
 
-  find(id: string): Observable<EntityResponseType> {
+  find(id: number): Observable<EntityResponseType> {
     return this.http.get<IScenario>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
@@ -41,11 +41,11 @@ export class ScenarioService {
     return this.http.get<IScenario[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: string): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req: Search): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IScenario[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

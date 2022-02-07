@@ -7,7 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 
 import { IActor, Actor } from '../actor.model';
 import { ActorService } from '../service/actor.service';
-import { Environment } from 'app/entities/enumerations/environment.model';
+import { IEnvironment } from 'app/entities/environment/environment.model';
+import { EnvironmentService } from 'app/entities/environment/service/environment.service';
 
 @Component({
   selector: 'jhi-actor-update',
@@ -15,22 +16,27 @@ import { Environment } from 'app/entities/enumerations/environment.model';
 })
 export class ActorUpdateComponent implements OnInit {
   isSaving = false;
-  environmentValues = Object.keys(Environment);
 
-  inheritsFromsCollection: IActor[] = [];
+  parentActorsCollection: IActor[] = [];
+  environmentsSharedCollection: IEnvironment[] = [];
 
   editForm = this.fb.group({
-    actorID: [null, [Validators.required]],
+    id: [],
     firstName: [null, [Validators.required]],
     lastName: [null, [Validators.required]],
     nickName: [null, [Validators.required]],
-    environMent: [null, [Validators.required]],
-    inheritsFrom: [],
+    group: [null, [Validators.required]],
     description: [null, [Validators.maxLength(1024)]],
-    inheritsFrom: [],
+    parentActor: [],
+    group: [],
   });
 
-  constructor(protected actorService: ActorService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected actorService: ActorService,
+    protected environmentService: EnvironmentService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ actor }) => {
@@ -47,15 +53,19 @@ export class ActorUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const actor = this.createFromForm();
-    if (actor.actorID !== undefined) {
+    if (actor.id !== undefined) {
       this.subscribeToSaveResponse(this.actorService.update(actor));
     } else {
       this.subscribeToSaveResponse(this.actorService.create(actor));
     }
   }
 
-  trackActorByActorID(index: number, item: IActor): string {
-    return item.actorID!;
+  trackActorById(index: number, item: IActor): number {
+    return item.id!;
+  }
+
+  trackEnvironmentById(index: number, item: IEnvironment): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IActor>>): void {
@@ -79,38 +89,52 @@ export class ActorUpdateComponent implements OnInit {
 
   protected updateForm(actor: IActor): void {
     this.editForm.patchValue({
-      actorID: actor.actorID,
+      id: actor.id,
       firstName: actor.firstName,
       lastName: actor.lastName,
       nickName: actor.nickName,
-      environMent: actor.environMent,
-      inheritsFrom: actor.inheritsFrom,
+      group: actor.group,
       description: actor.description,
-      inheritsFrom: actor.inheritsFrom,
+      parentActor: actor.parentActor,
+      group: actor.group,
     });
 
-    this.inheritsFromsCollection = this.actorService.addActorToCollectionIfMissing(this.inheritsFromsCollection, actor.inheritsFrom);
+    this.parentActorsCollection = this.actorService.addActorToCollectionIfMissing(this.parentActorsCollection, actor.parentActor);
+    this.environmentsSharedCollection = this.environmentService.addEnvironmentToCollectionIfMissing(
+      this.environmentsSharedCollection,
+      actor.group
+    );
   }
 
   protected loadRelationshipsOptions(): void {
     this.actorService
       .query({ filter: 'actor-is-null' })
       .pipe(map((res: HttpResponse<IActor[]>) => res.body ?? []))
-      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('inheritsFrom')!.value)))
-      .subscribe((actors: IActor[]) => (this.inheritsFromsCollection = actors));
+      .pipe(map((actors: IActor[]) => this.actorService.addActorToCollectionIfMissing(actors, this.editForm.get('parentActor')!.value)))
+      .subscribe((actors: IActor[]) => (this.parentActorsCollection = actors));
+
+    this.environmentService
+      .query()
+      .pipe(map((res: HttpResponse<IEnvironment[]>) => res.body ?? []))
+      .pipe(
+        map((environments: IEnvironment[]) =>
+          this.environmentService.addEnvironmentToCollectionIfMissing(environments, this.editForm.get('group')!.value)
+        )
+      )
+      .subscribe((environments: IEnvironment[]) => (this.environmentsSharedCollection = environments));
   }
 
   protected createFromForm(): IActor {
     return {
       ...new Actor(),
-      actorID: this.editForm.get(['actorID'])!.value,
+      id: this.editForm.get(['id'])!.value,
       firstName: this.editForm.get(['firstName'])!.value,
       lastName: this.editForm.get(['lastName'])!.value,
       nickName: this.editForm.get(['nickName'])!.value,
-      environMent: this.editForm.get(['environMent'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      group: this.editForm.get(['group'])!.value,
       description: this.editForm.get(['description'])!.value,
-      inheritsFrom: this.editForm.get(['inheritsFrom'])!.value,
+      parentActor: this.editForm.get(['parentActor'])!.value,
+      group: this.editForm.get(['group'])!.value,
     };
   }
 }

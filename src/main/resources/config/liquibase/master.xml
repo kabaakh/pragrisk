@@ -20,6 +20,7 @@
     <include file="config/liquibase/changelog/20220207114117_added_entity_Vulnerability.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220207114118_added_entity_Technology.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220207114119_added_entity_Mitigation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220207160354_added_entity_Environment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20220207114115_added_entity_constraints_Actor.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220207114116_added_entity_constraints_Scenario.xml" relativeToChangelogFile="false"/>

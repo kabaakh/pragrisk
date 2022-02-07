@@ -1,7 +1,6 @@
 package com.gobr.pragrisk.repository;
 
 import com.gobr.pragrisk.domain.Technology;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TechnologyRepository extends JpaRepository<Technology, UUID> {}
+public interface TechnologyRepository extends JpaRepository<Technology, Long> {}

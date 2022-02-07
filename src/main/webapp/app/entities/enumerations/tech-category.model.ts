@@ -1,7 +1,7 @@
 export enum TechCategory {
-  FAG = 'Fagsystem',
+  APPLICATION = 'APPLICATION',
 
-  FEL = 'Fellestjeneste',
+  SERVICE = 'SERVICE',
 
-  KOM = 'Komponent',
+  COMPONENT = 'COMPONENT',
 }

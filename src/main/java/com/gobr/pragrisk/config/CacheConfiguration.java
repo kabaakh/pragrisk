@@ -61,6 +61,10 @@ public class CacheConfiguration {
             createCache(cm, com.gobr.pragrisk.domain.Technology.class.getName() + ".scenarios");
             createCache(cm, com.gobr.pragrisk.domain.Mitigation.class.getName());
             createCache(cm, com.gobr.pragrisk.domain.Mitigation.class.getName() + ".vulnerabilities");
+            createCache(cm, com.gobr.pragrisk.domain.Actor.class.getName() + ".actorIDS");
+            createCache(cm, com.gobr.pragrisk.domain.Vulnerability.class.getName() + ".vulnerabilityIDS");
+            createCache(cm, com.gobr.pragrisk.domain.Technology.class.getName() + ".technologyIDS");
+            createCache(cm, com.gobr.pragrisk.domain.Environment.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

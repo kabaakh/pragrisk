@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { Environment } from 'app/entities/enumerations/environment.model';
 import { IActor, Actor } from '../actor.model';
 
 import { ActorService } from './actor.service';
@@ -21,12 +20,11 @@ describe('Actor Service', () => {
     httpMock = TestBed.inject(HttpTestingController);
 
     elemDefault = {
-      actorID: 'AAAAAAA',
+      id: 0,
       firstName: 'AAAAAAA',
       lastName: 'AAAAAAA',
       nickName: 'AAAAAAA',
-      environMent: Environment.KOM,
-      inheritsFrom: 'AAAAAAA',
+      group: 'AAAAAAA',
       description: 'AAAAAAA',
     };
   });
@@ -35,7 +33,7 @@ describe('Actor Service', () => {
     it('should find an element', () => {
       const returnedFromService = Object.assign({}, elemDefault);
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp.body));
+      service.find(123).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -45,7 +43,7 @@ describe('Actor Service', () => {
     it('should create a Actor', () => {
       const returnedFromService = Object.assign(
         {
-          id: 'ID',
+          id: 0,
         },
         elemDefault
       );
@@ -62,12 +60,11 @@ describe('Actor Service', () => {
     it('should update a Actor', () => {
       const returnedFromService = Object.assign(
         {
-          actorID: 'BBBBBB',
+          id: 1,
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
-          environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          group: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault
@@ -87,7 +84,6 @@ describe('Actor Service', () => {
         {
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
-          description: 'BBBBBB',
         },
         new Actor()
       );
@@ -106,12 +102,11 @@ describe('Actor Service', () => {
     it('should return a list of Actor', () => {
       const returnedFromService = Object.assign(
         {
-          actorID: 'BBBBBB',
+          id: 1,
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
           nickName: 'BBBBBB',
-          environMent: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
+          group: 'BBBBBB',
           description: 'BBBBBB',
         },
         elemDefault
@@ -128,7 +123,7 @@ describe('Actor Service', () => {
     });
 
     it('should delete a Actor', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp.ok));
+      service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
       const req = httpMock.expectOne({ method: 'DELETE' });
       req.flush({ status: 200 });
@@ -137,46 +132,42 @@ describe('Actor Service', () => {
 
     describe('addActorToCollectionIfMissing', () => {
       it('should add a Actor to an empty array', () => {
-        const actor: IActor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const actor: IActor = { id: 123 };
         expectedResult = service.addActorToCollectionIfMissing([], actor);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(actor);
       });
 
       it('should not add a Actor to an array that contains it', () => {
-        const actor: IActor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const actor: IActor = { id: 123 };
         const actorCollection: IActor[] = [
           {
             ...actor,
           },
-          { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
+          { id: 456 },
         ];
         expectedResult = service.addActorToCollectionIfMissing(actorCollection, actor);
         expect(expectedResult).toHaveLength(2);
       });
 
       it("should add a Actor to an array that doesn't contain it", () => {
-        const actor: IActor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const actorCollection: IActor[] = [{ actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' }];
+        const actor: IActor = { id: 123 };
+        const actorCollection: IActor[] = [{ id: 456 }];
         expectedResult = service.addActorToCollectionIfMissing(actorCollection, actor);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(actor);
       });
 
       it('should add only unique Actor to an array', () => {
-        const actorArray: IActor[] = [
-          { actorID: '9fec3727-3421-4967-b213-ba36557ca194' },
-          { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { actorID: 'd7f2eedb-0eed-4d6c-9799-9f7b5116334d' },
-        ];
-        const actorCollection: IActor[] = [{ actorID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const actorArray: IActor[] = [{ id: 123 }, { id: 456 }, { id: 64574 }];
+        const actorCollection: IActor[] = [{ id: 123 }];
         expectedResult = service.addActorToCollectionIfMissing(actorCollection, ...actorArray);
         expect(expectedResult).toHaveLength(3);
       });
 
       it('should accept varargs', () => {
-        const actor: IActor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const actor2: IActor = { actorID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
+        const actor: IActor = { id: 123 };
+        const actor2: IActor = { id: 456 };
         expectedResult = service.addActorToCollectionIfMissing([], actor, actor2);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(actor);
@@ -184,14 +175,14 @@ describe('Actor Service', () => {
       });
 
       it('should accept null and undefined values', () => {
-        const actor: IActor = { actorID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const actor: IActor = { id: 123 };
         expectedResult = service.addActorToCollectionIfMissing([], null, actor, undefined);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(actor);
       });
 
       it('should return initial array if no Actor is added', () => {
-        const actorCollection: IActor[] = [{ actorID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const actorCollection: IActor[] = [{ id: 123 }];
         expectedResult = service.addActorToCollectionIfMissing(actorCollection, undefined, null);
         expect(expectedResult).toEqual(actorCollection);
       });

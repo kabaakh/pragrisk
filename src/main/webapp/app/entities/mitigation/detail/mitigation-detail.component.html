@@ -10,17 +10,25 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pragRiskApp.mitigation.vulnerabiltyID">Vulnerabilty ID</span></dt>
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
         <dd>
-          <span>{{ mitigation.vulnerabiltyID }}</span>
+          <span>{{ mitigation.id }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.mitigation.controlID">Control ID</span></dt>
         <dd>
           <span>{{ mitigation.controlID }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.mitigation.reference">Reference</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.mitigation.title">Title</span></dt>
         <dd>
-          <span>{{ mitigation.reference }}</span>
+          <span>{{ mitigation.title }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.mitigation.description">Description</span></dt>
+        <dd>
+          <span>{{ mitigation.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.mitigation.frameworkReference">Framework Reference</span></dt>
+        <dd>
+          <span>{{ mitigation.frameworkReference }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.mitigation.type">Type</span></dt>
         <dd>
@@ -36,7 +44,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/mitigation', mitigation.vulnerabiltyID, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/mitigation', mitigation.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
