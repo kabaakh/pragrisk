@@ -1,0 +1,9 @@
+export enum MitigationType {
+  PREVENTIVE = 'PREVENTIVE',
+
+  DETECTIVE = 'DETECTIVE',
+
+  CORRECTIVE = 'CORRECTIVE',
+
+  DETERRING = 'DETERRING',
+}

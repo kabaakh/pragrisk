@@ -1,0 +1,55 @@
+{
+  "applications": "*",
+  "changelogDate": "20220207164848",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "mitigation",
+  "fields": [
+    {
+      "fieldName": "controlID",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern", "required", "unique"],
+      "fieldValidateRulesPattern": "^R+\\d$"
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "frameworkReference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "MitigationType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PREVENTIVE,DETECTIVE,CORRECTIVE,DETERRING"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "MitigationStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NOT_PERFORMED,AD_HOC,PLANNED_AND_TRACKED,WELL_DEFINED,QUANTITATIVELY_CONTROLLED,CONTINUOUSLY_IMPROVED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Mitigation",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "vulnerability",
+      "otherEntityRelationshipName": "mitigation",
+      "ownerSide": false,
+      "relationshipName": "vulnerability",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

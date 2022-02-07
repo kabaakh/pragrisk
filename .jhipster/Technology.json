@@ -1,0 +1,53 @@
+{
+  "applications": "*",
+  "changelogDate": "20220207164847",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "technology",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "category",
+      "fieldType": "TechCategory",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "APPLICATION,SERVICE,COMPONENT"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1024"
+    },
+    {
+      "fieldName": "techStackType",
+      "fieldType": "TechStack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "JAVA,NET,PHP"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Technology",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "technology",
+      "otherEntityRelationshipName": "technology",
+      "ownerSide": true,
+      "relationshipName": "parentTechnology",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "scenario",
+      "otherEntityRelationshipName": "technologyFK",
+      "relationshipName": "technologyID",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}
