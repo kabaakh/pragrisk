@@ -21,7 +21,19 @@ describe('Mitigation Management Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: {} } },
+          useValue: {
+            data: of({
+              defaultSort: 'mitigationID,asc',
+            }),
+            queryParamMap: of(
+              jest.requireActual('@angular/router').convertToParamMap({
+                page: '1',
+                size: '1',
+                sort: 'mitigationID,desc',
+              })
+            ),
+            snapshot: { queryParams: {} },
+          },
         },
       ],
     })
@@ -36,7 +48,7 @@ describe('Mitigation Management Component', () => {
     jest.spyOn(service, 'query').mockReturnValue(
       of(
         new HttpResponse({
-          body: [{ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' }],
+          body: [{ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' }],
           headers,
         })
       )
@@ -49,6 +61,37 @@ describe('Mitigation Management Component', () => {
 
     // THEN
     expect(service.query).toHaveBeenCalled();
-    expect(comp.mitigations?.[0]).toEqual(expect.objectContaining({ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+    expect(comp.mitigations?.[0]).toEqual(expect.objectContaining({ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+  });
+
+  it('should load a page', () => {
+    // WHEN
+    comp.loadPage(1);
+
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.mitigations?.[0]).toEqual(expect.objectContaining({ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+  });
+
+  it('should calculate the sort attribute for an id', () => {
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(service.query).toHaveBeenCalledWith(expect.objectContaining({ sort: ['mitigationID,desc'] }));
+  });
+
+  it('should calculate the sort attribute for a non-id attribute', () => {
+    // INIT
+    comp.ngOnInit();
+
+    // GIVEN
+    comp.predicate = 'name';
+
+    // WHEN
+    comp.loadPage(1);
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['name,desc', 'mitigationID'] }));
   });
 });

@@ -21,7 +21,19 @@ describe('Scenario Management Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: {} } },
+          useValue: {
+            data: of({
+              defaultSort: 'scenarioID,asc',
+            }),
+            queryParamMap: of(
+              jest.requireActual('@angular/router').convertToParamMap({
+                page: '1',
+                size: '1',
+                sort: 'scenarioID,desc',
+              })
+            ),
+            snapshot: { queryParams: {} },
+          },
         },
       ],
     })
@@ -50,5 +62,36 @@ describe('Scenario Management Component', () => {
     // THEN
     expect(service.query).toHaveBeenCalled();
     expect(comp.scenarios?.[0]).toEqual(expect.objectContaining({ scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+  });
+
+  it('should load a page', () => {
+    // WHEN
+    comp.loadPage(1);
+
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.scenarios?.[0]).toEqual(expect.objectContaining({ scenarioID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+  });
+
+  it('should calculate the sort attribute for an id', () => {
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(service.query).toHaveBeenCalledWith(expect.objectContaining({ sort: ['scenarioID,desc'] }));
+  });
+
+  it('should calculate the sort attribute for a non-id attribute', () => {
+    // INIT
+    comp.ngOnInit();
+
+    // GIVEN
+    comp.predicate = 'name';
+
+    // WHEN
+    comp.loadPage(1);
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['name,desc', 'scenarioID'] }));
   });
 });

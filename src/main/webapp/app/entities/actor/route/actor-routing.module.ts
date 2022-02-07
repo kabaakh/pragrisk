@@ -11,6 +11,9 @@ const actorRoute: Routes = [
   {
     path: '',
     component: ActorComponent,
+    data: {
+      defaultSort: 'actorID,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {

@@ -29,14 +29,10 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "environMent",
+      "fieldName": "group",
       "fieldType": "Environment",
       "fieldValidateRules": ["required"],
       "fieldValues": "KOM (Kommune),KS (KS),UV (Uvedkommende),LEV (Leverandør)"
-    },
-    {
-      "fieldName": "inheritsFrom",
-      "fieldType": "UUID"
     },
     {
       "fieldName": "description",
@@ -48,22 +44,22 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Actor",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "actor",
       "otherEntityRelationshipName": "actor",
       "ownerSide": true,
-      "relationshipName": "inheritsFrom",
+      "relationshipName": "parentActor",
       "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "scenario",
-      "otherEntityRelationshipName": "actorID",
-      "relationshipName": "scenario",
+      "otherEntityRelationshipName": "actorFK",
+      "relationshipName": "actorID",
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

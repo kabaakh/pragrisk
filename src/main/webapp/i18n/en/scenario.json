@@ -19,15 +19,13 @@
         "title": "Scenario"
       },
       "scenarioID": "Scenario ID",
-      "actorID": "Actor ID",
-      "technologyID": "Technology ID",
-      "vulnerabilityID": "Vulnerability ID",
       "description": "Description",
       "probability": "Probability",
       "qonsequence": "Qonsequence",
-      "actorID": "Actor ID",
-      "technologyID": "Technology ID",
-      "vulnerabilityID": "Vulnerability ID"
+      "riskValue": "Risk Value",
+      "actorFK": "Actor FK",
+      "technologyFK": "Technology FK",
+      "vulnerabilityFK": "Vulnerability FK"
     }
   }
 }

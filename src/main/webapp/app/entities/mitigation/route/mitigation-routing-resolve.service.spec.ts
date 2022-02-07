@@ -42,8 +42,8 @@ describe('Mitigation routing resolve service', () => {
   describe('resolve', () => {
     it('should return IMitigation returned by find', () => {
       // GIVEN
-      service.find = jest.fn(vulnerabiltyID => of(new HttpResponse({ body: { vulnerabiltyID } })));
-      mockActivatedRouteSnapshot.params = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      service.find = jest.fn(mitigationID => of(new HttpResponse({ body: { mitigationID } })));
+      mockActivatedRouteSnapshot.params = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
@@ -52,7 +52,7 @@ describe('Mitigation routing resolve service', () => {
 
       // THEN
       expect(service.find).toBeCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
-      expect(resultMitigation).toEqual({ vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' });
+      expect(resultMitigation).toEqual({ mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' });
     });
 
     it('should return new IMitigation if id is not provided', () => {
@@ -73,7 +73,7 @@ describe('Mitigation routing resolve service', () => {
     it('should route to 404 page if data not found in server', () => {
       // GIVEN
       jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Mitigation })));
-      mockActivatedRouteSnapshot.params = { vulnerabiltyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+      mockActivatedRouteSnapshot.params = { mitigationID: '9fec3727-3421-4967-b213-ba36557ca194' };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {

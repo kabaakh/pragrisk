@@ -6,9 +6,9 @@
   "entityTableName": "mitigation",
   "fields": [
     {
-      "fieldName": "vulnerabiltyID",
+      "fieldName": "mitigationID",
       "fieldType": "UUID",
-      "fieldValidateRules": ["required"],
+      "fieldValidateRules": ["required", "unique"],
       "options": {
         "id": true
       }
@@ -38,7 +38,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Mitigation",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -49,5 +49,5 @@
       "relationshipType": "many-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

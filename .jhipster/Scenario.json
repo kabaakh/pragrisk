@@ -8,25 +8,10 @@
     {
       "fieldName": "scenarioID",
       "fieldType": "UUID",
-      "fieldValidateRules": ["required"],
+      "fieldValidateRules": ["required", "unique"],
       "options": {
         "id": true
       }
-    },
-    {
-      "fieldName": "actorID",
-      "fieldType": "UUID",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "technologyID",
-      "fieldType": "UUID",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "vulnerabilityID",
-      "fieldType": "UUID",
-      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "description",
@@ -41,32 +26,36 @@
     {
       "fieldName": "qonsequence",
       "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "riskValue",
+      "fieldType": "BigDecimal"
     }
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Scenario",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "actor",
-      "otherEntityRelationshipName": "scenario",
-      "relationshipName": "actorID",
+      "otherEntityRelationshipName": "actorID",
+      "relationshipName": "actorFK",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "technology",
-      "otherEntityRelationshipName": "scenario",
-      "relationshipName": "technologyID",
+      "otherEntityRelationshipName": "technologyID",
+      "relationshipName": "technologyFK",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "vulnerability",
-      "otherEntityRelationshipName": "scenario",
-      "relationshipName": "vulnerabilityID",
+      "otherEntityRelationshipName": "vulnerabilityID",
+      "relationshipName": "vulnerabilityFK",
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

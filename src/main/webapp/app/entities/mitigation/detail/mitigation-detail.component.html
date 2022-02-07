@@ -10,9 +10,9 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pragRiskApp.mitigation.vulnerabiltyID">Vulnerabilty ID</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.mitigation.mitigationID">Mitigation ID</span></dt>
         <dd>
-          <span>{{ mitigation.vulnerabiltyID }}</span>
+          <span>{{ mitigation.mitigationID }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.mitigation.controlID">Control ID</span></dt>
         <dd>
@@ -36,7 +36,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/mitigation', mitigation.vulnerabiltyID, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/mitigation', mitigation.mitigationID, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
