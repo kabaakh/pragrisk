@@ -14,17 +14,17 @@
       }
     },
     {
-      "fieldName": "actorID",
+      "fieldName": "actorFK",
       "fieldType": "UUID",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "technologyID",
+      "fieldName": "technologyFK",
       "fieldType": "UUID",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "vulnerabilityID",
+      "fieldName": "vulnerabilityFK",
       "fieldType": "UUID",
       "fieldValidateRules": ["required"]
     },
@@ -52,19 +52,19 @@
     {
       "otherEntityName": "actor",
       "otherEntityRelationshipName": "scenario",
-      "relationshipName": "actorID",
+      "relationshipName": "actorFK",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "technology",
       "otherEntityRelationshipName": "scenario",
-      "relationshipName": "technologyID",
+      "relationshipName": "technologyFK",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "vulnerability",
       "otherEntityRelationshipName": "scenario",
-      "relationshipName": "vulnerabilityID",
+      "relationshipName": "vulnerabilityFK",
       "relationshipType": "many-to-one"
     }
   ],

@@ -27,16 +27,16 @@ public class Scenario implements Serializable {
     private UUID scenarioID;
 
     @NotNull
-    @Column(name = "actor_id", nullable = false)
-    private UUID actorID;
+    @Column(name = "actor_fk", nullable = false)
+    private UUID actorFK;
 
     @NotNull
-    @Column(name = "technology_id", nullable = false)
-    private UUID technologyID;
+    @Column(name = "technology_fk", nullable = false)
+    private UUID technologyFK;
 
     @NotNull
-    @Column(name = "vulnerability_id", nullable = false)
-    private UUID vulnerabilityID;
+    @Column(name = "vulnerability_fk", nullable = false)
+    private UUID vulnerabilityFK;
 
     @Size(max = 1024)
     @Column(name = "description", length = 1024)
@@ -49,16 +49,16 @@ public class Scenario implements Serializable {
     private BigDecimal qonsequence;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
-    private Actor actorID;
+    @JsonIgnoreProperties(value = { "parentAct", "scenarios" }, allowSetters = true)
+    private Actor actorFK;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
-    private Technology technologyID;
+    @JsonIgnoreProperties(value = { "parentTech", "scenarios" }, allowSetters = true)
+    private Technology technologyFK;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "scenarios", "mitigations" }, allowSetters = true)
-    private Vulnerability vulnerabilityID;
+    private Vulnerability vulnerabilityFK;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -75,43 +75,43 @@ public class Scenario implements Serializable {
         this.scenarioID = scenarioID;
     }
 
-    public UUID getActorID() {
-        return this.actorID;
+    public UUID getActorFK() {
+        return this.actorFK;
     }
 
-    public Scenario actorID(UUID actorID) {
-        this.setActorID(actorID);
+    public Scenario actorFK(UUID actorFK) {
+        this.setActorFK(actorFK);
         return this;
     }
 
-    public void setActorID(UUID actorID) {
-        this.actorID = actorID;
+    public void setActorFK(UUID actorFK) {
+        this.actorFK = actorFK;
     }
 
-    public UUID getTechnologyID() {
-        return this.technologyID;
+    public UUID getTechnologyFK() {
+        return this.technologyFK;
     }
 
-    public Scenario technologyID(UUID technologyID) {
-        this.setTechnologyID(technologyID);
+    public Scenario technologyFK(UUID technologyFK) {
+        this.setTechnologyFK(technologyFK);
         return this;
     }
 
-    public void setTechnologyID(UUID technologyID) {
-        this.technologyID = technologyID;
+    public void setTechnologyFK(UUID technologyFK) {
+        this.technologyFK = technologyFK;
     }
 
-    public UUID getVulnerabilityID() {
-        return this.vulnerabilityID;
+    public UUID getVulnerabilityFK() {
+        return this.vulnerabilityFK;
     }
 
-    public Scenario vulnerabilityID(UUID vulnerabilityID) {
-        this.setVulnerabilityID(vulnerabilityID);
+    public Scenario vulnerabilityFK(UUID vulnerabilityFK) {
+        this.setVulnerabilityFK(vulnerabilityFK);
         return this;
     }
 
-    public void setVulnerabilityID(UUID vulnerabilityID) {
-        this.vulnerabilityID = vulnerabilityID;
+    public void setVulnerabilityFK(UUID vulnerabilityFK) {
+        this.vulnerabilityFK = vulnerabilityFK;
     }
 
     public String getDescription() {
@@ -153,42 +153,42 @@ public class Scenario implements Serializable {
         this.qonsequence = qonsequence;
     }
 
-    public Actor getActorID() {
-        return this.actorID;
+    public Actor getActorFK() {
+        return this.actorFK;
     }
 
-    public void setActorID(Actor actor) {
-        this.actorID = actor;
+    public void setActorFK(Actor actor) {
+        this.actorFK = actor;
     }
 
-    public Scenario actorID(Actor actor) {
-        this.setActorID(actor);
+    public Scenario actorFK(Actor actor) {
+        this.setActorFK(actor);
         return this;
     }
 
-    public Technology getTechnologyID() {
-        return this.technologyID;
+    public Technology getTechnologyFK() {
+        return this.technologyFK;
     }
 
-    public void setTechnologyID(Technology technology) {
-        this.technologyID = technology;
+    public void setTechnologyFK(Technology technology) {
+        this.technologyFK = technology;
     }
 
-    public Scenario technologyID(Technology technology) {
-        this.setTechnologyID(technology);
+    public Scenario technologyFK(Technology technology) {
+        this.setTechnologyFK(technology);
         return this;
     }
 
-    public Vulnerability getVulnerabilityID() {
-        return this.vulnerabilityID;
+    public Vulnerability getVulnerabilityFK() {
+        return this.vulnerabilityFK;
     }
 
-    public void setVulnerabilityID(Vulnerability vulnerability) {
-        this.vulnerabilityID = vulnerability;
+    public void setVulnerabilityFK(Vulnerability vulnerability) {
+        this.vulnerabilityFK = vulnerability;
     }
 
-    public Scenario vulnerabilityID(Vulnerability vulnerability) {
-        this.setVulnerabilityID(vulnerability);
+    public Scenario vulnerabilityFK(Vulnerability vulnerability) {
+        this.setVulnerabilityFK(vulnerability);
         return this;
     }
 
@@ -216,9 +216,9 @@ public class Scenario implements Serializable {
     public String toString() {
         return "Scenario{" +
             "scenarioID=" + getScenarioID() +
-            ", actorID='" + getActorID() + "'" +
-            ", technologyID='" + getTechnologyID() + "'" +
-            ", vulnerabilityID='" + getVulnerabilityID() + "'" +
+            ", actorFK='" + getActorFK() + "'" +
+            ", technologyFK='" + getTechnologyFK() + "'" +
+            ", vulnerabilityFK='" + getVulnerabilityFK() + "'" +
             ", description='" + getDescription() + "'" +
             ", probability=" + getProbability() +
             ", qonsequence=" + getQonsequence() +

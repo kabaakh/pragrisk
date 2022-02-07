@@ -14,13 +14,13 @@
             <column name="scenario_id" type="${uuidType}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="actor_id" type="${uuidType}">
+            <column name="actor_fk" type="${uuidType}">
                 <constraints nullable="false" />
             </column>
-            <column name="technology_id" type="${uuidType}">
+            <column name="technology_fk" type="${uuidType}">
                 <constraints nullable="false" />
             </column>
-            <column name="vulnerability_id" type="${uuidType}">
+            <column name="vulnerability_fk" type="${uuidType}">
                 <constraints nullable="false" />
             </column>
             <column name="description" type="varchar(1024)">
@@ -32,13 +32,13 @@
             <column name="qonsequence" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
-            <column name="actorid_actor_id" type="${uuidType}">
+            <column name="actorfk_actor_id" type="${uuidType}">
                 <constraints nullable="true" />
             </column>
-            <column name="technologyid_technology_id" type="${uuidType}">
+            <column name="technologyfk_technology_id" type="${uuidType}">
                 <constraints nullable="true" />
             </column>
-            <column name="vulnerabilityid_vulnerability_id" type="${uuidType}">
+            <column name="vulnerabilityfk_vulnerability_id" type="${uuidType}">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -62,9 +62,9 @@
                   tableName="scenario"
                   usePreparedStatements="true">
             <column name="scenario_id" type="${uuidType}"/>
-            <column name="actor_id" type="${uuidType}"/>
-            <column name="technology_id" type="${uuidType}"/>
-            <column name="vulnerability_id" type="${uuidType}"/>
+            <column name="actor_fk" type="${uuidType}"/>
+            <column name="technology_fk" type="${uuidType}"/>
+            <column name="vulnerability_fk" type="${uuidType}"/>
             <column name="description" type="string"/>
             <column name="probability" type="numeric"/>
             <column name="qonsequence" type="numeric"/>

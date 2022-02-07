@@ -1,4 +1,4 @@
-scenario_id;actor_id;technology_id;vulnerability_id;description;probability;qonsequence
+scenario_id;actor_fk;technology_fk;vulnerability_fk;description;probability;qonsequence
 52375f11-0208-496c-b046-2f21539ffe93;ee1bc263-7096-45e5-adc3-d8111e7fbadc;b1294409-5653-4f70-b2a2-8dc7db5c46fa;8c5645d7-2bb3-470b-984f-c49337c96507;success;78898;1039
 4424442e-ddff-44e9-a74c-e1bfdcd1b95d;075f3d98-0d45-4b3c-9555-629ce75086b2;d583e802-128f-4eca-8d44-6d944ae305ff;fc8aa7b2-320b-4424-bb8f-31371f8d4cf0;Liaison Costa collaboration;1000;41343
 fde0a615-97d9-481b-a412-52ae438e8d03;399193e3-67ce-43de-9a34-8a7a330f9c0f;44844e1b-903d-45dc-ab2e-4b6b204beb6b;453a80b6-d344-4785-a550-cf1dc12c169d;invoice;34561;69851

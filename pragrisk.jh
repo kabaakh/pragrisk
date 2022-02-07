@@ -5,7 +5,7 @@ entity Actor {
     lastName String required,
     nickName String required,
     environMent Environment required,
-    inheritsFrom UUID,
+    parentActor UUID,
     description String maxlength(1024)
 }
 
@@ -18,9 +18,9 @@ enum Environment {
 
 entity Scenario {
 	@id scenarioID UUID required,
-    actorID UUID required,
-    technologyID UUID required,
-    vulnerabilityID UUID required,
+    actorFK UUID required,
+    technologyFK UUID required,
+    vulnerabilityFK UUID required,
     description String maxlength(1024)
     probability BigDecimal,
 	qonsequence BigDecimal
@@ -37,7 +37,7 @@ entity Technology {
     name String required,
     category TechCategory required,
     description String maxlength(1024),
-    inheritsFrom UUID,
+    parentTechnology UUID,
     techStackType TechStack,
 }
 
@@ -78,15 +78,15 @@ enum MitigationStatus {
 }
 
 relationship OneToOne {
-	Actor{inheritsFrom} to Actor,
-    Technology{inheritsFrom} to Technology
+	Actor{parentAct} to Actor,
+    Technology{parentTech} to Technology
 }
 
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
-	Actor to Scenario{actorID},
-	Technology to Scenario{technologyID},
-    Vulnerability to Scenario{vulnerabilityID}
+	Actor to Scenario{actorFK},
+	Technology to Scenario{technologyFK},
+    Vulnerability to Scenario{vulnerabilityFK}
 }
 
 relationship ManyToMany {
