@@ -22,11 +22,10 @@ describe('Technology Service', () => {
     httpMock = TestBed.inject(HttpTestingController);
 
     elemDefault = {
-      technologyID: 'AAAAAAA',
+      id: 0,
       name: 'AAAAAAA',
-      category: TechCategory.FAG,
+      category: TechCategory.APPLICATION,
       description: 'AAAAAAA',
-      inheritsFrom: 'AAAAAAA',
       techStackType: TechStack.JAVA,
     };
   });
@@ -35,7 +34,7 @@ describe('Technology Service', () => {
     it('should find an element', () => {
       const returnedFromService = Object.assign({}, elemDefault);
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp.body));
+      service.find(123).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -45,7 +44,7 @@ describe('Technology Service', () => {
     it('should create a Technology', () => {
       const returnedFromService = Object.assign(
         {
-          id: 'ID',
+          id: 0,
         },
         elemDefault
       );
@@ -62,11 +61,10 @@ describe('Technology Service', () => {
     it('should update a Technology', () => {
       const returnedFromService = Object.assign(
         {
-          technologyID: 'BBBBBB',
+          id: 1,
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault
@@ -85,7 +83,6 @@ describe('Technology Service', () => {
       const patchObject = Object.assign(
         {
           category: 'BBBBBB',
-          techStackType: 'BBBBBB',
         },
         new Technology()
       );
@@ -104,11 +101,10 @@ describe('Technology Service', () => {
     it('should return a list of Technology', () => {
       const returnedFromService = Object.assign(
         {
-          technologyID: 'BBBBBB',
+          id: 1,
           name: 'BBBBBB',
           category: 'BBBBBB',
           description: 'BBBBBB',
-          inheritsFrom: 'BBBBBB',
           techStackType: 'BBBBBB',
         },
         elemDefault
@@ -125,7 +121,7 @@ describe('Technology Service', () => {
     });
 
     it('should delete a Technology', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp.ok));
+      service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
       const req = httpMock.expectOne({ method: 'DELETE' });
       req.flush({ status: 200 });
@@ -134,46 +130,42 @@ describe('Technology Service', () => {
 
     describe('addTechnologyToCollectionIfMissing', () => {
       it('should add a Technology to an empty array', () => {
-        const technology: ITechnology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const technology: ITechnology = { id: 123 };
         expectedResult = service.addTechnologyToCollectionIfMissing([], technology);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(technology);
       });
 
       it('should not add a Technology to an array that contains it', () => {
-        const technology: ITechnology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const technology: ITechnology = { id: 123 };
         const technologyCollection: ITechnology[] = [
           {
             ...technology,
           },
-          { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
+          { id: 456 },
         ];
         expectedResult = service.addTechnologyToCollectionIfMissing(technologyCollection, technology);
         expect(expectedResult).toHaveLength(2);
       });
 
       it("should add a Technology to an array that doesn't contain it", () => {
-        const technology: ITechnology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const technologyCollection: ITechnology[] = [{ technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' }];
+        const technology: ITechnology = { id: 123 };
+        const technologyCollection: ITechnology[] = [{ id: 456 }];
         expectedResult = service.addTechnologyToCollectionIfMissing(technologyCollection, technology);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(technology);
       });
 
       it('should add only unique Technology to an array', () => {
-        const technologyArray: ITechnology[] = [
-          { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' },
-          { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' },
-          { technologyID: '4858b994-988f-4fe1-8802-9b0a96bc5508' },
-        ];
-        const technologyCollection: ITechnology[] = [{ technologyID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const technologyArray: ITechnology[] = [{ id: 123 }, { id: 456 }, { id: 88670 }];
+        const technologyCollection: ITechnology[] = [{ id: 123 }];
         expectedResult = service.addTechnologyToCollectionIfMissing(technologyCollection, ...technologyArray);
         expect(expectedResult).toHaveLength(3);
       });
 
       it('should accept varargs', () => {
-        const technology: ITechnology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
-        const technology2: ITechnology = { technologyID: '1361f429-3817-4123-8ee3-fdf8943310b2' };
+        const technology: ITechnology = { id: 123 };
+        const technology2: ITechnology = { id: 456 };
         expectedResult = service.addTechnologyToCollectionIfMissing([], technology, technology2);
         expect(expectedResult).toHaveLength(2);
         expect(expectedResult).toContain(technology);
@@ -181,14 +173,14 @@ describe('Technology Service', () => {
       });
 
       it('should accept null and undefined values', () => {
-        const technology: ITechnology = { technologyID: '9fec3727-3421-4967-b213-ba36557ca194' };
+        const technology: ITechnology = { id: 123 };
         expectedResult = service.addTechnologyToCollectionIfMissing([], null, technology, undefined);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(technology);
       });
 
       it('should return initial array if no Technology is added', () => {
-        const technologyCollection: ITechnology[] = [{ technologyID: '9fec3727-3421-4967-b213-ba36557ca194' }];
+        const technologyCollection: ITechnology[] = [{ id: 123 }];
         expectedResult = service.addTechnologyToCollectionIfMissing(technologyCollection, undefined, null);
         expect(expectedResult).toEqual(technologyCollection);
       });

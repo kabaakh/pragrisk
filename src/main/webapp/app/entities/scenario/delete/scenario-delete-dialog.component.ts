@@ -16,7 +16,7 @@ export class ScenarioDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: string): void {
+  confirmDelete(id: number): void {
     this.scenarioService.delete(id).subscribe(() => {
       this.activeModal.close('deleted');
     });

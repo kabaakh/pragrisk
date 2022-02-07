@@ -1,7 +1,7 @@
 export enum TechStack {
-  JAVA = 'Java',
+  JAVA = 'JAVA',
 
-  NET = '.NET',
+  NET = 'NET',
 
   PHP = 'PHP',
 }

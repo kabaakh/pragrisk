@@ -1,11 +1,26 @@
 {
   "pragRiskApp": {
-    "Environment": {
-      "null": "",
-      "KOM": "Kommune",
-      "KS": "KS",
-      "UV": "Uvedkommende",
-      "LEV": "Leverandør"
+    "environment": {
+      "home": {
+        "title": "Environments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Environment",
+        "createOrEditLabel": "Create or edit a Environment",
+        "search": "Search for Environment",
+        "notFound": "No Environments found"
+      },
+      "created": "A new Environment is created with identifier {{ param }}",
+      "updated": "A Environment is updated with identifier {{ param }}",
+      "deleted": "A Environment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Environment {{ id }}?"
+      },
+      "detail": {
+        "title": "Environment"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description"
     }
   }
 }

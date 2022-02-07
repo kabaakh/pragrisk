@@ -3,7 +3,6 @@ package com.gobr.pragrisk.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -20,23 +19,15 @@ public class Scenario implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
-    @GeneratedValue
-    @Column(name = "scenario_id", nullable = false)
-    private UUID scenarioID;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
+    private Long id;
 
     @NotNull
-    @Column(name = "actor_id", nullable = false)
-    private UUID actorID;
-
-    @NotNull
-    @Column(name = "technology_id", nullable = false)
-    private UUID technologyID;
-
-    @NotNull
-    @Column(name = "vulnerability_id", nullable = false)
-    private UUID vulnerabilityID;
+    @Column(name = "title", nullable = false, unique = true)
+    private String title;
 
     @Size(max = 1024)
     @Column(name = "description", length = 1024)
@@ -48,70 +39,47 @@ public class Scenario implements Serializable {
     @Column(name = "qonsequence", precision = 21, scale = 2)
     private BigDecimal qonsequence;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
-    private Actor actorID;
+    @Column(name = "risk_value", precision = 21, scale = 2)
+    private BigDecimal riskValue;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "inheritsFrom", "scenarios" }, allowSetters = true)
-    private Technology technologyID;
+    @JsonIgnoreProperties(value = { "parentActor", "actorIDS", "group" }, allowSetters = true)
+    private Actor actorFK;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "scenarios", "mitigations" }, allowSetters = true)
-    private Vulnerability vulnerabilityID;
+    @JsonIgnoreProperties(value = { "parentTechnology", "technologyIDS" }, allowSetters = true)
+    private Technology technologyFK;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "vulnerabilityIDS", "mitigations" }, allowSetters = true)
+    private Vulnerability vulnerabilityFK;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public UUID getScenarioID() {
-        return this.scenarioID;
+    public Long getId() {
+        return this.id;
     }
 
-    public Scenario scenarioID(UUID scenarioID) {
-        this.setScenarioID(scenarioID);
+    public Scenario id(Long id) {
+        this.setId(id);
         return this;
     }
 
-    public void setScenarioID(UUID scenarioID) {
-        this.scenarioID = scenarioID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public UUID getActorID() {
-        return this.actorID;
+    public String getTitle() {
+        return this.title;
     }
 
-    public Scenario actorID(UUID actorID) {
-        this.setActorID(actorID);
+    public Scenario title(String title) {
+        this.setTitle(title);
         return this;
     }
 
-    public void setActorID(UUID actorID) {
-        this.actorID = actorID;
-    }
-
-    public UUID getTechnologyID() {
-        return this.technologyID;
-    }
-
-    public Scenario technologyID(UUID technologyID) {
-        this.setTechnologyID(technologyID);
-        return this;
-    }
-
-    public void setTechnologyID(UUID technologyID) {
-        this.technologyID = technologyID;
-    }
-
-    public UUID getVulnerabilityID() {
-        return this.vulnerabilityID;
-    }
-
-    public Scenario vulnerabilityID(UUID vulnerabilityID) {
-        this.setVulnerabilityID(vulnerabilityID);
-        return this;
-    }
-
-    public void setVulnerabilityID(UUID vulnerabilityID) {
-        this.vulnerabilityID = vulnerabilityID;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -153,42 +121,55 @@ public class Scenario implements Serializable {
         this.qonsequence = qonsequence;
     }
 
-    public Actor getActorID() {
-        return this.actorID;
+    public BigDecimal getRiskValue() {
+        return this.riskValue;
     }
 
-    public void setActorID(Actor actor) {
-        this.actorID = actor;
-    }
-
-    public Scenario actorID(Actor actor) {
-        this.setActorID(actor);
+    public Scenario riskValue(BigDecimal riskValue) {
+        this.setRiskValue(riskValue);
         return this;
     }
 
-    public Technology getTechnologyID() {
-        return this.technologyID;
+    public void setRiskValue(BigDecimal riskValue) {
+        this.riskValue = riskValue;
     }
 
-    public void setTechnologyID(Technology technology) {
-        this.technologyID = technology;
+    public Actor getActorFK() {
+        return this.actorFK;
     }
 
-    public Scenario technologyID(Technology technology) {
-        this.setTechnologyID(technology);
+    public void setActorFK(Actor actor) {
+        this.actorFK = actor;
+    }
+
+    public Scenario actorFK(Actor actor) {
+        this.setActorFK(actor);
         return this;
     }
 
-    public Vulnerability getVulnerabilityID() {
-        return this.vulnerabilityID;
+    public Technology getTechnologyFK() {
+        return this.technologyFK;
     }
 
-    public void setVulnerabilityID(Vulnerability vulnerability) {
-        this.vulnerabilityID = vulnerability;
+    public void setTechnologyFK(Technology technology) {
+        this.technologyFK = technology;
     }
 
-    public Scenario vulnerabilityID(Vulnerability vulnerability) {
-        this.setVulnerabilityID(vulnerability);
+    public Scenario technologyFK(Technology technology) {
+        this.setTechnologyFK(technology);
+        return this;
+    }
+
+    public Vulnerability getVulnerabilityFK() {
+        return this.vulnerabilityFK;
+    }
+
+    public void setVulnerabilityFK(Vulnerability vulnerability) {
+        this.vulnerabilityFK = vulnerability;
+    }
+
+    public Scenario vulnerabilityFK(Vulnerability vulnerability) {
+        this.setVulnerabilityFK(vulnerability);
         return this;
     }
 
@@ -202,7 +183,7 @@ public class Scenario implements Serializable {
         if (!(o instanceof Scenario)) {
             return false;
         }
-        return scenarioID != null && scenarioID.equals(((Scenario) o).scenarioID);
+        return id != null && id.equals(((Scenario) o).id);
     }
 
     @Override
@@ -215,13 +196,12 @@ public class Scenario implements Serializable {
     @Override
     public String toString() {
         return "Scenario{" +
-            "scenarioID=" + getScenarioID() +
-            ", actorID='" + getActorID() + "'" +
-            ", technologyID='" + getTechnologyID() + "'" +
-            ", vulnerabilityID='" + getVulnerabilityID() + "'" +
+            "id=" + getId() +
+            ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", probability=" + getProbability() +
             ", qonsequence=" + getQonsequence() +
+            ", riskValue=" + getRiskValue() +
             "}";
     }
 }

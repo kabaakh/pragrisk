@@ -14,7 +14,7 @@ describe('Actor Management Detail Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { data: of({ actor: { actorID: '9fec3727-3421-4967-b213-ba36557ca194' } }) },
+          useValue: { data: of({ actor: { id: 123 } }) },
         },
       ],
     })
@@ -30,7 +30,7 @@ describe('Actor Management Detail Component', () => {
       comp.ngOnInit();
 
       // THEN
-      expect(comp.actor).toEqual(expect.objectContaining({ actorID: '9fec3727-3421-4967-b213-ba36557ca194' }));
+      expect(comp.actor).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { Search } from 'app/core/request/request.model';
+import { SearchWithPagination } from 'app/core/request/request.model';
 import { IMitigation, getMitigationIdentifier } from '../mitigation.model';
 
 export type EntityResponseType = HttpResponse<IMitigation>;
@@ -23,18 +23,18 @@ export class MitigationService {
   }
 
   update(mitigation: IMitigation): Observable<EntityResponseType> {
-    return this.http.put<IMitigation>(`${this.resourceUrl}/${getMitigationIdentifier(mitigation) as string}`, mitigation, {
+    return this.http.put<IMitigation>(`${this.resourceUrl}/${getMitigationIdentifier(mitigation) as number}`, mitigation, {
       observe: 'response',
     });
   }
 
   partialUpdate(mitigation: IMitigation): Observable<EntityResponseType> {
-    return this.http.patch<IMitigation>(`${this.resourceUrl}/${getMitigationIdentifier(mitigation) as string}`, mitigation, {
+    return this.http.patch<IMitigation>(`${this.resourceUrl}/${getMitigationIdentifier(mitigation) as number}`, mitigation, {
       observe: 'response',
     });
   }
 
-  find(id: string): Observable<EntityResponseType> {
+  find(id: number): Observable<EntityResponseType> {
     return this.http.get<IMitigation>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
@@ -43,11 +43,11 @@ export class MitigationService {
     return this.http.get<IMitigation[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: string): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req: Search): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IMitigation[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

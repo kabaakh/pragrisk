@@ -10,9 +10,9 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pragRiskApp.actor.actorID">Actor ID</span></dt>
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
         <dd>
-          <span>{{ actor.actorID }}</span>
+          <span>{{ actor.id }}</span>
         </dd>
         <dt><span jhiTranslate="pragRiskApp.actor.firstName">First Name</span></dt>
         <dd>
@@ -26,22 +26,20 @@
         <dd>
           <span>{{ actor.nickName }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.environMent">Environ Ment</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'pragRiskApp.Environment.' + actor.environMent }}">{{ actor.environMent }}</span>
-        </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
-        <dd>
-          <span>{{ actor.inheritsFrom }}</span>
-        </dd>
         <dt><span jhiTranslate="pragRiskApp.actor.description">Description</span></dt>
         <dd>
           <span>{{ actor.description }}</span>
         </dd>
-        <dt><span jhiTranslate="pragRiskApp.actor.inheritsFrom">Inherits From</span></dt>
+        <dt><span jhiTranslate="pragRiskApp.actor.parentActor">Parent Actor</span></dt>
         <dd>
-          <div *ngIf="actor.inheritsFrom">
-            <a [routerLink]="['/actor', actor.inheritsFrom?.actorID, 'view']">{{ actor.inheritsFrom?.actorID }}</a>
+          <div *ngIf="actor.parentActor">
+            <a [routerLink]="['/actor', actor.parentActor?.id, 'view']">{{ actor.parentActor?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pragRiskApp.actor.group">Group</span></dt>
+        <dd>
+          <div *ngIf="actor.group">
+            <a [routerLink]="['/environment', actor.group?.id, 'view']">{{ actor.group?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -50,7 +48,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/actor', actor.actorID, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/actor', actor.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

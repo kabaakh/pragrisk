@@ -12,7 +12,7 @@ export class ScenarioRoutingResolveService implements Resolve<IScenario> {
   constructor(protected service: ScenarioService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IScenario> | Observable<never> {
-    const id = route.params['scenarioID'];
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((scenario: HttpResponse<Scenario>) => {
